@@ -1,0 +1,10 @@
+services:
+  syzeteo:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "8502:8501"
+    environment:
+      SYZETEO_DATA_DIR: /data
+    volumes:
+      - ./persistent:/data
