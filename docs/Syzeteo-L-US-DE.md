@@ -1,6 +1,6 @@
 # Syzeteo – User Stories
 
-Stand: 27.08.2026
+Stand: 31.08.2026
 
 ## User Stories
 
@@ -65,7 +65,7 @@ Stand: 27.08.2026
   Als **Instructor** möchte ich den zuletzt ausgeführten Spielschritt rückgängig machen können, damit eine versehentliche Wertung oder Spielerwahl korrigiert werden kann, ohne das gesamte Spiel neu starten zu müssen.
 
 - [x] **US #21 – Laufendes Spiel fortsetzen**  
-  Als **Instructor** möchte ich ein begonnenes und noch nicht abgeschlossenes Spiel später wieder öffnen und am gespeicherten Spielstand fortsetzen können, damit ein Spiel bei Unterbrechungen nicht verloren geht.
+  Als **Instructor** möchte ich ein laufendes Spiel später wieder öffnen und am gespeicherten Spielstand fortsetzen können, damit ein Spiel bei Unterbrechungen nicht verloren geht.
 
 - [x] **US #22 – Beamer-Modus verwenden**  
   Als **Instructor** möchte ich die Spielansicht in einen Beamer-Modus umschalten können, damit Karten, Fragen und Spielstand für die Studierenden groß und ohne störende Navigation dargestellt werden.
@@ -77,4 +77,7 @@ Stand: 27.08.2026
   Als **Instructor** möchte ich nachvollziehen können, welche Fachfragen in welcher Runde und in welchem Kurs tatsächlich gespielt wurden, und dieses Protokoll exportieren können, damit die Verwendung der Fragen für die weitere Lehr- und Klausurplanung dokumentiert ist.
 
 - [x] **US #25 – Rundenabdeckung prüfen**  
-  Als **Instructor** möchte ich sehen können, welche Runden in welchen aktiven Kursen bereits gespielt wurden, noch laufen oder noch offen sind, damit ich die kursübergreifende Durchführung der vorgesehenen Runden überblicken kann.
+  Als **Instructor** möchte ich sehen können, welche Runden in welchen aktiven Kursen bereits gespielt wurden, noch laufen, abgebrochen oder noch offen sind, damit ich die kursübergreifende Durchführung der vorgesehenen Runden überblicken kann.
+
+- [x] **US #26 – Spiel abbrechen und löschen**  
+  Als **Instructor** möchte ich ein laufendes Spiel abbrechen und ein abgebrochenes Spiel auf der **Instructor-Seite** löschen können, damit irrtümlich gestartete oder nicht fortzuführende Spiele den weiteren Spielbetrieb und die Rundenabdeckung nicht blockieren.
