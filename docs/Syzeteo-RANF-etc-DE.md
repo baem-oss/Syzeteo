@@ -1,6 +1,6 @@
 # Syzeteo – Randanforderungen, nichtfunktionale Anforderungen und Geschäftsregeln
 
-Stand: 27.08.2026
+Stand: 31.08.2026
 
 ## 1. Randanforderungen (RANF)
 
@@ -9,7 +9,7 @@ Stand: 27.08.2026
   **Anforderung:**  
   Bei Aktualisierungen von Syzeteo müssen sämtliche bereits vorhandenen fachlichen Daten vollständig und konsistent erhalten bleiben. Änderungen am Datenbankschema dürfen nur so durchgeführt werden, dass bestehende Daten verlustfrei übernommen und weiterhin korrekt verwendet werden können.  
   **Begründung:**  
-  Versionswechsel dürfen nicht zum Verlust oder zur unbeabsichtigten Veränderung bereits erfasster Kurs-, Studierenden-, Fragen-, Runden- oder Spieldaten führen. Die ausdrücklich durch den Instructor ausgelöste Löschung eines Kurses gemäß GR #10 ist keine Aktualisierung von Syzeteo und fällt daher nicht unter diese Migrationsrandbedingung.
+  Versionswechsel dürfen nicht zum Verlust oder zur unbeabsichtigten Veränderung bereits erfasster Kurs-, Studierenden-, Fragen-, Runden- oder Spieldaten führen. Die ausdrücklich durch den Instructor ausgelöste Löschung eines Kurses gemäß GR #10 sowie die Löschung eines zuvor abgebrochenen Spiels gemäß GR #11 sind keine Aktualisierung von Syzeteo und fallen daher nicht unter diese Migrationsrandbedingung.
 
 ## 2. Nichtfunktionale Anforderungen (NFANF)
 
@@ -31,9 +31,9 @@ Stand: 27.08.2026
 - [x] **NFANF #02 – Rundenbezogene Datenintegrität**  
   **Art:** Integrität / Konsistenz  
   **Anforderung:**  
-  Bereits abgeschlossene Spielzüge, Punktestände und protokollierte Fragen dürfen durch spätere Änderungen an Stammdaten oder durch die Aufnahme von Nachzüglern nicht rückwirkend verändert werden. Davon ausgenommen ist die ausdrücklich durch den Instructor ausgelöste vollständige Löschung eines Kurses gemäß GR #10; in diesem Fall werden sämtliche mit diesem Kurs zusammenhängenden Daten gelöscht. Das in US #20 vorgesehene Rückgängigmachen des zuletzt ausgeführten Spielschritts ist eine definierte Spieloperation und gilt nicht als unzulässige rückwirkende Änderung im Sinne dieser Anforderung.  
+  Bereits abgeschlossene Spielzüge, Punktestände und protokollierte Fragen dürfen durch spätere Änderungen an Stammdaten oder durch die Aufnahme von Nachzüglern nicht rückwirkend verändert werden. Davon ausgenommen sind die ausdrücklich durch den Instructor ausgelöste vollständige Löschung eines Kurses gemäß GR #10 sowie die Löschung eines zuvor abgebrochenen Spiels gemäß GR #11. Das in US #20 vorgesehene Rückgängigmachen des zuletzt ausgeführten Spielschritts ist eine definierte Spieloperation und gilt ebenfalls nicht als unzulässige rückwirkende Änderung im Sinne dieser Anforderung.  
   **Begründung:**  
-  Der dokumentierte Spielverlauf muss während des Bestehens des zugehörigen Kurses nachvollziehbar und konsistent bleiben. Eine bewusste vollständige Kurslöschung stellt dagegen eine ausdrücklich vorgesehene Löschoperation dar.
+  Der dokumentierte Spielverlauf muss während des Bestehens des zugehörigen Kurses nachvollziehbar und konsistent bleiben. Bewusst ausgelöste Löschoperationen gemäß GR #10 und GR #11 sowie das definierte Undo gemäß US #20 sind fachlich vorgesehene Ausnahmen.
 
 - [x] **NFANF #03 – Kompakte Spielansicht**  
   **Art:** Usability  
@@ -110,13 +110,20 @@ Stand: 27.08.2026
 - [x] **GR #09 – Runde je Kurs einmal verwenden**  
   **Art:** Fachliche Geschäftsregel  
   **Regel:**  
-  Eine Runde darf in einem Kurs nur einmal regulär durchgeführt werden.  
+  Eine Runde darf in einem Kurs nur einmal regulär durchgeführt werden. Ein abgebrochenes und gemäß GR #11 gelöschtes Spiel gilt nicht als reguläre Durchführung; die Runde darf für den betreffenden Kurs anschließend erneut gestartet werden.  
   **Begründung:**  
-  Dadurch wird verhindert, dass dieselbe Runde mit demselben Fragensatz innerhalb eines Kurses mehrfach in die Ergebnis- und Fragenhistorie eingeht.
+  Dadurch wird verhindert, dass dieselbe Runde mit demselben Fragensatz innerhalb eines Kurses mehrfach in die Ergebnis- und Fragenhistorie eingeht, ohne Fehlstarts oder abgebrochene Spiele dauerhaft als Durchführung zu werten.
 
 - [x] **GR #10 – Vollständige Kurslöschung**  
   **Art:** Fachliche Datenregel  
   **Regel:**  
-  Wird ein Kurs durch den **Instructor** gelöscht, werden sämtliche mit diesem Kurs zusammenhängenden Daten vollständig gelöscht. Dies umfasst insbesondere Studierende und Teamzuordnungen des Kurses, Anwesenheitsdaten, laufende und abgeschlossene Spiele, Spielstände, Rundenergebnisse, kursbezogene Fragenprotokolle und sonstige ausschließlich diesem Kurs zugeordnete Daten. Globaler, kursübergreifender Datenbestand, insbesondere Lerneinheiten und Fragen des globalen Fragenpools, wird dadurch nicht gelöscht.  
+  Wird ein Kurs durch den **Instructor** gelöscht, werden sämtliche mit diesem Kurs zusammenhängenden Daten vollständig gelöscht. Dies umfasst insbesondere Studierende und Teamzuordnungen des Kurses, Anwesenheitsdaten, laufende, abgebrochene und abgeschlossene Spiele, Spielstände, Rundenergebnisse, kursbezogene Fragenprotokolle und sonstige ausschließlich diesem Kurs zugeordnete Daten. Globaler, kursübergreifender Datenbestand, insbesondere Lerneinheiten und Fragen des globalen Fragenpools, wird dadurch nicht gelöscht.  
   **Begründung:**  
   Die Kurslöschung ist als vollständige fachliche Löschoperation definiert. Gleichzeitig bleiben globale, nicht ausschließlich dem gelöschten Kurs zugeordnete Lerninhalte erhalten.
+
+- [x] **GR #11 – Spiel abbrechen und löschen**  
+  **Art:** Fachliche Spiel- und Datenregel  
+  **Regel:**  
+  Ein laufendes Spiel kann durch den **Instructor** abgebrochen werden. Ein abgebrochenes Spiel gilt weder als laufendes noch als regulär abgeschlossenes Spiel und kann nicht fortgesetzt werden. Abgebrochene Spiele werden auf der **Instructor-Seite** angezeigt und können dort durch den Instructor gelöscht werden. Nur abgebrochene Spiele dürfen über diese Funktion gelöscht werden; regulär abgeschlossene Spiele sind davon ausgeschlossen. Beim Löschen werden das Spiel und alle ausschließlich diesem Spiel zugeordneten Daten vollständig entfernt. Nach der Löschung gilt die betreffende Runde für den betreffenden Kurs wieder als offen und darf erneut gestartet werden.  
+  **Begründung:**  
+  Irrtümlich gestartete oder nicht fortzuführende Spiele dürfen weder den laufenden Spielbetrieb noch die spätere reguläre Durchführung einer Runde blockieren. Gleichzeitig bleiben regulär abgeschlossene Spiele und deren Historie geschützt.
