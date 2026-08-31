@@ -1,0 +1,61 @@
+name: build-sud-1.1.0-dev1
+
+on:
+  push:
+    branches:
+      - sud-1.1.0-dev1-us26
+    paths:
+      - tools/apply_us26.py
+      - .github/workflows/build-sud-1.1.0-dev1.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-sud:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out SuD branch
+        uses: actions/checkout@v4
+        with:
+          ref: sud-1.1.0-dev1-us26
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Apply US 26 implementation
+        run: python tools/apply_us26.py
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Run full test suite
+        run: python -m unittest discover -v
+
+      - name: Commit generated SuD state
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app.py storage.py locales/de.json locales/en.json test_game_abort.py
+          if ! git diff --cached --quiet; then
+            git commit -m "Implement US26 abort and delete game"
+            git push origin HEAD:sud-1.1.0-dev1-us26
+          fi
+
+      - name: Package system state
+        run: |
+          git archive --format=zip --output=Syzeteo-1.1.0-dev1.zip HEAD
+          sha256sum Syzeteo-1.1.0-dev1.zip > Syzeteo-1.1.0-dev1-SHA256SUM.txt
+
+      - name: Upload system artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Syzeteo-1.1.0-dev1
+          path: |
+            Syzeteo-1.1.0-dev1.zip
+            Syzeteo-1.1.0-dev1-SHA256SUM.txt
+          if-no-files-found: error
