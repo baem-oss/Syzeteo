@@ -6,6 +6,9 @@ on:
       - sud-1.1.0-dev1-us26
     paths:
       - tools/apply_us26.py
+      - docs/**
+      - CHANGELOG.md
+      - DEVELOPMENT_NOTES.md
       - .github/workflows/build-sud-1.1.0-dev1.yml
   workflow_dispatch:
 
