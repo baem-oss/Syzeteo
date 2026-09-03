@@ -1,6 +1,6 @@
 # Syzeteo – Constraints, Non-functional Requirements, and Business Rules
 
-Status: 31 August 2026
+Status: 3 September 2026
 
 ## 1. Constraints (RANF)
 

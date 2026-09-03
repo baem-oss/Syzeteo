@@ -1,6 +1,6 @@
 # Syzeteo – User Stories
 
-Status: 31 August 2026
+Status: 3 September 2026
 
 ## User Stories
 

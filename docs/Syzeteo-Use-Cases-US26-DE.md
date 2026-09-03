@@ -1,6 +1,6 @@
 # Syzeteo – Use Cases zu US #26
 
-Stand: 31.08.2026
+Stand: 03.09.2026
 
 ## Use Case: Spiel abbrechen
 
@@ -27,26 +27,28 @@ Der Instructor wählt die Funktion „Spiel abbrechen“.
 1. Syzeteo fordert den Instructor auf, den Abbruch zu bestätigen.
 2. Der Instructor bestätigt den Abbruch.
 3. Syzeteo bricht das Spiel ab.
-4. Syzeteo bestätigt den erfolgreichen Abbruch und öffnet die Instructor-Seite.
+4. Syzeteo bestätigt dem Instructor den erfolgreichen Abbruch.
+5. Syzeteo öffnet die Instructor-Seite.
 
-**Erweiterungen:**
+**Erweiterungen:**  
+Keine.
 
-**2a. Der Instructor bestätigt den Abbruch nicht.**  
-2a1. Syzeteo schließt die Bestätigungsabfrage und zeigt dem Instructor wieder das laufende Spiel an.
+**Alternativen:**
 
-**3a. Syzeteo kann den Abbruch nicht durchführen.**  
+**2a. Der Instructor verwirft den Abbruch.**  
+2a1. Syzeteo schließt die Bestätigungsabfrage.  
+2a2. Syzeteo zeigt dem Instructor wieder das laufende Spiel an.
+
+**3a. Syzeteo kann das laufende Spiel nicht abbrechen.**  
 3a1. Syzeteo informiert den Instructor über den fehlgeschlagenen Abbruch.  
 3a2. Syzeteo zeigt dem Instructor wieder das laufende Spiel an.
-
-**Alternativen:**  
-Keine.
 
 ---
 
 ## Use Case: Spiel löschen
 
 **Ziel:**  
-Ein abgebrochenes Spiel vollständig entfernen, damit die zugehörige Runde für den betreffenden Kurs erneut durchgeführt werden kann.
+Ein abgebrochenes Spiel löschen, damit die zugehörige Runde für den betreffenden Kurs erneut durchgeführt werden kann.
 
 **Vorbedingung:**  
 Der Instructor befindet sich auf der Instructor-Seite. Mindestens ein abgebrochenes Spiel ist vorhanden.
@@ -65,19 +67,21 @@ Der Instructor wählt ein abgebrochenes Spiel zum Löschen aus.
 
 **Beschreibung:**
 
-1. Syzeteo zeigt dem Instructor das ausgewählte Spiel und fordert ihn auf, die Löschung zu bestätigen.
-2. Der Instructor bestätigt die Löschung.
-3. Syzeteo löscht das ausgewählte Spiel.
-4. Syzeteo bestätigt dem Instructor die erfolgreiche Löschung.
+1. Syzeteo zeigt dem Instructor das ausgewählte Spiel an.
+2. Syzeteo fordert den Instructor auf, die Löschung zu bestätigen.
+3. Der Instructor bestätigt die Löschung.
+4. Syzeteo löscht das ausgewählte Spiel.
+5. Syzeteo bestätigt dem Instructor die erfolgreiche Löschung.
 
-**Erweiterungen:**
+**Erweiterungen:**  
+Keine.
 
-**2a. Der Instructor bestätigt die Löschung nicht.**  
-2a1. Syzeteo schließt die Bestätigungsabfrage und zeigt dem Instructor wieder die Instructor-Seite an.
+**Alternativen:**
 
-**3a. Syzeteo kann die Löschung nicht durchführen.**  
-3a1. Syzeteo informiert den Instructor über die fehlgeschlagene Löschung.  
+**3a. Der Instructor verwirft die Löschung.**  
+3a1. Syzeteo schließt die Bestätigungsabfrage.  
 3a2. Syzeteo zeigt dem Instructor wieder die Instructor-Seite an.
 
-**Alternativen:**  
-Keine.
+**4a. Syzeteo kann das ausgewählte Spiel nicht löschen.**  
+4a1. Syzeteo informiert den Instructor über die fehlgeschlagene Löschung.  
+4a2. Syzeteo zeigt dem Instructor wieder die Instructor-Seite an.

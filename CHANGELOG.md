@@ -2,6 +2,35 @@
 
 All notable changes to Syzeteo are documented here.
 
+## [1.1.0] - 2026-09-03
+
+### Added
+- abort a running game after explicit Instructor confirmation;
+- persistent language-neutral game status `aborted`;
+- management and deletion of aborted games on the Instructor page;
+- German and English UI texts for US #26;
+- five domain tests for abort/delete behavior and one navigation regression test.
+
+### Changed
+- round coverage distinguishes `aborted` from `running`, `played`, and `open`;
+- aborted games are excluded from regular results and cannot be resumed;
+- deleting an aborted game makes the corresponding round available again for that course.
+
+### Fixed
+- programmatic Streamlit navigation is deferred until before the `page_nav` widget is instantiated, preventing session-state mutation errors after a successful abort.
+
+### Compatibility
+- SQLite schema remains version `2`;
+- no database migration is required;
+- existing Syzeteo 1.0.0 data remains compatible.
+
+## [1.1.0-dev2] - 2026-09-03
+
+### Fixed
+- Streamlit navigation after a successful game abort no longer writes to `st.session_state.page_nav` after the `page_nav` widget has been instantiated.
+- Programmatic navigation is now deferred through `_pending_page_nav` and applied before the sidebar navigation widget is created.
+- Added a regression test for the Streamlit widget-state rule.
+
 ## [1.1.0-dev1] - 2026-08-31
 
 Development state implementing US #26.

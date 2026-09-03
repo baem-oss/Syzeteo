@@ -1,6 +1,6 @@
 # Syzeteo – Traceability Matrix
 
-Stand: 31.08.2026
+Stand: 03.09.2026
 
 Quellenbasis: `Syzeteo-L-US-DE.md`, `Syzeteo-RANF-etc-DE.md` und `Syzeteo-Use-Cases-US26-DE.md`
 

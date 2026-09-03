@@ -19,6 +19,7 @@ Der Name geht auf das altgriechische **συζητέω (syzēteō)** zurück und 
 - Team Assist als Ausnahme: ein Einsatz über Team Assist zählt nicht als regulärer Zug;
 - die letzte verbleibende Karte wird immer vom Instructor beantwortet und mit 0 Punkten abgeschlossen;
 - keine Individualauswertung;
+- laufende Spiele können abgebrochen werden; ausschließlich abgebrochene Spiele können vom Instructor gelöscht werden;
 - persistente SQLite-Datenhaltung und Docker-Betrieb;
 - vollständig englische und deutsche Anwendungsoberfläche.
 
@@ -84,7 +85,12 @@ Ohne diese Variable verwendet Syzeteo `./persistent`. Die Datenbankdatei heißt 
 syzeteo.sqlite3
 ```
 
-Syzeteo 1.0.0 verwendet SQLite-Schemaversion `2` (`PRAGMA user_version`). Anwendungs- und SQLite-Schemaversion sind bewusst voneinander unabhängig. Im persistenten Domänenmodell werden unter anderem `challenge`, `team_assist_used`, `team1_assist_used` und `team2_assist_used` verwendet.
+Syzeteo 1.1.0 verwendet SQLite-Schemaversion `2` (`PRAGMA user_version`). Anwendungs- und SQLite-Schemaversion sind bewusst voneinander unabhängig. Im persistenten Domänenmodell werden unter anderem `challenge`, `team_assist_used`, `team1_assist_used` und `team2_assist_used` verwendet.
+
+
+## Upgrade von 1.0.0
+
+Syzeteo 1.1.0 verwendet weiterhin SQLite-Schemaversion `2`. Eine Datenmigration ist nicht erforderlich. Bestehende 1.0.0-Daten können unverändert weiterverwendet werden. Vor einem Wechsel des Anwendungscodes wird dennoch eine konsistente Sicherung von `persistent/` empfohlen.
 
 ## Tests
 
@@ -92,11 +98,11 @@ Syzeteo 1.0.0 verwendet SQLite-Schemaversion `2` (`PRAGMA user_version`). Anwend
 python -m unittest discover -v
 ```
 
-Das Release enthält Regressionstests, Release-Abnahmetests und Konsistenztests für die Internationalisierung. Die Release-Testsuite von Syzeteo 1.0.0 umfasst **56 automatisierte Tests**.
+Das Release enthält Regressionstests, Release-Abnahmetests und Konsistenztests für die Internationalisierung. Die Release-Testsuite von Syzeteo 1.1.0 umfasst **62 automatisierte Tests**.
 
 ## Spezifikation
 
-Im Verzeichnis `docs/` liegen User Stories, Anforderungen/Geschäftsregeln und Traceability Matrix jeweils in deutscher und englischer Fassung sowie technische Baseline und Internationalisierungsspezifikation für Syzeteo 1.0.0.
+Im Verzeichnis `docs/` liegen User Stories, Anforderungen/Geschäftsregeln und Traceability Matrix jeweils in deutscher und englischer Fassung sowie technische Baseline und Internationalisierungsspezifikation für Syzeteo 1.1.0.
 
 ## Repository-Hygiene
 

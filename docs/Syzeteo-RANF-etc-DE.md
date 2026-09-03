@@ -1,6 +1,6 @@
 # Syzeteo – Randanforderungen, nichtfunktionale Anforderungen und Geschäftsregeln
 
-Stand: 31.08.2026
+Stand: 03.09.2026
 
 ## 1. Randanforderungen (RANF)
 

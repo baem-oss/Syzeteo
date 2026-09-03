@@ -1,6 +1,6 @@
 # Syzeteo – Traceability Matrix
 
-Status: 31 August 2026
+Status: 3 September 2026
 
 Source basis: `Syzeteo-L-US-EN.md`, `Syzeteo-RANF-etc-EN.md`, and `Syzeteo-Use-Cases-US26-EN.md`
 
