@@ -23,7 +23,7 @@ from storage import (
     get_app_setting, set_app_setting, StorageError,
 )
 
-APP_VERSION = "1.1.0-dev1"
+APP_VERSION = "1.1.0"
 
 st.set_page_config(page_title="Syzeteo", page_icon="🧠", layout="wide")
 
@@ -171,6 +171,13 @@ if not st.session_state.get("authenticated"):
 
 st.sidebar.title(tr("app.title"))
 st.sidebar.caption(tr("app.tagline"))
+
+# Programmatic navigation must be applied before the widget with key
+# "page_nav" is instantiated in the current Streamlit run.
+_pending_page_nav = st.session_state.pop("_pending_page_nav", None)
+if _pending_page_nav in PAGE_IDS:
+    st.session_state["page_nav"] = _pending_page_nav
+
 PAGE=st.sidebar.radio(
     tr("nav.label"),
     PAGE_IDS,
@@ -185,7 +192,7 @@ if st.sidebar.button(tr("auth.logout")):
 
 
 def navigate(page, game_id=None, clear_finished=False):
-    st.session_state.page_nav=page
+    st.session_state["_pending_page_nav"]=page
     if game_id is not None:
         st.session_state.active_game=game_id
     if clear_finished:
@@ -879,7 +886,7 @@ elif PAGE==PAGE_GAME:
                     st.session_state.pop("active_game",None)
                     st.session_state.pop(abort_confirm_key,None)
                     st.session_state["game_abort_success"]={"round_name":aborted_round,"course_code":aborted_course}
-                    st.session_state.page_nav=PAGE_INSTRUCTOR_SETTINGS
+                    st.session_state["_pending_page_nav"]=PAGE_INSTRUCTOR_SETTINGS
                     rerun()
                 except Exception as e:
                     show_error(e)
