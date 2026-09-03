@@ -1043,6 +1043,51 @@ def list_games(conn, status=None):
     ).fetchall()
 
 
+
+def abort_game(conn, game_id):
+    """Abort an ongoing game without treating it as regularly completed."""
+    gid = int(game_id)
+    game = conn.execute("SELECT id,status FROM games WHERE id=?", (gid,)).fetchone()
+    if not game:
+        raise StorageError("error.game.abort_not_found")
+    if game["status"] != "running":
+        raise StorageError("error.game.abort_running_only")
+    try:
+        conn.execute("BEGIN")
+        updated = conn.execute(
+            "UPDATE games SET status='aborted' WHERE id=? AND status='running'",
+            (gid,),
+        )
+        if updated.rowcount != 1:
+            raise StorageError("error.game.abort_running_only")
+        conn.commit()
+    except Exception:
+        conn.rollback()
+        raise
+
+
+def delete_aborted_game(conn, game_id):
+    """Delete an aborted game and all data that belongs exclusively to it."""
+    gid = int(game_id)
+    game = conn.execute("SELECT id,status FROM games WHERE id=?", (gid,)).fetchone()
+    if not game:
+        raise StorageError("error.game.delete_not_found")
+    if game["status"] != "aborted":
+        raise StorageError("error.game.delete_aborted_only")
+    try:
+        conn.execute("BEGIN")
+        deleted = conn.execute(
+            "DELETE FROM games WHERE id=? AND status='aborted'",
+            (gid,),
+        )
+        if deleted.rowcount != 1:
+            raise StorageError("error.game.delete_aborted_only")
+        conn.commit()
+    except Exception:
+        conn.rollback()
+        raise
+
+
 def game_cards(conn, game_id):
     return conn.execute("SELECT * FROM game_cards WHERE game_id=? ORDER BY card_no", (game_id,)).fetchall()
 

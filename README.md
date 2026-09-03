@@ -19,6 +19,7 @@ The name derives from the Ancient Greek **συζητέω (syzēteō)**, meaning 
 - Team Assist as an exception: helping through Team Assist does not count as a regular turn;
 - the final remaining card is always answered by the Instructor and scores 0 points;
 - no individual performance analytics: names are used only for game organization;
+- running games can be aborted; only aborted games can be deleted by the Instructor;
 - persistent SQLite storage and Docker-based deployment;
 - complete English and German application UI.
 
@@ -86,7 +87,12 @@ If it is not set, Syzeteo uses `./persistent`. The database file is always named
 syzeteo.sqlite3
 ```
 
-Syzeteo 1.0.0 uses SQLite schema version `2` (`PRAGMA user_version`). Application version and SQLite schema version are intentionally independent. The persisted domain identifiers include `challenge`, `team_assist_used`, `team1_assist_used` and `team2_assist_used`.
+Syzeteo 1.1.0 uses SQLite schema version `2` (`PRAGMA user_version`). Application version and SQLite schema version are intentionally independent. The persisted domain identifiers include `challenge`, `team_assist_used`, `team1_assist_used` and `team2_assist_used`.
+
+
+## Upgrade from 1.0.0
+
+Syzeteo 1.1.0 keeps SQLite schema version `2`. No database migration is required. Existing 1.0.0 data can be reused unchanged. A consistent backup of `persistent/` is nevertheless recommended before changing application code.
 
 ## Tests
 
@@ -94,11 +100,11 @@ Syzeteo 1.0.0 uses SQLite schema version `2` (`PRAGMA user_version`). Applicatio
 python -m unittest discover -v
 ```
 
-The release contains regression tests, release-acceptance tests and internationalization consistency tests. The Syzeteo 1.0.0 release suite contains **56 automated tests**.
+The release contains regression tests, release-acceptance tests and internationalization consistency tests. The Syzeteo 1.1.0 release suite contains **62 automated tests**.
 
 ## Documentation
 
-The `docs/` directory contains the complete requirements and traceability set in German and English, the technical baseline, and the internationalization specification for Syzeteo 1.0.0.
+The `docs/` directory contains the complete requirements and traceability set in German and English, the technical baseline, and the internationalization specification for Syzeteo 1.1.0.
 
 ## Repository hygiene
 

@@ -1,6 +1,6 @@
 # Syzeteo – User Stories
 
-Status: 27 August 2026
+Status: 3 September 2026
 
 ## User Stories
 
@@ -65,7 +65,7 @@ Status: 27 August 2026
   As an **Instructor**, I want to undo the most recently executed game step, so that an accidental score or player selection can be corrected without restarting the entire game.
 
 - [x] **US #21 – Resume Ongoing Game**  
-  As an **Instructor**, I want to reopen a game that has started but is not yet complete and continue from the saved game state, so that a game is not lost when interrupted.
+  As an **Instructor**, I want to reopen an ongoing game later and continue from the saved game state, so that a game is not lost when interrupted.
 
 - [x] **US #22 – Use Projector Mode**  
   As an **Instructor**, I want to switch the game view to Projector Mode, so that cards, questions, and the score are displayed large enough for students and without distracting navigation.
@@ -77,4 +77,7 @@ Status: 27 August 2026
   As an **Instructor**, I want to trace which subject-matter questions were actually played in which round and course and export this log, so that question usage is documented for further teaching and exam planning.
 
 - [x] **US #25 – Check Round Coverage**  
-  As an **Instructor**, I want to see which rounds have already been played, are currently in progress, or are still open in which active courses, so that I can monitor the cross-course completion of the planned rounds.
+  As an **Instructor**, I want to see which rounds have already been played, are currently in progress, have been aborted, or are still open in which active courses, so that I can monitor the cross-course completion of the planned rounds.
+
+- [x] **US #26 – Abort and Delete Game**  
+  As an **Instructor**, I want to abort an ongoing game and delete an aborted game from the **Instructor page**, so that games started by mistake or no longer to be continued do not block further gameplay or round coverage.

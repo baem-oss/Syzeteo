@@ -1,6 +1,6 @@
 # Syzeteo – Constraints, Non-functional Requirements, and Business Rules
 
-Status: 27 August 2026
+Status: 3 September 2026
 
 ## 1. Constraints (RANF)
 
@@ -9,7 +9,7 @@ Status: 27 August 2026
   **Requirement:**  
   When Syzeteo is updated, all existing domain data must be preserved completely and consistently. Changes to the database schema may only be performed in a way that allows existing data to be migrated without loss and to continue to be used correctly.  
   **Rationale:**  
-  Version changes must not cause the loss or unintended modification of previously recorded course, student, question, round, or game data. A course deletion explicitly initiated by the Instructor in accordance with GR #10 is not an update of Syzeteo and therefore does not fall under this migration constraint.
+  Version changes must not cause the loss or unintended modification of previously recorded course, student, question, round, or game data. A course deletion explicitly initiated by the Instructor under GR #10 and deletion of a previously aborted game under GR #11 are not updates of Syzeteo and therefore do not fall under this migration constraint.
 
 ## 2. Non-functional Requirements (NFANF)
 
@@ -31,9 +31,9 @@ Status: 27 August 2026
 - [x] **NFANF #02 – Round-related Data Integrity**  
   **Type:** Integrity / consistency  
   **Requirement:**  
-  Completed game turns, point totals, and logged questions must not be changed retroactively by later changes to master data or by adding late arrivals. The complete deletion of a course explicitly initiated by the Instructor in accordance with GR #10 is exempt; in that case, all data associated with that course is deleted. Undoing the most recently executed game step as defined in US #20 is a defined game operation and does not constitute an impermissible retroactive change within the meaning of this requirement.  
+  Completed game turns, point totals, and logged questions must not be changed retroactively by later changes to master data or by adding late arrivals. Complete deletion of a course explicitly initiated by the Instructor under GR #10 and deletion of a previously aborted game under GR #11 are exempt. Undoing the most recently executed game step as defined in US #20 is likewise a defined game operation and does not constitute an impermissible retroactive change within the meaning of this requirement.  
   **Rationale:**  
-  The documented game progression must remain traceable and consistent for as long as the associated course exists. A deliberate complete course deletion, by contrast, is an explicitly defined deletion operation.
+  The documented game progression must remain traceable and consistent for as long as the associated course exists. Deliberately initiated deletion operations under GR #10 and GR #11 and the defined undo operation under US #20 are domain-defined exceptions.
 
 - [x] **NFANF #03 – Compact Game View**  
   **Type:** Usability  
@@ -110,13 +110,20 @@ Status: 27 August 2026
 - [x] **GR #09 – Use a Round Once per Course**  
   **Type:** Business rule  
   **Rule:**  
-  A round may be conducted regularly only once in a course.  
+  A round may be conducted regularly only once in a course. A game that has been aborted and deleted under GR #11 does not count as a regular conduct of the round; the round may then be started again for the respective course.  
   **Rationale:**  
-  This prevents the same round with the same question set from being entered multiple times in a course's results and question history.
+  This prevents the same round with the same question set from being entered multiple times in a course's results and question history without permanently treating false starts or aborted games as regular conduct.
 
 - [x] **GR #10 – Complete Course Deletion**  
   **Type:** Data rule  
   **Rule:**  
-  When a course is deleted by the **Instructor**, all data associated with that course is deleted completely. This includes, in particular, the course's students and team assignments, attendance data, ongoing and completed games, scores, round results, course-specific Question Logs, and any other data assigned exclusively to that course. Global cross-course data, in particular learning units and questions in the global Question Pool, is not deleted.  
+  When a course is deleted by the **Instructor**, all data associated with that course is deleted completely. This includes, in particular, the course's students and team assignments, attendance data, ongoing, aborted, and completed games, scores, round results, course-specific Question Logs, and any other data assigned exclusively to that course. Global cross-course data, in particular learning units and questions in the global Question Pool, is not deleted.  
   **Rationale:**  
   Course deletion is defined as a complete domain deletion operation. At the same time, global learning content that is not assigned exclusively to the deleted course is preserved.
+
+- [x] **GR #11 – Abort and Delete Game**  
+  **Type:** Game and data rule  
+  **Rule:**  
+  An ongoing game may be aborted by the **Instructor**. An aborted game is neither ongoing nor regularly completed and cannot be resumed. Aborted games are shown on the **Instructor page** and may be deleted there by the Instructor. Only aborted games may be deleted through this function; regularly completed games are excluded. Deleting an aborted game removes the game and all data assigned exclusively to that game. After deletion, the respective round is open again for the respective course and may be started again.  
+  **Rationale:**  
+  Games started by mistake or no longer to be continued must not block ongoing gameplay or a later regular conduct of the round. At the same time, regularly completed games and their history remain protected.

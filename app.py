@@ -10,7 +10,7 @@ from config import resolve_data_dir, resolve_database_path
 from i18n import available_locales, initial_locale, locale_display_name, t
 from storage import (
     add_late_player, add_learning_unit, add_question, add_student, archive_course, connect, course_scoreboard,
-    create_course, create_round, delete_course, delete_learning_unit, delete_question,
+    abort_game, create_course, create_round, delete_aborted_game, delete_course, delete_learning_unit, delete_question,
     export_question_pool_csv, export_question_pool_json, game_cards, game_history, game_roster,
     get_game, import_question_pool_json, import_students_csv, learning_unit_question_count,
     list_courses, list_games, list_learning_units, list_questions, preview_question_pool_import,
@@ -23,7 +23,7 @@ from storage import (
     get_app_setting, set_app_setting, StorageError,
 )
 
-APP_VERSION = "1.0.0"
+APP_VERSION = "1.1.0"
 
 st.set_page_config(page_title="Syzeteo", page_icon="🧠", layout="wide")
 
@@ -102,6 +102,7 @@ def coverage_state_label(state):
         "open": tr("question_log.coverage.open"),
         "played": tr("question_log.coverage.played"),
         "running": tr("question_log.coverage.running"),
+        "aborted": tr("question_log.coverage.aborted"),
     }.get(state, state)
 
 
@@ -170,6 +171,13 @@ if not st.session_state.get("authenticated"):
 
 st.sidebar.title(tr("app.title"))
 st.sidebar.caption(tr("app.tagline"))
+
+# Programmatic navigation must be applied before the widget with key
+# "page_nav" is instantiated in the current Streamlit run.
+_pending_page_nav = st.session_state.pop("_pending_page_nav", None)
+if _pending_page_nav in PAGE_IDS:
+    st.session_state["page_nav"] = _pending_page_nav
+
 PAGE=st.sidebar.radio(
     tr("nav.label"),
     PAGE_IDS,
@@ -184,7 +192,7 @@ if st.sidebar.button(tr("auth.logout")):
 
 
 def navigate(page, game_id=None, clear_finished=False):
-    st.session_state.page_nav=page
+    st.session_state["_pending_page_nav"]=page
     if game_id is not None:
         st.session_state.active_game=game_id
     if clear_finished:
@@ -320,7 +328,7 @@ if PAGE==PAGE_DASHBOARD:
     with st.expander(tr("dashboard.game_history")):
         hist=game_history(conn)
         if hist:
-            status_labels={"finished":tr("status.finished"),"running":tr("status.running")}
+            status_labels={"finished":tr("status.finished"),"running":tr("status.running"),"aborted":tr("status.aborted")}
             st.dataframe(pd.DataFrame([{
                 tr("dashboard.column.round"):r["round_name"],
                 tr("common.course"):r["course_code"],
@@ -862,6 +870,30 @@ elif PAGE==PAGE_GAME:
         j1.caption(tr("game.assist.status", team=1, status=tr("common.used") if game["team1_assist_used"] else tr("common.available")))
         j2.caption(tr("game.assist.status", team=2, status=tr("common.used") if game["team2_assist_used"] else tr("common.available")))
         regular_mode_label=player_mode_label(game["player_selection_mode"])
+        abort_confirm_key=f"abort_confirm_{gid}"
+        if st.button(tr("game.abort.button"),key=f"abort_game_{gid}",type="secondary"):
+            st.session_state[abort_confirm_key]=True
+            rerun()
+        if st.session_state.get(abort_confirm_key):
+            st.warning(tr("game.abort.warning",round_name=game["round_name"],course_code=game["course_code"]))
+            abort_yes,abort_no=st.columns(2)
+            if abort_yes.button(tr("game.abort.confirm"),key=f"abort_game_confirm_{gid}",type="primary"):
+                try:
+                    aborted_round=game["round_name"]
+                    aborted_course=game["course_code"]
+                    abort_game(conn,gid)
+                    clear_game_ui_state(gid)
+                    st.session_state.pop("active_game",None)
+                    st.session_state.pop(abort_confirm_key,None)
+                    st.session_state["game_abort_success"]={"round_name":aborted_round,"course_code":aborted_course}
+                    st.session_state["_pending_page_nav"]=PAGE_INSTRUCTOR_SETTINGS
+                    rerun()
+                except Exception as e:
+                    show_error(e)
+            if abort_no.button(tr("game.abort.cancel"),key=f"abort_game_cancel_{gid}"):
+                st.session_state.pop(abort_confirm_key,None)
+                rerun()
+
         st.caption(tr("game.player_mode.running", mode=regular_mode_label))
 
         # US #3: Abwesende aktive Studierende können während der laufenden Runde nachgetragen werden.
@@ -1108,7 +1140,7 @@ elif PAGE==PAGE_QUESTION_LOG:
             data.append({
                 col_round:row["round_name"], col_position:row["position"], col_qid:f"F{row['question_id']:03d}",
                 col_unit:row["unit_code"], col_question:row["question_text"], col_course:row["course_code"],
-                col_status:{"finished":tr("status.finished"),"running":tr("status.running")}.get(row["status"],row["status"]), col_played:((row["resolved_at"] or row["started_at"] or "")[:10]),
+                col_status:{"finished":tr("status.finished"),"running":tr("status.running"),"aborted":tr("status.aborted")}.get(row["status"],row["status"]), col_played:((row["resolved_at"] or row["started_at"] or "")[:10]),
             })
         df=pd.DataFrame(data)
         courses=sorted(df[col_course].unique())
@@ -1143,6 +1175,8 @@ elif PAGE==PAGE_QUESTION_LOG:
                     status=tr("question_log.coverage.played")
                 elif game and game["status"]=="running":
                     status=tr("question_log.coverage.running"); finished_all=False
+                elif game and game["status"]=="aborted":
+                    status=tr("question_log.coverage.aborted"); finished_all=False
                 else:
                     status=tr("question_log.coverage.open"); finished_all=False
                 row[course["code"]]=status
@@ -1154,6 +1188,13 @@ elif PAGE==PAGE_QUESTION_LOG:
 
 elif PAGE==PAGE_INSTRUCTOR_SETTINGS:
     st.title(tr("settings.title"))
+    aborted_flash=st.session_state.pop("game_abort_success",None)
+    if aborted_flash:
+        st.success(tr("game.abort.success",**aborted_flash))
+    deleted_flash=st.session_state.pop("game_delete_success",None)
+    if deleted_flash:
+        st.success(tr("settings.aborted.deleted",**deleted_flash))
+
     st.caption(tr("settings.caption"))
 
     st.subheader(tr("locale.selector"))
@@ -1303,6 +1344,55 @@ elif PAGE==PAGE_INSTRUCTOR_SETTINGS:
             st.session_state[mode_key]=selected_mode
             st.caption(tr("settings.player_mode.random_caption") if selected_mode=="random" else tr("settings.player_mode.manual_caption"))
             st.button(tr("settings.game.prepare"),key="admin_new_game",on_click=navigate,args=(PAGE_GAME,))
+
+    st.divider()
+    st.subheader(tr("settings.aborted.title"))
+    aborted_games=list_games(conn,"aborted")
+    if not aborted_games:
+        st.info(tr("settings.aborted.none"))
+    else:
+        aborted_labels={
+            tr(
+                "settings.aborted.option",
+                round_name=g["round_name"],
+                course_code=g["course_code"],
+                team1=g["team1_points"],
+                team2=g["team2_points"],
+            ):int(g["id"])
+            for g in aborted_games
+        }
+        aborted_label=st.selectbox(
+            tr("settings.aborted.select"),
+            list(aborted_labels),
+            key="settings_aborted_select",
+        )
+        aborted_id=aborted_labels[aborted_label]
+        aborted_game=next(g for g in aborted_games if int(g["id"])==aborted_id)
+        delete_confirm_key=f"delete_aborted_confirm_{aborted_id}"
+        if st.button(tr("settings.aborted.delete"),key=f"delete_aborted_{aborted_id}",type="secondary"):
+            st.session_state[delete_confirm_key]=True
+            rerun()
+        if st.session_state.get(delete_confirm_key):
+            st.warning(tr(
+                "settings.aborted.warning",
+                round_name=aborted_game["round_name"],
+                course_code=aborted_game["course_code"],
+            ))
+            delete_yes,delete_no=st.columns(2)
+            if delete_yes.button(tr("settings.aborted.confirm"),key=f"delete_aborted_confirm_btn_{aborted_id}",type="primary"):
+                try:
+                    deleted_round=aborted_game["round_name"]
+                    deleted_course=aborted_game["course_code"]
+                    delete_aborted_game(conn,aborted_id)
+                    st.session_state.pop(delete_confirm_key,None)
+                    st.session_state["game_delete_success"]={"round_name":deleted_round,"course_code":deleted_course}
+                    rerun()
+                except Exception as e:
+                    show_error(e)
+            if delete_no.button(tr("settings.aborted.cancel"),key=f"delete_aborted_cancel_{aborted_id}"):
+                st.session_state.pop(delete_confirm_key,None)
+                rerun()
+
 
 elif PAGE==PAGE_ACCOUNT:
     st.title(tr("account.title"))
