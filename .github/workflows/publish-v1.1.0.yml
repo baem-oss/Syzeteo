@@ -1,0 +1,44 @@
+name: publish-v1.1.0
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/publish-v1.1.0.yml
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out release commit
+        uses: actions/checkout@v4
+        with:
+          ref: dd5bb0bbfc02abcb592e1d5451ee75f3b1f6d2dc
+
+      - name: Verify release version and repository hygiene
+        run: |
+          grep -q 'APP_VERSION = "1.1.0"' app.py
+          test -f persistent/.gitkeep
+          test "$(find persistent -type f ! -name .gitkeep | wc -l)" -eq 0
+          if find . -type f \( -name '*.sqlite' -o -name '*.sqlite3' -o -name '*.db' -o -name '*.backup' -o -name '*.bak' \) | grep -q .; then
+            echo 'Database-like file found in release tree' >&2
+            exit 1
+          fi
+
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view v1.1.0 >/dev/null 2>&1; then
+            echo 'Release v1.1.0 already exists.'
+            exit 0
+          fi
+          gh release create v1.1.0 \
+            --repo "${{ github.repository }}" \
+            --target dd5bb0bbfc02abcb592e1d5451ee75f3b1f6d2dc \
+            --title 'Syzeteo 1.1.0' \
+            --notes-file RELEASE_NOTES.md
