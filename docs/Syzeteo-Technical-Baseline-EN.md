@@ -1,83 +1,81 @@
-# Syzeteo – Technical Baseline 1.1.0
+# Syzeteo – Technical Baseline 1.1.1
 
-Date: 2026-09-03
+Date: 2026-09-10
 
-## 1. Purpose
+## 1. Status and purpose
 
-This document defines the technical baseline for Syzeteo 1.1.0. Version 1.1.0 extends the published 1.0.0 baseline with US #26 “Abort and Delete Game” and GR #11.
+`1.1.1` is the Syzeteo 1.1.1 release, based on Syzeteo 1.1.0. It contains question-rendering fixes, US #27 “Manage Team Names”, GR #12 “Course-specific Team Names”, the deterministic schema-3 startup preflight, localized duplicate-student validation, US #28 “Analyze Questions” with GR #13 “Question-level Result Aggregation”, and the round-question-selection usability fix.
 
 ## 2. Runtime and deployment
 
-- application framework: Streamlit
-- implementation language: Python
-- persistence: SQLite
-- supported deployment path: Docker / Docker Compose
-- default host port: `8502`
-- application version: `1.1.0`
+- Application framework: Streamlit 1.54.0
+- Implementation language: Python
+- Persistence: SQLite
+- Deployment: Docker / Docker Compose
+- Data directory: `SYZETEO_DATA_DIR`, default `./persistent`
+- Database file: `syzeteo.sqlite3`
+- Application version: `1.1.1`
+- SQLite schema version: `PRAGMA user_version = 3`
 
-## 3. Persistence and compatibility
+## 3. Schema change 2 → 3
 
-- database file: `syzeteo.sqlite3`
-- default data directory: `./persistent`
-- optional environment variable: `SYZETEO_DATA_DIR`
-- SQLite schema version: `PRAGMA user_version = 2`
+Schema 3 adds only additive columns:
 
-Syzeteo 1.1.0 does not change the database schema from 1.0.0. No data migration is required. Existing 1.0.0 databases can be used unchanged.
+- `courses.team1_name`
+- `courses.team2_name`
+- `games.team1_name_snapshot`
+- `games.team2_name_snapshot`
 
-The existing textual game status may additionally contain the language-neutral value `aborted`. This new domain state is created only when an Instructor explicitly aborts a running game.
+Existing schema-2 databases are migrated automatically and idempotently to schema 3 during container startup before Streamlit starts. Existing courses and games receive the previous display names `Team 1` and `Team 2`. Existing domain data is not deleted or rewritten.
 
-## 4. Game states
+## 4. Team names
 
-Syzeteo 1.1.0 distinguishes:
+- Team names are course-specific.
+- Both names must be non-empty and distinct within the course.
+- Internal team identifiers remain `1` and `2`.
+- Team names can be set when a course is created and changed later.
+- Changes are blocked while the course has a game with status `running`.
+- Both team names are snapshotted when a game starts.
+- Later renaming does not retroactively change running, aborted, or completed games.
 
-- `running`: running game;
-- `finished`: regularly completed game;
-- `aborted`: aborted game.
+## 5. Rendering and round editing
 
-An aborted game:
+Question and model-answer text is treated as user content and is not interpreted as Markdown. Numbered lines remain literal on Question Cards, in opened questions, and in the round overview. The round question selector no longer uses Streamlit's selection-limit popover, which could cover the save button; the domain layer still enforces exactly eight subject questions.
 
-- is no longer considered running;
-- cannot be resumed;
-- does not count as a regularly completed result;
-- retains its game-specific data until explicitly deleted;
-- can be deleted from the Instructor page;
-- frees the respective course/round combination after deletion.
+## 6. Internationalization
 
-Regularly completed games cannot be deleted through this function.
+- `en.json` and `de.json` are the official shipped catalogs.
+- Both catalogs have identical key sets and compatible placeholders.
+- Fully installed optional local presentation profiles are supported as distinct locale IDs.
+- The revealed Challenge Card obtains its title and subtitle from the active catalog.
+- Domain values, data model, game rules, and the technical Question Pool interchange format remain language-neutral.
 
-## 5. Deletion behavior
+## 7. Question analysis
 
-Deletion under US #26 is restricted to games with status `aborted`. Deleting such a game removes the game and data exclusively associated with it through the existing foreign-key relations using `ON DELETE CASCADE`.
+- Analysis is integrated into the existing Question Log page.
+- The Instructor can select one course or an all-courses aggregation.
+- Only subject Question Cards from games with status `finished` are analyzed.
+- Challenge Cards and the final Instructor-resolved card are excluded.
+- Team Assist answers count as normal attempts.
+- Metrics per played question version: attempts, correct, incorrect, and success rate.
+- Changed question versions are kept separate using `question_id` plus the stored `question_text_snapshot`.
+- No student names or individual performance data are analyzed.
+- CSV export is available.
 
-The history of regularly completed games remains protected.
+## 8. Repository hygiene
 
-## 6. Round coverage and results
+`persistent/`, SQLite files, WAL/SHM files, and backups are excluded from the Docker build context through `.dockerignore`. Release test REL-10 additionally verifies that no persistent database files enter the release tree.
 
-Round coverage distinguishes `open`, `running`, `played`, and `aborted`.
+## 9. Verification
 
-Aborted games are excluded from regular team and course results. After deletion of an aborted game, the corresponding round is open again for that course.
+The release contains domain, migration, rendering, release, navigation, authentication, and i18n tests. In particular, it verifies:
 
-## 7. Navigation
-
-Programmatic page changes use a pending navigation value that is applied before the Streamlit navigation widget is instantiated. This avoids modifying the session-state key of an already-created widget during the same Streamlit run.
-
-## 8. Internationalization
-
-The official `locales/en.json` and `locales/de.json` catalogs each contain 493 identical translation keys. The US #26 UI, including status labels, confirmation dialogs, deletion dialogs, and error messages, is fully available in both languages.
-
-## 9. Tests and acceptance
-
-Syzeteo 1.1.0 was verified with:
-
-- complete automated test suite: **62/62 tests passed**;
-- five domain tests for abort/delete behavior;
-- one regression test for Streamlit navigation;
-- staged deployment using a copy of the existing dataset;
-- manual smoke test of “Abort Game” and “Delete Game” use cases;
-- productive cutover without schema change;
-- successful post-cutover HTTP, SQLite integrity, and foreign-key checks;
-- unchanged inventory counts before and after cutover.
-
-## 10. Release status
-
-Syzeteo 1.1.0 is the released successor to Syzeteo 1.0.0. Development states `1.1.0-dev1` and `1.1.0-dev2` are not separate releases.
+- team-name validation, running-game lock, and immutable game snapshots;
+- automatic schema-2 to schema-3 migration without data loss;
+- fail-closed startup preflight for unsupported schema versions or foreign-key violations;
+- literal question rendering;
+- localized duplicate-student errors;
+- key and placeholder parity for `en` and `de`;
+- support for optionally installed local presentation profiles;
+- course-specific and all-courses question analysis without individual analytics;
+- domain validation of exactly eight subject questions per round.

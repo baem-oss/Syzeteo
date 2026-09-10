@@ -2,79 +2,61 @@
 
 All notable changes to Syzeteo are documented here.
 
+## [1.1.1] - 2026-09-10
+
+Syzeteo 1.1.1 release.
+
+### Added
+- US #27: freely configurable, course-specific team names.
+- GR #12: team-name validation, running-game lock, stable internal team IDs, and immutable game snapshots.
+- SQLite schema version 3 with automatic additive migration from schema 2.
+- Deterministic startup preflight before Streamlit starts.
+- US #28 / GR #13: question-level analysis for one course or across all courses.
+- Per-question-version metrics for attempts, correct, incorrect, and success rate, plus CSV export.
+- Support for optional locally installed presentation-profile catalogs.
+
+### Changed
+- Game, attendance, student, settings, result, and history views use course- or game-specific team display names.
+- The revealed Challenge Card obtains title and subtitle from translation keys rather than hard-coded UI literals.
+- Round question selectors no longer use Streamlit's maximum-selection popover; exactly eight questions remain enforced by the domain layer.
+- Streamlit dependency updated to 1.54.0.
+
+### Fixed
+- Question and model-answer content is rendered literally rather than interpreted as Markdown.
+- Numbered lines remain visible on Question Cards and are not renumbered in opened questions or the round overview.
+- Duplicate student display names in one course produce a localized domain error instead of a raw SQLite UNIQUE-constraint message.
+- Persistent databases and backups are excluded from Docker build contexts through `.dockerignore`.
+
+### Analysis behavior
+- Only regularly scored subject questions from completed games contribute to question analysis.
+- Challenge Cards and the final Instructor-resolved card are excluded.
+- Team Assist answers count as normal attempts.
+- Changed question texts are aggregated as separate played versions.
+- No individual student performance data is used or displayed.
+
+### Compatibility
+- SQLite schema migrates from version 2 to version 3.
+- Existing records receive `Team 1` and `Team 2` as initial team display names.
+- Migration is additive and idempotent and runs before the UI starts.
+- Existing Syzeteo 1.1.0 domain data is preserved.
+
 ## [1.1.0] - 2026-09-03
 
 ### Added
 - abort a running game after explicit Instructor confirmation;
 - persistent language-neutral game status `aborted`;
 - management and deletion of aborted games on the Instructor page;
-- German and English UI texts for US #26;
-- five domain tests for abort/delete behavior and one navigation regression test.
+- German and English UI texts for US #26.
 
 ### Changed
 - round coverage distinguishes `aborted` from `running`, `played`, and `open`;
 - aborted games are excluded from regular results and cannot be resumed;
 - deleting an aborted game makes the corresponding round available again for that course.
 
-### Fixed
-- programmatic Streamlit navigation is deferred until before the `page_nav` widget is instantiated, preventing session-state mutation errors after a successful abort.
-
 ### Compatibility
 - SQLite schema remains version `2`;
-- no database migration is required;
-- existing Syzeteo 1.0.0 data remains compatible.
-
-## [1.1.0-dev2] - 2026-09-03
-
-### Fixed
-- Streamlit navigation after a successful game abort no longer writes to `st.session_state.page_nav` after the `page_nav` widget has been instantiated.
-- Programmatic navigation is now deferred through `_pending_page_nav` and applied before the sidebar navigation widget is created.
-- Added a regression test for the Streamlit widget-state rule.
-
-## [1.1.0-dev1] - 2026-08-31
-
-Development state implementing US #26.
-
-### Added
-
-- abort an ongoing game after explicit confirmation;
-- persistent language-neutral game status `aborted`;
-- aborted-game management on the Instructor Settings page;
-- deletion of aborted games after explicit confirmation;
-- German and English UI texts for abort/delete workflows and aborted round coverage;
-- five automated domain tests for abort/delete behavior.
-
-### Changed
-
-- round coverage now distinguishes `aborted` from `running`, `played`, and `open`;
-- aborted games are excluded from regular team/course result totals and cannot be resumed;
-- after deletion of an aborted game, the respective round becomes available again for that course;
-- requirements, business rules, use cases, and traceability have been updated for US #26 / GR #11.
-
-### Compatibility
-
-- SQLite schema version remains `2`; no database migration is required.
-- existing Syzeteo 1.0.0 data remains compatible.
+- no data migration is required.
 
 ## [1.0.0] - 2026-08-27
 
 Initial public baseline under the Syzeteo name.
-
-### Added
-
-- Syzeteo branding with the claim `Knowledge. Teams. Rounds.` and the product description `An open-source team-based active recall game for the classroom.`;
-- bilingual English/German application UI with English reference and fallback catalog;
-- language selection on login/first-run and in Instructor Settings;
-- short bilingual explanation of the Syzeteo name on the login/first-run page;
-- persistent `ui_locale` setting;
-- course, student, learning-unit and Question Pool administration;
-- round configuration with exactly eight Question Cards and one Challenge Card;
-- manual or random regular player selection from player 2 onward;
-- Team Assist without consuming the assisting person's regular turn;
-- last-card rule: the final remaining card is always answered by the Instructor and scores 0 points;
-- team- and course-level result tracking without individual performance analytics;
-- JSON Question Pool exchange format `Syzeteo question pool`, version 1;
-- `syzeteo.sqlite3` as the application database;
-- `SYZETEO_DATA_DIR` as the optional data-directory environment variable;
-- Docker deployment and automated test suite;
-- German and English requirements, traceability, technical baseline and i18n specification.

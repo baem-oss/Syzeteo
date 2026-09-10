@@ -1,6 +1,6 @@
 # Syzeteo – User Stories
 
-Status: 3 September 2026
+Status: 10 September 2026
 
 ## User Stories
 
@@ -81,3 +81,11 @@ Status: 3 September 2026
 
 - [x] **US #26 – Abort and Delete Game**  
   As an **Instructor**, I want to abort an ongoing game and delete an aborted game from the **Instructor page**, so that games started by mistake or no longer to be continued do not block further gameplay or round coverage.
+
+
+- [x] **US #27 – Manage Team Names**  
+  As an **Instructor**, I want to assign freely chosen names to the two teams of a course and change them later so that the teams are displayed under suitable names during gameplay.
+
+- [x] **US #28 – Analyze Questions**  
+  As an **Instructor**, I want to analyze the results of played subject questions for an individual course and across all courses, so that I can see how often and how successfully each question was answered.
+

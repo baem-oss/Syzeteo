@@ -1,6 +1,6 @@
 # Syzeteo – Randanforderungen, nichtfunktionale Anforderungen und Geschäftsregeln
 
-Stand: 03.09.2026
+Stand: 10.09.2026
 
 ## 1. Randanforderungen (RANF)
 
@@ -31,7 +31,7 @@ Stand: 03.09.2026
 - [x] **NFANF #02 – Rundenbezogene Datenintegrität**  
   **Art:** Integrität / Konsistenz  
   **Anforderung:**  
-  Bereits abgeschlossene Spielzüge, Punktestände und protokollierte Fragen dürfen durch spätere Änderungen an Stammdaten oder durch die Aufnahme von Nachzüglern nicht rückwirkend verändert werden. Davon ausgenommen sind die ausdrücklich durch den Instructor ausgelöste vollständige Löschung eines Kurses gemäß GR #10 sowie die Löschung eines zuvor abgebrochenen Spiels gemäß GR #11. Das in US #20 vorgesehene Rückgängigmachen des zuletzt ausgeführten Spielschritts ist eine definierte Spieloperation und gilt ebenfalls nicht als unzulässige rückwirkende Änderung im Sinne dieser Anforderung.  
+  Bereits abgeschlossene Spielzüge, Punktestände und protokollierte Fragen dürfen durch spätere Änderungen an Stammdaten oder durch die Aufnahme von Nachzüglern nicht rückwirkend verändert werden. Dies gilt ausdrücklich auch für Teamnamen: Der beim Start eines Spiels gültige Name beider Teams wird für dieses Spiel eingefroren; eine spätere Umbenennung des Kurses darf laufende, abgebrochene oder abgeschlossene Spiele nicht rückwirkend umbenennen. Davon ausgenommen sind die ausdrücklich durch den Instructor ausgelöste vollständige Löschung eines Kurses gemäß GR #10 sowie die Löschung eines zuvor abgebrochenen Spiels gemäß GR #11. Das in US #20 vorgesehene Rückgängigmachen des zuletzt ausgeführten Spielschritts ist eine definierte Spieloperation und gilt ebenfalls nicht als unzulässige rückwirkende Änderung im Sinne dieser Anforderung.  
   **Begründung:**  
   Der dokumentierte Spielverlauf muss während des Bestehens des zugehörigen Kurses nachvollziehbar und konsistent bleiben. Bewusst ausgelöste Löschoperationen gemäß GR #10 und GR #11 sowie das definierte Undo gemäß US #20 sind fachlich vorgesehene Ausnahmen.
 
@@ -127,3 +127,18 @@ Stand: 03.09.2026
   Ein laufendes Spiel kann durch den **Instructor** abgebrochen werden. Ein abgebrochenes Spiel gilt weder als laufendes noch als regulär abgeschlossenes Spiel und kann nicht fortgesetzt werden. Abgebrochene Spiele werden auf der **Instructor-Seite** angezeigt und können dort durch den Instructor gelöscht werden. Nur abgebrochene Spiele dürfen über diese Funktion gelöscht werden; regulär abgeschlossene Spiele sind davon ausgeschlossen. Beim Löschen werden das Spiel und alle ausschließlich diesem Spiel zugeordneten Daten vollständig entfernt. Nach der Löschung gilt die betreffende Runde für den betreffenden Kurs wieder als offen und darf erneut gestartet werden.  
   **Begründung:**  
   Irrtümlich gestartete oder nicht fortzuführende Spiele dürfen weder den laufenden Spielbetrieb noch die spätere reguläre Durchführung einer Runde blockieren. Gleichzeitig bleiben regulär abgeschlossene Spiele und deren Historie geschützt.
+
+
+- [x] **GR #12 – Kursbezogene Teamnamen**  
+  **Art:** Fachliche Konfigurations- und Integritätsregel  
+  **Regel:**  
+  Jeder Kurs besitzt zwei frei wählbare, nicht leere und voneinander verschiedene Teamnamen. Die internen Teamkennungen `1` und `2` bleiben unabhängig von den Anzeigenamen unverändert. Teamnamen dürfen nur geändert werden, wenn für den betreffenden Kurs kein Spiel mit Status `running` existiert. Beim Start eines Spiels werden beide Teamnamen im Spiel gespeichert. Spätere Umbenennungen des Kurses verändern die Teamnamen bereits gestarteter, abgebrochener oder abgeschlossener Spiele nicht.  
+  **Begründung:**  
+  Frei wählbare Teamnamen verbessern die Anpassbarkeit an die konkrete Lehrsituation. Stabile interne Teamkennungen erhalten die bestehende Spiellogik; Spiel-Snapshots verhindern rückwirkende Veränderungen historischer Spiel- und Ergebnisdarstellungen.
+
+- [x] **GR #13 – Fragenbezogene Ergebnisaggregation**  
+  **Art:** Fachliche Auswertungs- und Integritätsregel  
+  **Regel:**  
+  Die Fragenauswertung berücksichtigt ausschließlich regulär gewertete Fachfragen aus Spielen mit Status `finished`. Die **Challenge Card** sowie die gemäß GR #07 durch den Instructor beantwortete letzte Karte eines Spiels werden nicht als studentische Beantwortungsversuche ausgewertet. Ein Einsatz des **Team Assist** zählt dagegen als regulärer Beantwortungsversuch der betreffenden Fachfrage. Die Auswertung kann für einen einzelnen Kurs oder kursübergreifend erfolgen. Aggregiert wird nach der tatsächlich gespielten Fragefassung; eine geänderte Fragefassung wird nicht mit einer früheren Fassung derselben Frage-ID vermischt. Individuelle Leistungsdaten oder Studierendennamen dürfen in der Fragenauswertung weder verwendet noch angezeigt werden.  
+  **Begründung:**  
+  Die Auswertung soll die didaktische Schwierigkeit und Bewährung von Fragen sichtbar machen, ohne Sonderkarten, den nicht gewerteten Rundenabschluss oder personenbezogene Leistungsprofile in die Erfolgsquoten einzubeziehen. Die Verwendung der gespeicherten Frage-Snapshots wahrt zugleich die historische Aussagekraft bei später geänderten Fragen.

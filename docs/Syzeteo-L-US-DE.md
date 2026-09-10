@@ -1,6 +1,6 @@
 # Syzeteo – User Stories
 
-Stand: 03.09.2026
+Stand: 10.09.2026
 
 ## User Stories
 
@@ -81,3 +81,11 @@ Stand: 03.09.2026
 
 - [x] **US #26 – Spiel abbrechen und löschen**  
   Als **Instructor** möchte ich ein laufendes Spiel abbrechen und ein abgebrochenes Spiel auf der **Instructor-Seite** löschen können, damit irrtümlich gestartete oder nicht fortzuführende Spiele den weiteren Spielbetrieb und die Rundenabdeckung nicht blockieren.
+
+
+- [x] **US #27 – Teamnamen verwalten**  
+  Als **Instructor** möchte ich für die beiden Teams eines Kurses frei wählbare Namen vergeben und diese später ändern können, damit die Teams im Spiel unter passenden Bezeichnungen angezeigt werden.
+
+- [x] **US #28 – Fragen auswerten**  
+  Als **Instructor** möchte ich die Ergebnisse gespielter Fachfragen für einen einzelnen Kurs sowie kursübergreifend auswerten können, damit ich erkenne, welche Fragen wie häufig und wie erfolgreich beantwortet wurden.
+

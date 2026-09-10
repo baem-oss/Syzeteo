@@ -11,6 +11,7 @@ import pandas as pd
 
 QUESTION_POOL_FORMAT = "Syzeteo question pool"
 CARD_TYPE_CHALLENGE = "challenge"
+SCHEMA_VERSION = 3
 
 
 class StorageError(ValueError):
@@ -42,6 +43,8 @@ def ensure_tables(conn: sqlite3.Connection):
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             code TEXT NOT NULL UNIQUE,
             title TEXT NOT NULL DEFAULT '',
+            team1_name TEXT NOT NULL DEFAULT 'Team 1',
+            team2_name TEXT NOT NULL DEFAULT 'Team 2',
             active INTEGER NOT NULL DEFAULT 1,
             created_at TEXT NOT NULL
         );
@@ -111,6 +114,8 @@ def ensure_tables(conn: sqlite3.Connection):
             current_team INTEGER,
             turn_no INTEGER NOT NULL DEFAULT 1,
             player_selection_mode TEXT NOT NULL DEFAULT 'manual',
+            team1_name_snapshot TEXT NOT NULL DEFAULT 'Team 1',
+            team2_name_snapshot TEXT NOT NULL DEFAULT 'Team 2',
             UNIQUE(round_id, course_id)
         );
 
@@ -156,11 +161,29 @@ def ensure_tables(conn: sqlite3.Connection):
         );
         """
     )
-    # Syzeteo 1.0.0 introduces persistent UI settings.
-    # Schema version 2 adds app_settings without changing existing domain tables.
+    # Syzeteo 1.0.0 introduced persistent UI settings (schema version 2).
+    # Schema version 3 adds course-specific team display names and immutable
+    # snapshots on games. Existing data is preserved and receives the former
+    # canonical display names "Team 1" / "Team 2".
     current_version = int(conn.execute("PRAGMA user_version").fetchone()[0])
     if current_version < 2:
         conn.execute("PRAGMA user_version=2")
+        current_version = 2
+
+    course_columns = {row[1] for row in conn.execute("PRAGMA table_info(courses)")}
+    if "team1_name" not in course_columns:
+        conn.execute("ALTER TABLE courses ADD COLUMN team1_name TEXT NOT NULL DEFAULT 'Team 1'")
+    if "team2_name" not in course_columns:
+        conn.execute("ALTER TABLE courses ADD COLUMN team2_name TEXT NOT NULL DEFAULT 'Team 2'")
+
+    game_columns = {row[1] for row in conn.execute("PRAGMA table_info(games)")}
+    if "team1_name_snapshot" not in game_columns:
+        conn.execute("ALTER TABLE games ADD COLUMN team1_name_snapshot TEXT NOT NULL DEFAULT 'Team 1'")
+    if "team2_name_snapshot" not in game_columns:
+        conn.execute("ALTER TABLE games ADD COLUMN team2_name_snapshot TEXT NOT NULL DEFAULT 'Team 2'")
+
+    if current_version < 3:
+        conn.execute(f"PRAGMA user_version={SCHEMA_VERSION}")
     conn.commit()
 
 
@@ -234,6 +257,8 @@ def dashboard_course_status(conn: sqlite3.Connection, course_id):
         "id": course["id"],
         "code": course["code"],
         "title": course["title"],
+        "team1_name": course["team1_name"],
+        "team2_name": course["team2_name"],
         "students": int(counts["students"] or 0),
         "team1": int(counts["team1"] or 0),
         "team2": int(counts["team2"] or 0),
@@ -364,17 +389,50 @@ def dashboard_configuration_issues(conn: sqlite3.Connection):
         )
     return issues
 
-def create_course(conn, code: str, title: str = ""):
+def _validated_team_names(team1_name, team2_name):
+    name1 = (team1_name or "").strip()
+    name2 = (team2_name or "").strip()
+    if not name1 or not name2:
+        raise StorageError("course.error.team_name_required")
+    if name1.casefold() == name2.casefold():
+        raise StorageError("course.error.team_names_distinct")
+    return name1, name2
+
+
+def create_course(conn, code: str, title: str = "", team1_name: str = "Team 1", team2_name: str = "Team 2"):
     code = (code or "").strip().upper()
     if not code:
         raise StorageError("course.error.code_required")
+    name1, name2 = _validated_team_names(team1_name, team2_name)
     try:
-        conn.execute("INSERT INTO courses(code,title,created_at) VALUES(?,?,?)", (code, (title or "").strip(), now_iso()))
+        conn.execute(
+            "INSERT INTO courses(code,title,team1_name,team2_name,created_at) VALUES(?,?,?,?,?)",
+            (code, (title or "").strip(), name1, name2, now_iso()),
+        )
         conn.commit()
     except sqlite3.IntegrityError as exc:
         if "courses.code" in str(exc) or "UNIQUE constraint failed: courses.code" in str(exc):
             raise StorageError("course.error.code_exists", code=code) from exc
         raise
+
+
+def update_course_team_names(conn, course_id, team1_name, team2_name):
+    course_id = int(course_id)
+    course = conn.execute("SELECT * FROM courses WHERE id=?", (course_id,)).fetchone()
+    if not course:
+        raise StorageError("course.error.not_found")
+    running = conn.execute(
+        "SELECT COUNT(*) FROM games WHERE course_id=? AND status='running'",
+        (course_id,),
+    ).fetchone()[0]
+    if running:
+        raise StorageError("course.error.team_names_running_game")
+    name1, name2 = _validated_team_names(team1_name, team2_name)
+    conn.execute(
+        "UPDATE courses SET team1_name=?,team2_name=? WHERE id=?",
+        (name1, name2, course_id),
+    )
+    conn.commit()
 
 
 def list_courses(conn, active_only=True):
@@ -427,7 +485,7 @@ def delete_course(conn, course_id):
 def course_scoreboard(conn):
     return conn.execute(
         """
-        SELECT c.id,c.code,c.title,
+        SELECT c.id,c.code,c.title,c.team1_name,c.team2_name,
                COALESCE(SUM(CASE WHEN g.status='finished' THEN g.team1_points ELSE 0 END),0) team1_points,
                COALESCE(SUM(CASE WHEN g.status='finished' THEN g.team2_points ELSE 0 END),0) team2_points,
                SUM(CASE WHEN g.status='finished' THEN 1 ELSE 0 END) games_played,
@@ -451,11 +509,17 @@ def add_student(conn, course_id, display_name, first_name="", last_name="", team
     display_name = (display_name or "").strip()
     if not display_name:
         raise StorageError("error.student.name_required")
-    conn.execute(
-        "INSERT INTO students(course_id,first_name,last_name,display_name,team,created_at) VALUES(?,?,?,?,?,?)",
-        (course_id, (first_name or "").strip(), (last_name or "").strip(), display_name, team, now_iso()),
-    )
-    conn.commit()
+    try:
+        conn.execute(
+            "INSERT INTO students(course_id,first_name,last_name,display_name,team,created_at) VALUES(?,?,?,?,?,?)",
+            (course_id, (first_name or "").strip(), (last_name or "").strip(), display_name, team, now_iso()),
+        )
+        conn.commit()
+    except sqlite3.IntegrityError as exc:
+        conn.rollback()
+        if "students.course_id, students.display_name" in str(exc) or "UNIQUE constraint failed: students.course_id, students.display_name" in str(exc):
+            raise StorageError("error.student.name_exists", name=display_name) from exc
+        raise
 
 
 def import_students_csv(conn, course_id, raw: bytes):
@@ -487,8 +551,11 @@ def import_students_csv(conn, course_id, raw: bytes):
         try:
             add_student(conn, course_id, display, first, last)
             imported += 1
-        except sqlite3.IntegrityError:
-            skipped += 1
+        except StorageError as exc:
+            if exc.code == "error.student.name_exists":
+                skipped += 1
+            else:
+                raise
     return imported, skipped
 
 
@@ -510,8 +577,14 @@ def update_student(conn, student_id, display_name, team, active):
         raise StorageError("error.student.name_required")
     if team not in (None, 1, 2):
         raise StorageError("error.student.invalid_team")
-    conn.execute("UPDATE students SET display_name=?,team=?,active=? WHERE id=?", (display_name, team, int(bool(active)), student_id))
-    conn.commit()
+    try:
+        conn.execute("UPDATE students SET display_name=?,team=?,active=? WHERE id=?", (display_name, team, int(bool(active)), student_id))
+        conn.commit()
+    except sqlite3.IntegrityError as exc:
+        conn.rollback()
+        if "students.course_id, students.display_name" in str(exc) or "UNIQUE constraint failed: students.course_id, students.display_name" in str(exc):
+            raise StorageError("error.student.name_exists", name=display_name) from exc
+        raise
 
 
 def add_learning_unit(conn, code, title, position=0):
@@ -988,9 +1061,20 @@ def start_game(conn, round_id, course_id, present_student_ids, first_player_mode
     lock_round(conn, round_id)
     # Der vor Spielbeginn festgelegte Modus wird pro Spiel eingefroren.
     # Damit bleibt die Einstellung während des laufenden Spiels unveränderlich.
+    course = conn.execute("SELECT team1_name,team2_name FROM courses WHERE id=?", (course_id,)).fetchone()
+    if not course:
+        raise StorageError("course.error.not_found")
     conn.execute(
-        "INSERT INTO games(round_id,course_id,started_at,current_student_id,current_team,player_selection_mode) VALUES(?,?,?,?,?,?)",
-        (round_id,course_id,now_iso(),starter["id"],starter["team"],player_selection_mode),
+        """
+        INSERT INTO games(
+            round_id,course_id,started_at,current_student_id,current_team,player_selection_mode,
+            team1_name_snapshot,team2_name_snapshot
+        ) VALUES(?,?,?,?,?,?,?,?)
+        """,
+        (
+            round_id,course_id,now_iso(),starter["id"],starter["team"],player_selection_mode,
+            course["team1_name"],course["team2_name"],
+        ),
     )
     gid = conn.execute("SELECT last_insert_rowid()").fetchone()[0]
     for student in roster:
@@ -1397,12 +1481,50 @@ def protocol_rows(conn):
     ).fetchall()
 
 
+def question_analysis_rows(conn, course_id=None):
+    """Aggregate question outcomes without individual student performance data.
+
+    Only regularly finished games contribute. Challenge Cards and the final
+    Instructor-resolved card are excluded. A changed question text is treated
+    as a distinct played question version even when the stable question_id is
+    unchanged.
+    """
+    where_course = " AND g.course_id=?" if course_id is not None else ""
+    args = (int(course_id),) if course_id is not None else ()
+    return conn.execute(
+        f"""
+        SELECT gc.question_id,
+               gc.unit_code_snapshot unit_code,
+               gc.question_text_snapshot question_text,
+               COUNT(*) attempts,
+               SUM(CASE WHEN gc.points_awarded=1 THEN 1 ELSE 0 END) correct,
+               SUM(CASE WHEN gc.points_awarded=0 THEN 1 ELSE 0 END) wrong,
+               100.0 * SUM(CASE WHEN gc.points_awarded=1 THEN 1 ELSE 0 END) / COUNT(*) success_rate
+        FROM game_cards gc
+        JOIN games g ON g.id=gc.game_id
+        WHERE g.status='finished'
+          AND gc.card_type='question'
+          AND gc.resolved=1
+          AND gc.resolved_at IS NOT NULL
+          AND gc.resolved_at < (
+              SELECT MAX(last_card.resolved_at)
+              FROM game_cards last_card
+              WHERE last_card.game_id=g.id AND last_card.resolved=1
+          )
+          {where_course}
+        GROUP BY gc.question_id,gc.unit_code_snapshot,gc.question_text_snapshot
+        ORDER BY success_rate ASC, attempts DESC, gc.question_id ASC, gc.question_text_snapshot ASC
+        """,
+        args,
+    ).fetchall()
+
+
 def game_history(conn, course_id=None):
     where="WHERE g.course_id=?" if course_id else ""
     args=(course_id,) if course_id else ()
     return conn.execute(
         f"""
-        SELECT g.id,g.round_id,r.name round_name,c.code course_code,g.started_at,g.finished_at,g.status,g.team1_points,g.team2_points
+        SELECT g.id,g.round_id,r.name round_name,c.code course_code,g.started_at,g.finished_at,g.status,g.team1_points,g.team2_points,g.team1_name_snapshot,g.team2_name_snapshot
         FROM games g JOIN rounds r ON r.id=g.round_id JOIN courses c ON c.id=g.course_id
         {where} ORDER BY g.id DESC
         """,args

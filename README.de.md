@@ -42,7 +42,7 @@ streamlit run app.py
 
 ## Internationalisierung
 
-Englisch und Deutsch stehen über JSON-Sprachkataloge zur Verfügung; Englisch ist Referenz- und Fallback-Sprache. Die Sprachauswahl wird bewusst nur auf der Login-/Ersteinrichtungsseite und in den Instructor Settings angeboten. Die gespeicherte Standardsprache wird bei zukünftigen Anmeldungen wiederverwendet.
+Englisch und Deutsch stehen über JSON-Sprachkataloge zur Verfügung; Englisch ist Referenz- und Fallback-Sprache. Optionale lokale Präsentationsprofile können als zusätzliche vollständige Kataloge installiert werden, ohne die Domänenlogik zu verändern. Die Sprachauswahl wird bewusst nur auf der Login-/Ersteinrichtungsseite und in den Instructor Settings angeboten. Die gespeicherte Standardsprache wird bei zukünftigen Anmeldungen wiederverwendet.
 
 Sämtliche Seiten der Anwendungsoberfläche sind internationalisiert. Navigation, Filter, Konfigurationshinweise, Undo-Aktionen und Domänenfehler verwenden intern sprachneutrale IDs bzw. Codes. Inhalte des Question Pool bleiben Nutzerdaten und werden bewusst nicht automatisch übersetzt.
 
@@ -85,12 +85,12 @@ Ohne diese Variable verwendet Syzeteo `./persistent`. Die Datenbankdatei heißt 
 syzeteo.sqlite3
 ```
 
-Syzeteo 1.1.0 verwendet SQLite-Schemaversion `2` (`PRAGMA user_version`). Anwendungs- und SQLite-Schemaversion sind bewusst voneinander unabhängig. Im persistenten Domänenmodell werden unter anderem `challenge`, `team_assist_used`, `team1_assist_used` und `team2_assist_used` verwendet.
+Syzeteo 1.1.1 verwendet SQLite-Schemaversion `3` (`PRAGMA user_version`). Anwendungs- und SQLite-Schemaversion sind bewusst voneinander unabhängig. Schema 3 ergänzt kursbezogene Team-Anzeigenamen und unveränderliche Teamnamen-Snapshots in Spielen.
 
 
-## Upgrade von 1.0.0
+## Upgrade von 1.1.0
 
-Syzeteo 1.1.0 verwendet weiterhin SQLite-Schemaversion `2`. Eine Datenmigration ist nicht erforderlich. Bestehende 1.0.0-Daten können unverändert weiterverwendet werden. Vor einem Wechsel des Anwendungscodes wird dennoch eine konsistente Sicherung von `persistent/` empfohlen.
+Syzeteo 1.1.1 migriert Schemaversion `2` automatisch auf `3`, indem Teamnamen-Felder mit den historischen Standardwerten `Team 1` und `Team 2` ergänzt werden. Bestehende Fachdaten bleiben erhalten. Vor einem produktiven Upgrade ist eine konsistente Sicherung von `persistent/` erforderlich; siehe Upgrade-Sicherheitsdokument im Verzeichnis `docs/`.
 
 ## Tests
 
@@ -98,11 +98,11 @@ Syzeteo 1.1.0 verwendet weiterhin SQLite-Schemaversion `2`. Eine Datenmigration 
 python -m unittest discover -v
 ```
 
-Das Release enthält Regressionstests, Release-Abnahmetests und Konsistenztests für die Internationalisierung. Die Release-Testsuite von Syzeteo 1.1.0 umfasst **62 automatisierte Tests**.
+Der Release enthält Regressionstests, Migrationstests, Release-Abnahmetests und Konsistenztests für die Internationalisierung, einschließlich dedizierter Tests für kursbezogene Teamnamen und die Migration von Schema 2 auf Schema 3.
 
 ## Spezifikation
 
-Im Verzeichnis `docs/` liegen User Stories, Anforderungen/Geschäftsregeln und Traceability Matrix jeweils in deutscher und englischer Fassung sowie technische Baseline und Internationalisierungsspezifikation für Syzeteo 1.1.0.
+Im Verzeichnis `docs/` liegen User Stories, Anforderungen/Geschäftsregeln und Traceability Matrix jeweils in deutscher und englischer Fassung sowie die aktuelle technische Baseline, historische Baselines, Internationalisierungsspezifikationen und Upgrade-Sicherheitsdokumente.
 
 ## Repository-Hygiene
 

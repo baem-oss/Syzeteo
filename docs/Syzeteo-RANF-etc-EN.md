@@ -1,6 +1,6 @@
 # Syzeteo – Constraints, Non-functional Requirements, and Business Rules
 
-Status: 3 September 2026
+Status: 10 September 2026
 
 ## 1. Constraints (RANF)
 
@@ -31,7 +31,7 @@ Status: 3 September 2026
 - [x] **NFANF #02 – Round-related Data Integrity**  
   **Type:** Integrity / consistency  
   **Requirement:**  
-  Completed game turns, point totals, and logged questions must not be changed retroactively by later changes to master data or by adding late arrivals. Complete deletion of a course explicitly initiated by the Instructor under GR #10 and deletion of a previously aborted game under GR #11 are exempt. Undoing the most recently executed game step as defined in US #20 is likewise a defined game operation and does not constitute an impermissible retroactive change within the meaning of this requirement.  
+  Completed game turns, point totals, and logged questions must not be changed retroactively by later changes to master data or by adding late arrivals. This explicitly includes team names: the names in effect when a game starts are frozen for that game; later renaming of the course must not retroactively rename running, aborted, or completed games. Complete deletion of a course explicitly initiated by the Instructor under GR #10 and deletion of a previously aborted game under GR #11 are exempt. Undoing the most recently executed game step as defined in US #20 is likewise a defined game operation and does not constitute an impermissible retroactive change within the meaning of this requirement.  
   **Rationale:**  
   The documented game progression must remain traceable and consistent for as long as the associated course exists. Deliberately initiated deletion operations under GR #10 and GR #11 and the defined undo operation under US #20 are domain-defined exceptions.
 
@@ -127,3 +127,18 @@ Status: 3 September 2026
   An ongoing game may be aborted by the **Instructor**. An aborted game is neither ongoing nor regularly completed and cannot be resumed. Aborted games are shown on the **Instructor page** and may be deleted there by the Instructor. Only aborted games may be deleted through this function; regularly completed games are excluded. Deleting an aborted game removes the game and all data assigned exclusively to that game. After deletion, the respective round is open again for the respective course and may be started again.  
   **Rationale:**  
   Games started by mistake or no longer to be continued must not block ongoing gameplay or a later regular conduct of the round. At the same time, regularly completed games and their history remain protected.
+
+
+- [x] **GR #12 – Course-specific Team Names**  
+  **Type:** Domain configuration and integrity rule  
+  **Rule:**  
+  Each course has two freely chosen, non-empty, mutually distinct team names. The internal team identifiers `1` and `2` remain unchanged independently of the display names. Team names may be changed only when no game with status `running` exists for that course. When a game starts, both team names are stored in the game. Later renaming of the course does not change the team names of games that have already started, been aborted, or been completed.  
+  **Rationale:**  
+  Freely chosen team names improve adaptation to the teaching context. Stable internal identifiers preserve existing game logic, while game snapshots prevent retroactive changes to historical game and result displays.
+
+- [x] **GR #13 – Question-level Result Aggregation**  
+  **Type:** Domain analysis and integrity rule  
+  **Rule:**  
+  Question analysis considers only regularly scored subject questions from games with status `finished`. The **Challenge Card** and the final card answered by the Instructor under GR #07 are not evaluated as student answer attempts. Use of **Team Assist**, however, counts as a regular answer attempt for the respective subject question. Analysis can be performed for an individual course or across all courses. Aggregation is based on the question version actually played; a changed wording is not merged with an earlier version of the same question ID. Individual performance data or student names must neither be used nor displayed in question analysis.  
+  **Rationale:**  
+  The analysis is intended to reveal the didactic difficulty and performance of questions without allowing special cards, the unscored end-of-round card, or personal performance profiles to distort success rates. Using stored question snapshots also preserves historical meaning when questions are changed later.

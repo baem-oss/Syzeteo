@@ -4,7 +4,7 @@
 
 *An open-source team-based active recall game for the classroom.*
 
-Syzeteo is a Streamlit-based classroom game for structured knowledge review in two teams. Instructors manage courses, students, questions and rounds, run the game, and track results at team and course level.
+Syzeteo is a Streamlit-based classroom game for structured knowledge review in two teams. It also provides question-level analysis of regularly completed games for one course or across all courses, without individual performance analytics. Instructors manage courses, students, questions and rounds, run the game, and track results at team and course level.
 
 ## Why Syzeteo?
 
@@ -44,7 +44,7 @@ streamlit run app.py
 
 ## Internationalization
 
-English and German are available through JSON language catalogs, with English as the reference and fallback language. Language selection is intentionally exposed only on the login/first-run screen and in Instructor Settings; the saved default is reused for future logins.
+English and German are available through JSON language catalogs, with English as the reference and fallback language. Optional local presentation profiles can be installed as additional complete catalogs without changing domain logic. Language selection is intentionally exposed only on the login/first-run screen and in Instructor Settings; the saved default is reused for future logins.
 
 All application UI pages are localized. Stable internal IDs and status codes are used for navigation, filters, configuration issues, undo actions and domain errors. Question Pool content remains user-provided content and is intentionally not translated.
 
@@ -87,12 +87,12 @@ If it is not set, Syzeteo uses `./persistent`. The database file is always named
 syzeteo.sqlite3
 ```
 
-Syzeteo 1.1.0 uses SQLite schema version `2` (`PRAGMA user_version`). Application version and SQLite schema version are intentionally independent. The persisted domain identifiers include `challenge`, `team_assist_used`, `team1_assist_used` and `team2_assist_used`.
+Syzeteo 1.1.1 uses SQLite schema version `3` (`PRAGMA user_version`). Application version and SQLite schema version are intentionally independent. Schema 3 adds course-specific team display names and immutable team-name snapshots on games.
 
 
-## Upgrade from 1.0.0
+## Upgrade from 1.1.0
 
-Syzeteo 1.1.0 keeps SQLite schema version `2`. No database migration is required. Existing 1.0.0 data can be reused unchanged. A consistent backup of `persistent/` is nevertheless recommended before changing application code.
+Syzeteo 1.1.1 automatically migrates schema version `2` to `3` by adding team-name fields with the historical defaults `Team 1` and `Team 2`. Existing domain data is preserved. A consistent backup of `persistent/` is required before a productive upgrade; see the upgrade-safety document in `docs/`.
 
 ## Tests
 
@@ -100,11 +100,11 @@ Syzeteo 1.1.0 keeps SQLite schema version `2`. No database migration is required
 python -m unittest discover -v
 ```
 
-The release contains regression tests, release-acceptance tests and internationalization consistency tests. The Syzeteo 1.1.0 release suite contains **62 automated tests**.
+The release contains regression, migration, release-acceptance, and internationalization consistency tests, including dedicated tests for course-specific team names and schema-2 to schema-3 migration.
 
 ## Documentation
 
-The `docs/` directory contains the complete requirements and traceability set in German and English, the technical baseline, and the internationalization specification for Syzeteo 1.1.0.
+The `docs/` directory contains the requirements and traceability set in German and English, the current technical baseline, historical baselines, internationalization specifications, and upgrade-safety documentation.
 
 ## Repository hygiene
 

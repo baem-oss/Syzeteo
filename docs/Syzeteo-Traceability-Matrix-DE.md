@@ -1,6 +1,6 @@
 # Syzeteo – Traceability Matrix
 
-Stand: 03.09.2026
+Stand: 10.09.2026
 
 Quellenbasis: `Syzeteo-L-US-DE.md`, `Syzeteo-RANF-etc-DE.md` und `Syzeteo-Use-Cases-US26-DE.md`
 
@@ -16,6 +16,8 @@ Insbesondere gilt:
 - NFANF #04 gilt für sämtliche Spiel- und Verwaltungsfunktionen. US #05 stellt den Authentifizierungseinstieg bereit.
 - NFANF #02 schützt bestehende Spiel- und Protokolldaten vor unbeabsichtigten rückwirkenden Änderungen. Die vollständige Kurslöschung gemäß GR #10, das fachlich definierte Undo gemäß US #20 sowie die Löschung eines zuvor abgebrochenen Spiels gemäß US #26 und GR #11 sind ausdrücklich davon abgegrenzt.
 - US #26 wird durch die Use Cases „Spiel abbrechen“ und „Spiel löschen“ konkretisiert.
+- US #27 und GR #12 regeln kursbezogene Teamnamen; die Namen werden beim Spielstart als unveränderliche Spiel-Snapshots übernommen.
+- US #28 und GR #13 regeln die ausschließlich fragenbezogene, nicht personenbezogene Auswertung regulär abgeschlossener Fachfragen.
 
 ## 2. Traceability Matrix: User Stories → Anforderungen
 
@@ -36,17 +38,19 @@ Insbesondere gilt:
 | **US #13** | Fragenpool verwalten | GR #02 | NFANF #02 | Änderungen im globalen Fragenpool dürfen bereits gestartete oder gespielte Runden nicht rückwirkend verändern. |
 | **US #14** | Lerninhalte importieren und exportieren | – | NFANF #02 | Importierte Änderungen an Lerninhalten dürfen historische Spiel- und Protokolldaten nicht rückwirkend verändern. |
 | **US #15** | Runden konfigurieren | GR #01, GR #02, GR #03 | – | Die Rundenkonfiguration verwendet acht Fachfragen, kursübergreifend denselben Fragensatz und wird nach dem ersten erfolgreichen Start unveränderlich. |
-| **US #16** | Spiel starten | GR #01, GR #02, GR #03, GR #08, GR #09 | NFANF #01 | Beim Start werden Fragensatz, Rundenstruktur, Spielerwahlmodus und Einmaligkeit der Runde je Kurs wirksam. Personenbezogene Daten dürfen nur organisatorisch verarbeitet werden. |
+| **US #16** | Spiel starten | GR #01, GR #02, GR #03, GR #08, GR #09, GR #12 | NFANF #01 | Beim Start werden Fragensatz, Rundenstruktur, Spielerwahlmodus und Einmaligkeit der Runde je Kurs wirksam. Personenbezogene Daten dürfen nur organisatorisch verarbeitet werden. |
 | **US #17** | Fachfragen durchführen und werten | GR #03, GR #04, GR #05, GR #07 | NFANF #01, NFANF #03 | Kern des regulären Spielablaufs: Kartenstruktur, Teamwechsel, einmaliger regulärer Einsatz und Sonderbehandlung der letzten Karte. Punkte bleiben teambezogen. |
 | **US #18** | Team Assist einsetzen | GR #05, GR #06 | NFANF #01 | Einsätze über den Team Assist unterliegen der Ausnahme von der regulären Einsatzsperre und erzeugen ihrerseits keine Sperre für einen späteren regulären Spielerzug. |
 | **US #19** | Challenge Card werten | GR #03, GR #07 | NFANF #01 | Die Challenge Card ist die neunte Karte und wird nach ihrer speziellen Wertungslogik gewertet, sofern sie nicht die letzte verbleibende Karte ist. Als letzte Karte wird sie gemäß GR #07 durch den Instructor beantwortet und nicht gewertet. |
 | **US #20** | Spielschritt rückgängig machen | GR #04, GR #05, GR #06 | – | Undo muss den vorherigen fachlich konsistenten Spielzustand wiederherstellen. NFANF #02 stellt ausdrücklich klar, dass diese definierte Spieloperation keine unzulässige rückwirkende Änderung ist. |
-| **US #21** | Laufendes Spiel fortsetzen | GR #04, GR #05, GR #06, GR #07, GR #08, GR #09, GR #11 | NFANF #02 | Nur laufende Spiele können fortgesetzt werden. Ein gemäß GR #11 abgebrochenes Spiel kann nicht fortgesetzt werden. |
+| **US #21** | Laufendes Spiel fortsetzen | GR #04, GR #05, GR #06, GR #07, GR #08, GR #09, GR #11, GR #12 | NFANF #02 | Nur laufende Spiele können fortgesetzt werden. Ein gemäß GR #11 abgebrochenes Spiel kann nicht fortgesetzt werden. |
 | **US #22** | Beamer-Modus verwenden | – | NFANF #03 | Der Beamer-Modus unterstützt unmittelbar die kompakte und gut lesbare Spielansicht. |
-| **US #23** | Ergebnisse überblicken | GR #09, GR #11 | NFANF #01, NFANF #02 | Das Dashboard darf ausschließlich Team- und Kursauswertungen zeigen und muss auf konsistenten historischen Spieldaten beruhen. Abgebrochene Spiele gelten gemäß GR #11 nicht als regulär abgeschlossen und dürfen daher nicht als reguläre Ergebnisse behandelt werden. |
+| **US #23** | Ergebnisse überblicken | GR #09, GR #11, GR #12 | NFANF #01, NFANF #02 | Das Dashboard darf ausschließlich Team- und Kursauswertungen zeigen und muss auf konsistenten historischen Spieldaten beruhen. Abgebrochene Spiele gelten gemäß GR #11 nicht als regulär abgeschlossen und dürfen daher nicht als reguläre Ergebnisse behandelt werden. |
 | **US #24** | Gespielte Fragen protokollieren | GR #01, GR #02, GR #09, GR #11 | NFANF #02 | Das Protokoll muss den tatsächlich gespielten Fragensatz je Runde und Kurs nachvollziehbar halten. Wird ein abgebrochenes Spiel gemäß GR #11 gelöscht, werden auch seine ausschließlich spielbezogenen Daten entfernt. |
 | **US #25** | Rundenabdeckung prüfen | GR #09, GR #11 | NFANF #02 | Die Rundenabdeckung unterscheidet offene, laufende, abgebrochene und regulär gespielte Runden. Erst nach Löschung eines abgebrochenen Spiels gilt die Runde für den betreffenden Kurs wieder als offen. |
 | **US #26** | Spiel abbrechen und löschen | GR #09, GR #11 | NFANF #02 | US #26 wird durch die Use Cases „Spiel abbrechen“ und „Spiel löschen“ konkretisiert. Der Abbruch beendet das laufende Spiel ohne regulären Abschluss; die anschließende Löschung macht die Runde für den betreffenden Kurs wieder offen. |
+| **US #27** | Teamnamen verwalten | GR #12 | NFANF #02 | Die Teamnamen sind kursbezogene Anzeigenamen. Sie dürfen nicht leer oder identisch sein, können nur ohne laufendes Spiel geändert werden und verändern aufgrund der Spiel-Snapshots keine bereits gestarteten oder historischen Spiele. |
+| **US #28** | Fragen auswerten | GR #13 | NFANF #01, NFANF #02 | Die Auswertung aggregiert ausschließlich regulär gewertete Fachfragen aus abgeschlossenen Spielen auf Fragenebene. Challenge Card und letzte Instructor-Karte werden ausgeschlossen; geänderte Fragefassungen bleiben durch Snapshots getrennt und es werden keine individuellen Leistungsdaten ausgewertet. |
 
 ## 3. Querschnittsanforderungen
 
@@ -57,6 +61,7 @@ RANF #01 gilt bei Aktualisierungen von Syzeteo für sämtliche persistenten fach
 - Kurse,
 - Studierende,
 - Teamzuordnungen,
+- kursbezogene Teamnamen und in Spielen gespeicherte Teamnamen-Snapshots,
 - Lerneinheiten,
 - Fragen,
 - Runden,
@@ -72,7 +77,7 @@ Die ausdrücklich ausgelöste Kurslöschung gemäß GR #10 und die Löschung ein
 NFANF #04 gilt querschnittlich:
 
 - US #05 stellt den Authentifizierungsmechanismus bereit.
-- US #01 bis US #04 und US #06 bis US #26 beschreiben Spiel- oder Verwaltungsfunktionen und dürfen nur nach erfolgreicher Authentifizierung zugänglich sein.
+- US #01 bis US #04 und US #06 bis US #28 beschreiben Spiel- oder Verwaltungsfunktionen und dürfen nur nach erfolgreicher Authentifizierung zugänglich sein.
 
 ## 4. Rückwärts-Traceability: Anforderungen → User Stories
 
@@ -91,15 +96,17 @@ NFANF #04 gilt querschnittlich:
 | **GR #09 – Runde je Kurs einmal verwenden** | US #16, US #21, US #23, US #24, US #25, US #26 |
 | **GR #10 – Vollständige Kurslöschung** | US #07 |
 | **GR #11 – Spiel abbrechen und löschen** | US #21, US #23, US #24, US #25, US #26 |
+| **GR #12 – Kursbezogene Teamnamen** | US #16, US #21, US #23, US #27 |
+| **GR #13 – Fragenbezogene Ergebnisaggregation** | US #28 |
 
 ### 4.2 Nichtfunktionale Anforderungen
 
 | **Anforderung** | Abgedeckt durch User Stories |
 |---|---|
-| **NFANF #01 – Keine Individualauswertung** | US #01, US #02, US #03, US #08, US #09, US #10, US #11, US #16, US #17, US #18, US #19, US #23 |
-| **NFANF #02 – Rundenbezogene Datenintegrität** | US #03, US #07, US #08, US #09, US #10, US #12, US #13, US #14, US #21, US #23, US #24, US #25, US #26 |
+| **NFANF #01 – Keine Individualauswertung** | US #01, US #02, US #03, US #08, US #09, US #10, US #11, US #16, US #17, US #18, US #19, US #23, US #28 |
+| **NFANF #02 – Rundenbezogene Datenintegrität** | US #03, US #07, US #08, US #09, US #10, US #12, US #13, US #14, US #21, US #23, US #24, US #25, US #26, US #27, US #28 |
 | **NFANF #03 – Kompakte Spielansicht** | US #17, US #22 |
-| **NFANF #04 – Zugriffsschutz** | US #05 als Authentifizierungsmechanismus; US #01–US #04 und US #06–US #26 als geschützte Spiel- und Verwaltungsfunktionen |
+| **NFANF #04 – Zugriffsschutz** | US #05 als Authentifizierungsmechanismus; US #01–US #04 und US #06–US #28 als geschützte Spiel- und Verwaltungsfunktionen |
 
 ### 4.3 Randanforderung
 
@@ -111,15 +118,15 @@ NFANF #04 gilt querschnittlich:
 
 Die konsolidierte Anforderungsbasis enthält:
 
-- 26 User Stories
-- 11 Geschäfts- und Spielregeln
+- 28 User Stories
+- 13 Geschäfts- und Spielregeln
 - 4 nichtfunktionale Anforderungen
 - 1 Randanforderung
 - 2 Use Cases zur Konkretisierung von US #26
 
-Alle 26 User Stories sind in der Matrix enthalten.
+Alle 28 User Stories sind in der Matrix enthalten.
 
-Alle 11 Geschäfts- und Spielregeln besitzen mindestens einen nachvollziehbaren Trace-Link.
+Alle 13 Geschäfts- und Spielregeln besitzen mindestens einen nachvollziehbaren Trace-Link.
 
 Alle 4 nichtfunktionalen Anforderungen sind berücksichtigt.
 
@@ -133,5 +140,7 @@ Die Präzisierungen sind wie folgt konsolidiert:
 4. Team Assist: Ein ausschließlicher Einsatz über den Team Assist sperrt nicht für einen späteren regulären Spielerzug gemäß GR #05 und GR #06.
 5. Letzte Karte: Die letzte verbleibende Karte wird unabhängig von ihrem Kartentyp durch den Instructor beantwortet und nicht gewertet; es werden keine Punkte vergeben gemäß GR #07.
 6. Spielabbruch und Löschung: Ein laufendes Spiel kann gemäß US #26 und GR #11 abgebrochen werden. Das abgebrochene Spiel kann nicht fortgesetzt werden, wird auf der Instructor-Seite zur Löschung angeboten und macht die Runde erst nach der Löschung wieder offen. Regulär abgeschlossene Spiele können über diese Funktion nicht gelöscht werden.
+7. Teamnamen: Beide Teams besitzen kursbezogene, frei wählbare Anzeigenamen gemäß US #27 und GR #12. Interne Teamkennungen bleiben stabil; beim Spielstart werden die Namen eingefroren, sodass spätere Umbenennungen historische Spiele nicht verändern.
+8. Fragenauswertung: Gemäß US #28 und GR #13 werden nur regulär gewertete Fachfragen aus abgeschlossenen Spielen ausgewertet. Challenge Card und letzte Instructor-Karte bleiben außen vor; Fragefassungen werden anhand ihrer gespeicherten Snapshots getrennt aggregiert und personenbezogene Leistungsdaten ausgeschlossen.
 
 Ergebnis: Bezogen auf die konsolidierten Dokumente bestehen keine erkennbaren fachlichen Widersprüche oder verwaisten Anforderungen.

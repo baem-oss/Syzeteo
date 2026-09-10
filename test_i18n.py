@@ -25,6 +25,51 @@ class I18nTest(unittest.TestCase):
         de = i18n.load_catalog("de")
         self.assertEqual(set(en), set(de))
         self.assertEqual(i18n.validate_catalogs(), [])
+        self.assertEqual(set(i18n.available_locales()), {"en", "de"})
+
+    def test_i18n_installed_compound_locale_is_preserved_and_selectable(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            (root / "en.json").write_text('{"language.name":"English","x":"English"}', encoding="utf-8")
+            (root / "de.json").write_text('{"language.name":"Deutsch","x":"Deutsch"}', encoding="utf-8")
+            (root / "de_custom.json").write_text('{"language.name":"Deutsch (Custom)","x":"Custom"}', encoding="utf-8")
+            with patch.object(i18n, "LOCALES_DIR", root):
+                i18n.load_catalog.cache_clear()
+                self.assertEqual(i18n.normalize_locale("DE_CUSTOM"), "de_custom")
+                self.assertEqual(i18n.normalize_locale("de-DE"), "de")
+                self.assertIn("de_custom", i18n.available_locales())
+                self.assertEqual(i18n.locale_display_name("de_custom"), "Deutsch (Custom)")
+
+    def test_i18n_optional_profile_can_override_display_values_only(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            (root / "en.json").write_text('{"language.name":"English","x":"English text"}', encoding="utf-8")
+            (root / "de.json").write_text('{"language.name":"Deutsch","x":"Deutscher Text"}', encoding="utf-8")
+            (root / "de_custom.json").write_text('{"language.name":"Deutsch (Custom)","x":"Eigener Text"}', encoding="utf-8")
+            with patch.object(i18n, "LOCALES_DIR", root):
+                i18n.load_catalog.cache_clear()
+                self.assertEqual(i18n.t("x", locale="de_custom"), "Eigener Text")
+
+    def test_i18n_optional_profile_persists_without_collapsing_to_base_locale(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td) / "locales"
+            root.mkdir()
+            (root / "en.json").write_text('{"language.name":"English"}', encoding="utf-8")
+            (root / "de.json").write_text('{"language.name":"Deutsch"}', encoding="utf-8")
+            (root / "de_custom.json").write_text('{"language.name":"Deutsch (Custom)"}', encoding="utf-8")
+            with patch.object(i18n, "LOCALES_DIR", root):
+                i18n.load_catalog.cache_clear()
+                conn = connect(Path(td) / "test.sqlite3")
+                set_app_setting(conn, "ui_locale", "de_custom")
+                self.assertEqual(get_app_setting(conn, "ui_locale"), "de_custom")
+                self.assertEqual(i18n.normalize_locale(get_app_setting(conn, "ui_locale")), "de_custom")
+                conn.close()
+
+    def test_i18n_challenge_card_face_uses_translation_keys(self):
+        source = (Path(__file__).resolve().parent / "app.py").read_text(encoding="utf-8")
+        self.assertNotIn('label=f"{prefix}**Challenge Card**\\n\\nKnowledge. Teams. Rounds."', source)
+        self.assertIn("tr('game.challenge.title')", source)
+        self.assertIn("tr('app.tagline')", source)
 
     def test_i18n_t04_placeholders_must_match(self):
         with tempfile.TemporaryDirectory() as td:
@@ -33,7 +78,7 @@ class I18nTest(unittest.TestCase):
             (root / "de.json").write_text('{"language.name":"Deutsch","x":"Kurs {course}"}', encoding="utf-8")
             with patch.object(i18n, "LOCALES_DIR", root):
                 i18n.load_catalog.cache_clear()
-                errors = i18n.validate_catalogs()
+                errors = i18n.validate_catalogs(required_locales=("en", "de"))
             self.assertTrue(any("placeholder mismatch" in item for item in errors))
 
     def test_i18n_t05_missing_language_key_falls_back_to_english(self):

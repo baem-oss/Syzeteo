@@ -97,7 +97,7 @@ class ReleaseTest(unittest.TestCase):
             conn = connect(Path(td) / "test.sqlite3")
             game_cols = {r[1] for r in conn.execute("PRAGMA table_info(games)")}
             card_cols = {r[1] for r in conn.execute("PRAGMA table_info(game_cards)")}
-            self.assertEqual(conn.execute("PRAGMA user_version").fetchone()[0], 2)
+            self.assertEqual(conn.execute("PRAGMA user_version").fetchone()[0], 3)
             self.assertIn("team1_assist_used", game_cols)
             self.assertIn("team2_assist_used", game_cols)
             self.assertIn("team_assist_used", card_cols)
@@ -169,7 +169,7 @@ class ReleaseTest(unittest.TestCase):
         for term in ("baem_joker", "team_joker_used", "team1_joker_used", "team2_joker_used", "BSDS_DATA_DIR", "bsds.sqlite3", "MINDROUNDS_DATA_DIR", "mindrounds.sqlite3"):
             self.assertNotIn(term, runtime)
 
-    def test_rel_13_schema_v2_preserves_data_from_older_internal_schema(self):
+    def test_rel_13_schema_v3_preserves_data_from_older_internal_schema(self):
         with tempfile.TemporaryDirectory() as td:
             path = Path(td) / "test.sqlite3"
             import sqlite3
@@ -181,11 +181,25 @@ class ReleaseTest(unittest.TestCase):
             legacy.close()
 
             conn = connect(path)
-            self.assertEqual(conn.execute("PRAGMA user_version").fetchone()[0], 2)
+            self.assertEqual(conn.execute("PRAGMA user_version").fetchone()[0], 3)
             self.assertEqual(conn.execute("SELECT code FROM courses WHERE id=1").fetchone()[0], "KEEP")
             settings_table = conn.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='app_settings'").fetchone()
             self.assertIsNotNone(settings_table)
+            course = conn.execute("SELECT team1_name,team2_name FROM courses WHERE id=1").fetchone()
+            self.assertEqual((course["team1_name"], course["team2_name"]), ("Team 1", "Team 2"))
             conn.close()
+
+    def test_rel_14_dockerignore_excludes_persistent_data(self):
+        root = Path(__file__).resolve().parent
+        dockerignore = (root / ".dockerignore").read_text(encoding="utf-8")
+        self.assertIn("persistent/", dockerignore.splitlines())
+        self.assertTrue(any(line.startswith("*.sqlite3") for line in dockerignore.splitlines()))
+        self.assertIn("*.backup", dockerignore.splitlines())
+
+    def test_rel_15_public_release_ships_only_official_locales(self):
+        root = Path(__file__).resolve().parent / "locales"
+        shipped = {path.stem for path in root.glob("*.json")}
+        self.assertEqual(shipped, {"en", "de"})
 
 
 if __name__ == "__main__":

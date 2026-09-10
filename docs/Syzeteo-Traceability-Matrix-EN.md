@@ -1,6 +1,6 @@
 # Syzeteo – Traceability Matrix
 
-Status: 3 September 2026
+Status: 10 September 2026
 
 Source basis: `Syzeteo-L-US-EN.md`, `Syzeteo-RANF-etc-EN.md`, and `Syzeteo-Use-Cases-US26-EN.md`
 
@@ -16,6 +16,8 @@ In particular:
 - NFANF #04 applies to all game and administration functions. US #05 provides the authentication entry point.
 - NFANF #02 protects existing game and log data against unintended retroactive changes. Complete course deletion under GR #10, the domain-defined undo operation under US #20, and deletion of a previously aborted game under US #26 and GR #11 are explicitly excluded from this restriction.
 - US #26 is specified by the use cases “Abort Game” and “Delete Game”.
+- US #27 and GR #12 govern course-specific team names; the names are copied into immutable game snapshots when a game starts.
+- US #28 and GR #13 govern question-level, non-personal analysis of regularly completed subject questions.
 
 ## 2. Traceability Matrix: User Stories → Requirements
 
@@ -36,17 +38,19 @@ In particular:
 | **US #13** | Manage Question Pool | GR #02 | NFANF #02 | Changes to the global Question Pool must not retroactively change rounds that have already been started or played. |
 | **US #14** | Import and Export Learning Content | – | NFANF #02 | Imported changes to learning content must not retroactively change historical game and log data. |
 | **US #15** | Configure Rounds | GR #01, GR #02, GR #03 | – | Round configuration uses eight subject-matter questions, the same question set across courses, and becomes immutable after the first successful start. |
-| **US #16** | Start Game | GR #01, GR #02, GR #03, GR #08, GR #09 | NFANF #01 | Starting the game activates the question set, round structure, player selection mode, and the rule that a round is used only once per course. Personal data may only be processed for organizational purposes. |
+| **US #16** | Start Game | GR #01, GR #02, GR #03, GR #08, GR #09, GR #12 | NFANF #01 | Starting the game activates the question set, round structure, player selection mode, and the rule that a round is used only once per course. Personal data may only be processed for organizational purposes. |
 | **US #17** | Conduct and Score Questions | GR #03, GR #04, GR #05, GR #07 | NFANF #01, NFANF #03 | Core regular gameplay: card structure, team alternation, single regular turn per person, and special handling of the last card. Points remain team-based. |
 | **US #18** | Use Team Assist | GR #05, GR #06 | NFANF #01 | Team Assist participation is subject to the exception from the regular participation restriction and does not itself make a person ineligible for a later regular player turn. |
 | **US #19** | Score Challenge Card | GR #03, GR #07 | NFANF #01 | The Challenge Card is the ninth card and is scored according to its special scoring logic unless it is the last remaining card. If it is last, it is answered by the Instructor and not scored under GR #07. |
 | **US #20** | Undo Game Step | GR #04, GR #05, GR #06 | – | Undo must restore the previous domain-consistent game state. NFANF #02 explicitly clarifies that this defined game operation is not an impermissible retroactive change. |
-| **US #21** | Resume Ongoing Game | GR #04, GR #05, GR #06, GR #07, GR #08, GR #09, GR #11 | NFANF #02 | Only ongoing games can be resumed. A game aborted under GR #11 cannot be resumed. |
+| **US #21** | Resume Ongoing Game | GR #04, GR #05, GR #06, GR #07, GR #08, GR #09, GR #11, GR #12 | NFANF #02 | Only ongoing games can be resumed. A game aborted under GR #11 cannot be resumed. |
 | **US #22** | Use Projector Mode | – | NFANF #03 | Projector Mode directly supports the compact and clearly readable game view. |
-| **US #23** | Review Results | GR #09, GR #11 | NFANF #01, NFANF #02 | The dashboard may show only team- and course-level evaluations and must rely on consistent historical game data. Under GR #11, aborted games are not regularly completed and must not be treated as regular results. |
+| **US #23** | Review Results | GR #09, GR #11, GR #12 | NFANF #01, NFANF #02 | The dashboard may show only team- and course-level evaluations and must rely on consistent historical game data. Under GR #11, aborted games are not regularly completed and must not be treated as regular results. |
 | **US #24** | Log Played Questions | GR #01, GR #02, GR #09, GR #11 | NFANF #02 | The log must preserve a traceable record of the question set actually played per round and course. When an aborted game is deleted under GR #11, data assigned exclusively to that game is removed as well. |
 | **US #25** | Check Round Coverage | GR #09, GR #11 | NFANF #02 | Round coverage distinguishes open, ongoing, aborted, and regularly played rounds. Only after an aborted game is deleted does the round become open again for the respective course. |
 | **US #26** | Abort and Delete Game | GR #09, GR #11 | NFANF #02 | US #26 is specified by the use cases “Abort Game” and “Delete Game”. Aborting ends the ongoing game without regular completion; subsequent deletion makes the round open again for the respective course. |
+| **US #27** | Manage Team Names | GR #12 | NFANF #02 | Team names are course-specific display names. They must be non-empty and distinct, may be changed only when no game is running, and do not retroactively change games that already started because those games retain name snapshots. |
+| **US #28** | Analyze Questions | GR #13 | NFANF #01, NFANF #02 | Analysis aggregates only regularly scored subject questions from completed games at question level. The Challenge Card and final Instructor card are excluded; changed question versions remain separated through snapshots, and no individual performance data is evaluated. |
 
 ## 3. Cross-cutting Requirements
 
@@ -57,6 +61,7 @@ RANF #01 applies to all persistent domain data when Syzeteo is updated. This inc
 - courses,
 - students,
 - team assignments,
+- course-specific team names and team-name snapshots stored in games,
 - learning units,
 - questions,
 - rounds,
@@ -72,7 +77,7 @@ An explicitly initiated course deletion under GR #10 and deletion of a previousl
 NFANF #04 applies across the system:
 
 - US #05 provides the authentication mechanism.
-- US #01 through US #04 and US #06 through US #26 describe game or administration functions and may only be accessible after successful authentication.
+- US #01 through US #04 and US #06 through US #28 describe game or administration functions and may only be accessible after successful authentication.
 
 ## 4. Reverse Traceability: Requirements → User Stories
 
@@ -91,15 +96,17 @@ NFANF #04 applies across the system:
 | **GR #09 – Use a Round Once per Course** | US #16, US #21, US #23, US #24, US #25, US #26 |
 | **GR #10 – Complete Course Deletion** | US #07 |
 | **GR #11 – Abort and Delete Game** | US #21, US #23, US #24, US #25, US #26 |
+| **GR #12 – Course-specific Team Names** | US #16, US #21, US #23, US #27 |
+| **GR #13 – Question-level Result Aggregation** | US #28 |
 
 ### 4.2 Non-functional Requirements
 
 | **Requirement** | Covered by User Stories |
 |---|---|
-| **NFANF #01 – No Individual Performance Evaluation** | US #01, US #02, US #03, US #08, US #09, US #10, US #11, US #16, US #17, US #18, US #19, US #23 |
-| **NFANF #02 – Round-related Data Integrity** | US #03, US #07, US #08, US #09, US #10, US #12, US #13, US #14, US #21, US #23, US #24, US #25, US #26 |
+| **NFANF #01 – No Individual Performance Evaluation** | US #01, US #02, US #03, US #08, US #09, US #10, US #11, US #16, US #17, US #18, US #19, US #23, US #28 |
+| **NFANF #02 – Round-related Data Integrity** | US #03, US #07, US #08, US #09, US #10, US #12, US #13, US #14, US #21, US #23, US #24, US #25, US #26, US #27, US #28 |
 | **NFANF #03 – Compact Game View** | US #17, US #22 |
-| **NFANF #04 – Access Control** | US #05 as the authentication mechanism; US #01–US #04 and US #06–US #26 as protected game and administration functions |
+| **NFANF #04 – Access Control** | US #05 as the authentication mechanism; US #01–US #04 and US #06–US #28 as protected game and administration functions |
 
 ### 4.3 Constraint
 
@@ -111,15 +118,15 @@ NFANF #04 applies across the system:
 
 The consolidated requirements baseline contains:
 
-- 26 User Stories
-- 11 business and game rules
+- 28 User Stories
+- 13 business and game rules
 - 4 non-functional requirements
 - 1 constraint
 - 2 use cases specifying US #26
 
-All 26 User Stories are included in the matrix.
+All 28 User Stories are included in the matrix.
 
-All 11 business and game rules have at least one traceable link.
+All 13 business and game rules have at least one traceable link.
 
 All 4 non-functional requirements are covered.
 
@@ -133,5 +140,6 @@ The clarifications are consolidated as follows:
 4. Team Assist: participation exclusively through Team Assist does not make a person ineligible for a later regular player turn under GR #05 and GR #06.
 5. Last card: the last remaining card is answered by the Instructor and not scored regardless of card type; no points are awarded under GR #07.
 6. Game abort and deletion: an ongoing game can be aborted under US #26 and GR #11. The aborted game cannot be resumed, is offered for deletion on the Instructor page, and makes the round open again only after deletion. Regularly completed games cannot be deleted through this function.
+7. Team names: both teams have course-specific, freely chosen display names under US #27 and GR #12. Internal team identifiers remain stable; names are frozen at game start so later renaming does not change historical games.
 
 Result: Based on the consolidated documents, no identifiable domain contradictions or orphaned requirements remain.

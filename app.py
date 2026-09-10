@@ -8,14 +8,15 @@ import streamlit.components.v1 as components
 from auth import authenticate, change_password, change_username, create_admin, user_count
 from config import resolve_data_dir, resolve_database_path
 from i18n import available_locales, initial_locale, locale_display_name, t
+from rendering import escape_markdown_literal, plain_text_html, round_question_html
 from storage import (
     add_late_player, add_learning_unit, add_question, add_student, archive_course, connect, course_scoreboard,
     abort_game, create_course, create_round, delete_aborted_game, delete_course, delete_learning_unit, delete_question,
     export_question_pool_csv, export_question_pool_json, game_cards, game_history, game_roster,
     get_game, import_question_pool_json, import_students_csv, learning_unit_question_count,
     list_courses, list_games, list_learning_units, list_questions, preview_question_pool_import,
-    list_rounds, list_students, protocol_rows, randomize_teams, reveal_card,
-    reactivate_course, round_questions, start_game, update_learning_unit, update_question,
+    list_rounds, list_students, protocol_rows, question_analysis_rows, randomize_teams, reveal_card,
+    reactivate_course, round_questions, start_game, update_course_team_names, update_learning_unit, update_question,
     update_round_questions, update_student, current_player, resolve_instructor_card,
     resolve_question, set_next_player, undo_info, undo_last_action,
     dashboard_system_status, dashboard_course_status, dashboard_learning_unit_status,
@@ -23,7 +24,7 @@ from storage import (
     get_app_setting, set_app_setting, StorageError,
 )
 
-APP_VERSION = "1.1.0"
+APP_VERSION = "1.1.1"
 
 st.set_page_config(page_title="Syzeteo", page_icon="🧠", layout="wide")
 
@@ -31,6 +32,12 @@ DATA_DIR = resolve_data_dir()
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 DB_PATH = resolve_database_path(DATA_DIR)
 conn = connect(DB_PATH)
+
+
+def render_literal_text(text):
+    """Render question/answer content literally, without Markdown semantics."""
+    st.html(plain_text_html(text))
+
 
 PAGE_DASHBOARD = "dashboard"
 PAGE_COURSES = "courses"
@@ -83,8 +90,18 @@ def show_error(exc):
         st.error(str(exc))
 
 
-def team_name(team):
-    return tr("team.1") if int(team) == 1 else tr("team.2")
+def team_name(team, source=None):
+    """Return a course/game-specific display name while keeping team IDs 1/2 internal."""
+    number = int(team)
+    if source is not None:
+        for key in (f"team{number}_name_snapshot", f"team{number}_name"):
+            try:
+                value = source[key]
+            except (KeyError, IndexError, TypeError):
+                value = None
+            if value:
+                return str(value)
+    return tr("team.1") if number == 1 else tr("team.2")
 
 
 def player_mode_label(mode):
@@ -233,11 +250,11 @@ if PAGE==PAGE_DASHBOARD:
         score=score_by_code[selected_code]
 
         m1,m2,m3,m4=st.columns(4,border=True)
-        m1.metric(tr("dashboard.metric.team1_total"),int(score["team1_points"]))
-        m2.metric(tr("dashboard.metric.team2_total"),int(score["team2_points"]))
+        m1.metric(score["team1_name"],int(score["team1_points"]))
+        m2.metric(score["team2_name"],int(score["team2_points"]))
         m3.metric(tr("dashboard.metric.rounds_played"),int(score["games_played"] or 0))
         diff=int(score["team1_points"])-int(score["team2_points"])
-        leader=tr("dashboard.leader.tie") if diff==0 else (tr("team.1") if diff>0 else tr("team.2"))
+        leader=tr("dashboard.leader.tie") if diff==0 else (score["team1_name"] if diff>0 else score["team2_name"])
         lead_value=leader if diff==0 else tr("dashboard.lead_value",leader=leader,points=abs(diff))
         m4.metric(tr("dashboard.metric.current_lead"),lead_value)
 
@@ -257,8 +274,8 @@ if PAGE==PAGE_DASHBOARD:
         hist_course=list(reversed(hist_course))
 
         round_col=tr("dashboard.column.round")
-        team1_col=tr("team.1")
-        team2_col=tr("team.2")
+        team1_col=score["team1_name"]
+        team2_col=score["team2_name"]
         if not hist_course:
             st.info(tr("dashboard.no_completed_round"))
         else:
@@ -279,8 +296,10 @@ if PAGE==PAGE_DASHBOARD:
                 st.info(tr(
                     "dashboard.single_round_score",
                     round_name=last[round_col],
+                    team1_name=team1_col,
                     team1=last[team1_col],
                     team2=last[team2_col],
+                    team2_name=team2_col,
                 ))
             else:
                 st.subheader(tr("dashboard.results_by_round"))
@@ -316,11 +335,9 @@ if PAGE==PAGE_DASHBOARD:
         with st.expander(tr("dashboard.all_courses")):
             df=pd.DataFrame([{
                 tr("common.course"):r["code"],
-                tr("team.1"):r["team1_points"],
-                tr("team.2"):r["team2_points"],
+                tr("dashboard.column.score"):f"{r['team1_name']} {int(r['team1_points'])} : {int(r['team2_points'])} {r['team2_name']}",
                 tr("dashboard.column.games"):r["games_played"],
-                tr("dashboard.column.wins_t1"):r["team1_wins"],
-                tr("dashboard.column.wins_t2"):r["team2_wins"],
+                tr("dashboard.column.wins"):f"{r['team1_name']}: {int(r['team1_wins'] or 0)} · {r['team2_name']}: {int(r['team2_wins'] or 0)}",
                 tr("dashboard.column.draws"):r["draws"],
             } for r in rows])
             st.dataframe(df,use_container_width=True,hide_index=True)
@@ -333,8 +350,7 @@ if PAGE==PAGE_DASHBOARD:
                 tr("dashboard.column.round"):r["round_name"],
                 tr("common.course"):r["course_code"],
                 tr("dashboard.column.status"):status_labels.get(r["status"],r["status"]),
-                tr("team.1"):r["team1_points"],
-                tr("team.2"):r["team2_points"],
+                tr("dashboard.column.score"):f"{r['team1_name_snapshot']} {int(r['team1_points'])} : {int(r['team2_points'])} {r['team2_name_snapshot']}",
                 tr("dashboard.column.start"):r["started_at"][:16].replace("T"," "),
             } for r in hist]),use_container_width=True,hide_index=True)
         else:
@@ -346,9 +362,12 @@ elif PAGE==PAGE_COURSES:
         c1,c2=st.columns([1,2])
         code=c1.text_input(tr("courses.code"),placeholder=tr("courses.code.placeholder"))
         title=c2.text_input(tr("courses.name_optional"))
+        t1,t2=st.columns(2)
+        team1_name=t1.text_input(tr("courses.team1_name"),value=tr("team.1"))
+        team2_name=t2.text_input(tr("courses.team2_name"),value=tr("team.2"))
         if st.form_submit_button(tr("courses.create"),type="primary"):
             try:
-                create_course(conn,code,title)
+                create_course(conn,code,title,team1_name,team2_name)
                 st.success(tr("courses.created"))
                 rerun()
             except StorageError as e:
@@ -367,6 +386,8 @@ elif PAGE==PAGE_COURSES:
                     tr("common.id"):r["id"],
                     tr("common.course"):r["code"],
                     tr("common.name"):r["title"],
+                    tr("courses.team1_name"):r["team1_name"],
+                    tr("courses.team2_name"):r["team2_name"],
                     tr("common.status"):tr("status.active"),
                 } for r in active_rows]),
                 hide_index=True,use_container_width=True,
@@ -394,6 +415,8 @@ elif PAGE==PAGE_COURSES:
                         tr("common.id"):r["id"],
                         tr("common.course"):r["code"],
                         tr("common.name"):r["title"],
+                        tr("courses.team1_name"):r["team1_name"],
+                        tr("courses.team2_name"):r["team2_name"],
                         tr("common.status"):tr("status.archived"),
                     } for r in archived_rows]),
                     hide_index=True,use_container_width=True,
@@ -412,6 +435,42 @@ elif PAGE==PAGE_COURSES:
                         show_error(e)
             else:
                 st.caption(tr("courses.archived.none"))
+
+        st.divider()
+        st.subheader(tr("courses.teams.title"))
+        st.caption(tr("courses.teams.caption"))
+        team_course_map={
+            f"{r['code']}{' – '+r['title'] if r['title'] else ''}":r
+            for r in rows
+        }
+        team_course_label=st.selectbox(
+            tr("courses.teams.course"),list(team_course_map),key="course_team_names_select"
+        )
+        team_course=team_course_map[team_course_label]
+        running_for_team_names=any(
+            int(g["course_id"])==int(team_course["id"]) for g in list_games(conn,"running")
+        )
+        if running_for_team_names:
+            st.warning(tr("courses.teams.running_locked"))
+        with st.form(f"course_team_names_{team_course['id']}"):
+            tc1,tc2=st.columns(2)
+            new_team1=tc1.text_input(
+                tr("courses.team1_name"),value=team_course["team1_name"],
+                disabled=running_for_team_names,
+            )
+            new_team2=tc2.text_input(
+                tr("courses.team2_name"),value=team_course["team2_name"],
+                disabled=running_for_team_names,
+            )
+            if st.form_submit_button(
+                tr("courses.teams.save"),type="primary",disabled=running_for_team_names
+            ):
+                try:
+                    update_course_team_names(conn,team_course["id"],new_team1,new_team2)
+                    st.success(tr("courses.teams.saved"))
+                    rerun()
+                except Exception as e:
+                    show_error(e)
 
         st.divider()
         st.subheader(tr("courses.delete.title"))
@@ -442,6 +501,7 @@ elif PAGE==PAGE_STUDENTS:
     if not opts:
         st.warning(tr("students.no_course")); st.stop()
     label=st.selectbox(tr("common.course"),list(opts)); cid=opts[label]
+    course=next(r for r in list_courses(conn) if int(r["id"])==int(cid))
     st.subheader(tr("students.csv.title"))
     uploaded=st.file_uploader(tr("students.csv.file"),type=["csv"],help=tr("students.csv.help"))
     if uploaded and st.button(tr("students.csv.import")):
@@ -466,7 +526,7 @@ elif PAGE==PAGE_STUDENTS:
         st.subheader(tr("students.edit.title"))
         for student in rows:
             team_value=student["team"]
-            team_display=team_name(team_value) if team_value in (1,2) else tr("students.team_unassigned")
+            team_display=team_name(team_value,course) if team_value in (1,2) else tr("students.team_unassigned")
             inactive=tr("students.inactive_suffix") if not student["active"] else ""
             with st.expander(tr("students.expander", name=student["display_name"], team=team_display, inactive=inactive)):
                 with st.form(f"student_{student['id']}"):
@@ -475,7 +535,7 @@ elif PAGE==PAGE_STUDENTS:
                         tr("students.team"),
                         [None,1,2],
                         index={None:0,1:1,2:2}[student["team"]],
-                        format_func=lambda value: tr("students.team_unassigned") if value is None else team_name(value),
+                        format_func=lambda value: tr("students.team_unassigned") if value is None else team_name(value,course),
                     )
                     active=st.checkbox(tr("students.active"),value=bool(student["active"]))
                     if st.form_submit_button(tr("students.save")):
@@ -484,8 +544,8 @@ elif PAGE==PAGE_STUDENTS:
         t1=[student["display_name"] for student in rows if student["active"] and student["team"]==1]
         t2=[student["display_name"] for student in rows if student["active"] and student["team"]==2]
         a,b=st.columns(2)
-        a.markdown(f"### {tr('team.1')}"); a.write("\n".join(f"- {x}" for x in t1) or "–")
-        b.markdown(f"### {tr('team.2')}"); b.write("\n".join(f"- {x}" for x in t2) or "–")
+        a.markdown(f"### {team_name(1,course)}"); a.write("\n".join(f"- {x}" for x in t1) or "–")
+        b.markdown(f"### {team_name(2,course)}"); b.write("\n".join(f"- {x}" for x in t2) or "–")
 
 elif PAGE==PAGE_LEARNING_UNITS:
     st.title(tr("learning_units.title"))
@@ -632,7 +692,7 @@ elif PAGE==PAGE_ROUNDS:
     st.caption(tr("rounds.active_count", count=len(new_round_qopts)))
     with st.form("new_round"):
         name=st.text_input(tr("rounds.name"),placeholder=tr("rounds.name.placeholder"))
-        selected=st.multiselect(tr("rounds.select_eight"),list(new_round_qopts),max_selections=8)
+        selected=st.multiselect(tr("rounds.select_eight"),list(new_round_qopts))
         if st.form_submit_button(tr("rounds.create"),type="primary"):
             try: create_round(conn,name,[new_round_qopts[x] for x in selected]); st.success(tr("rounds.created")); rerun()
             except Exception as e: show_error(e)
@@ -641,7 +701,7 @@ elif PAGE==PAGE_ROUNDS:
         with st.expander(tr("rounds.expander", name=rnd["name"], count=rnd["n_questions"], state=state)):
             rq=round_questions(conn,rnd["id"])
             for item in rq:
-                st.write(f"{item['position']}. **{item['unit_code']}** – {item['question_text']}")
+                st.html(round_question_html(item["position"], item["unit_code"], item["question_text"]))
             st.write(tr("rounds.challenge_auto"))
             if not rnd["locked"] and len(qopts)>=8:
                 selected_labels=[]
@@ -658,7 +718,7 @@ elif PAGE==PAGE_ROUNDS:
                     if label in qopts:
                         edit_qopts[label]=qopts[label]
                 with st.form(f"edit_round_{rnd['id']}"):
-                    newsel=st.multiselect(tr("rounds.change_questions"),list(edit_qopts),default=selected_labels,max_selections=8)
+                    newsel=st.multiselect(tr("rounds.change_questions"),list(edit_qopts),default=selected_labels)
                     if st.form_submit_button(tr("rounds.save")):
                         try: update_round_questions(conn,rnd["id"],[edit_qopts[x] for x in newsel]); rerun()
                         except Exception as e: show_error(e)
@@ -675,21 +735,21 @@ elif PAGE==PAGE_GAME:
         if finished_game and finished_game["status"]=="finished":
             st.subheader(tr("game.finished.title", round_name=finished_game["round_name"], course_code=finished_game["course_code"]))
             a,b,c=st.columns([1,0.65,1],vertical_alignment="center")
-            a.metric(tr("team.1"),int(finished_game["team1_points"]))
+            a.metric(team_name(1,finished_game),int(finished_game["team1_points"]))
             b.markdown("<div style='text-align:center;font-size:2rem;font-weight:700'>:</div>",unsafe_allow_html=True)
-            c.metric(tr("team.2"),int(finished_game["team2_points"]))
+            c.metric(team_name(2,finished_game),int(finished_game["team2_points"]))
             p1=int(finished_game["team1_points"]); p2=int(finished_game["team2_points"])
             if p1==p2:
                 st.info(tr("game.finished.draw"))
             else:
                 winner=1 if p1>p2 else 2
-                st.success(tr("game.finished.winner", team=winner, high=max(p1,p2), low=min(p1,p2)))
+                st.success(tr("game.finished.winner", team=team_name(winner,finished_game), high=max(p1,p2), low=min(p1,p2)))
             score=next((r for r in course_scoreboard(conn) if r["id"]==finished_game["course_id"]),None)
             if score:
                 st.markdown(tr("game.finished.course_total"))
                 g1,g2=st.columns(2,border=True)
-                g1.metric(tr("dashboard.metric.team1_total"),int(score["team1_points"]))
-                g2.metric(tr("dashboard.metric.team2_total"),int(score["team2_points"]))
+                g1.metric(score["team1_name"],int(score["team1_points"]))
+                g2.metric(score["team2_name"],int(score["team2_points"]))
             st.caption(tr("game.privacy"))
             u=undo_info(conn,finished_id)
             x,y,z=st.columns(3)
@@ -734,6 +794,7 @@ elif PAGE==PAGE_GAME:
         if not copts or not ropts:
             st.warning(tr("common.course_and_round_required")); st.stop()
         cl=st.selectbox(tr("common.course"),list(copts)); rl=st.selectbox(tr("common.round"),list(ropts)); cid=copts[cl]; rid=ropts[rl]
+        course=next(r for r in list_courses(conn) if int(r["id"])==int(cid))
         already={g["round_id"] for g in game_history(conn,cid)}
         questions_ok=len(round_questions(conn,rid))==8
         students=[s for s in list_students(conn,cid,True) if s["team"] in (1,2)]
@@ -772,8 +833,8 @@ elif PAGE==PAGE_GAME:
         t1map={s["display_name"]:s["id"] for s in team1}
         t2map={s["display_name"]:s["id"] for s in team2}
         c1,c2=st.columns(2)
-        present1=c1.multiselect(tr("game.attendance.team", team=1),list(t1map),default=list(t1map),key=f"present1_{cid}_{rid}")
-        present2=c2.multiselect(tr("game.attendance.team", team=2),list(t2map),default=list(t2map),key=f"present2_{cid}_{rid}")
+        present1=c1.multiselect(tr("game.attendance.team", team=team_name(1,course)),list(t1map),default=list(t1map),key=f"present1_{cid}_{rid}")
+        present2=c2.multiselect(tr("game.attendance.team", team=team_name(2,course)),list(t2map),default=list(t2map),key=f"present2_{cid}_{rid}")
         present_ids=[t1map[x] for x in present1]+[t2map[x] for x in present2]
 
         st.markdown(tr("game.starter.title"))
@@ -791,7 +852,7 @@ elif PAGE==PAGE_GAME:
             present_id_set={int(x) for x in present_ids}
             present_roster=[s for s in students if int(s["id"]) in present_id_set]
             starter_map={
-                f"{s['display_name']} · Team {s['team']}":s["id"]
+                f"{s['display_name']} · {team_name(s['team'],course)}":s["id"]
                 for s in present_roster
             }
             starter_label=st.selectbox(
@@ -813,8 +874,8 @@ elif PAGE==PAGE_GAME:
         checks=[
             (questions_ok,tr("game.precheck.questions", count=len(round_questions(conn,rid)))),
             (already_ok,tr("game.precheck.round_new") if already_ok else tr("game.precheck.round_used")),
-            (team1_ok,tr("game.precheck.team", team=1, count=len(present1))),
-            (team2_ok,tr("game.precheck.team", team=2, count=len(present2))),
+            (team1_ok,tr("game.precheck.team", team=team_name(1,course), count=len(present1))),
+            (team2_ok,tr("game.precheck.team", team=team_name(2,course), count=len(present2))),
         ]
         for ok,text in checks:
             st.write(f"{'✓' if ok else '✗'} {text}")
@@ -854,8 +915,8 @@ elif PAGE==PAGE_GAME:
             """,unsafe_allow_html=True)
 
         s1,s2,s3=st.columns([1,1,1])
-        s1.metric(tr("team.1"),game["team1_points"])
-        s2.metric(tr("team.2"),game["team2_points"])
+        s1.metric(team_name(1,game),game["team1_points"])
+        s2.metric(team_name(2,game),game["team2_points"])
         u=undo_info(conn,gid)
         if u:
             if s3.button(tr("game.undo"),key=f"undo_{gid}",help=tr("game.undo.help", action=undo_action_label(u))):
@@ -867,8 +928,8 @@ elif PAGE==PAGE_GAME:
                 except Exception as e:
                     show_error(e)
         j1,j2=st.columns(2)
-        j1.caption(tr("game.assist.status", team=1, status=tr("common.used") if game["team1_assist_used"] else tr("common.available")))
-        j2.caption(tr("game.assist.status", team=2, status=tr("common.used") if game["team2_assist_used"] else tr("common.available")))
+        j1.caption(tr("game.assist.status", team=team_name(1,game), status=tr("common.used") if game["team1_assist_used"] else tr("common.available")))
+        j2.caption(tr("game.assist.status", team=team_name(2,game), status=tr("common.used") if game["team2_assist_used"] else tr("common.available")))
         regular_mode_label=player_mode_label(game["player_selection_mode"])
         abort_confirm_key=f"abort_confirm_{gid}"
         if st.button(tr("game.abort.button"),key=f"abort_game_{gid}",type="secondary"):
@@ -905,7 +966,7 @@ elif PAGE==PAGE_GAME:
             ]
             with st.expander(tr("game.late.title")):
                 if late_students:
-                    late_map={f"{s['display_name']} · Team {s['team']}":s["id"] for s in late_students}
+                    late_map={f"{s['display_name']} · {team_name(s['team'],game)}":s["id"] for s in late_students}
                     late_label=st.selectbox(
                         tr("game.late.person"), list(late_map), index=None,
                         placeholder=tr("game.person.select"), key=f"late_player_{gid}"
@@ -933,7 +994,7 @@ elif PAGE==PAGE_GAME:
         if instructor_turn:
             st.info(tr("game.last_card.info"))
         elif player:
-            st.markdown(tr("game.current_player", name=player["display_name_snapshot"], team=player["team_snapshot"]))
+            st.markdown(tr("game.current_player", name=player["display_name_snapshot"], team=team_name(player["team_snapshot"],game)))
         st.markdown(tr("game.board"))
         # Alle neun Kacheln erhalten dieselbe Höhe. Die Höhe wird konservativ aus
         # dem längsten Fragetext der Runde abgeleitet, damit kein Text überläuft.
@@ -1012,12 +1073,12 @@ elif PAGE==PAGE_GAME:
                 elif card["card_type"]==CARD_TYPE_CHALLENGE:
                     state="done" if card["resolved"] else "face"
                     prefix="✓ " if card["resolved"] else ""
-                    label=f"{prefix}**Challenge Card**\n\nKnowledge. Teams. Rounds."
+                    label=f"{prefix}**{tr('game.challenge.title')}**\n\n{tr('app.tagline')}"
                 else:
                     state="done" if card["resolved"] else "face"
                     prefix="✓ " if card["resolved"] else ""
-                    unit=card["unit_code_snapshot"] or ""
-                    question=card["question_text_snapshot"] or ""
+                    unit=escape_markdown_literal(card["unit_code_snapshot"] or "")
+                    question=escape_markdown_literal(card["question_text_snapshot"] or "")
                     label=f"{prefix}**{unit}**\n\n{question}"
                 with cols[col].container(key=f"syzeteo_card_{state}_{card['id']}"):
                     if st.button(label,key=f"card_{gid}_{card['id']}",use_container_width=True,disabled=bool(open_cards and not card["revealed"]) or bool(awaiting_next_player and not card["revealed"]) or card["resolved"]):
@@ -1031,8 +1092,8 @@ elif PAGE==PAGE_GAME:
             if instructor_turn:
                 if current["card_type"]=="question":
                     st.markdown(f"### {current['unit_code_snapshot']} · {tr('game.instructor_turn')}")
-                    st.write(current["question_text_snapshot"])
-                    with st.expander(tr("game.model_answer")): st.write(current["answer_text_snapshot"] or "–")
+                    render_literal_text(current["question_text_snapshot"])
+                    with st.expander(tr("game.model_answer")): render_literal_text(current["answer_text_snapshot"] or "–")
                 else:
                     st.markdown(f"### {tr('game.challenge.title')}")
                     st.write(tr("game.last_challenge"))
@@ -1057,12 +1118,12 @@ elif PAGE==PAGE_GAME:
                     resolve_question(conn,gid,current["id"],0); rerun()
             else:
                 st.markdown(f"## {current['unit_code_snapshot']}")
-                st.write(current["question_text_snapshot"])
+                render_literal_text(current["question_text_snapshot"])
                 components.html(f"""
                     <div style='font-family:sans-serif;font-size:22px'>{tr("game.timer_label")} <strong id='t'>60</strong> s</div>
                     <script>let n=60; const e=document.getElementById('t'); const x=setInterval(()=>{{n--;e.textContent=Math.max(n,0);if(n<=0)clearInterval(x)}},1000);</script>
                 """,height=45)
-                with st.expander(tr("game.model_answer")): st.write(current["answer_text_snapshot"] or "–")
+                with st.expander(tr("game.model_answer")): render_literal_text(current["answer_text_snapshot"] or "–")
                 a,b,c=st.columns(3)
                 if a.button(tr("game.correct"),type="primary"):
                     resolve_question(conn,gid,current["id"],1); rerun()
@@ -1098,13 +1159,13 @@ elif PAGE==PAGE_GAME:
             candidates=[r for r in game_roster(conn,gid,next_team) if not r["has_played"]]
             st.divider()
             if game["player_selection_mode"]=="manual":
-                st.markdown(tr("game.next.manual.title", team=next_team))
+                st.markdown(tr("game.next.manual.title", team=team_name(next_team,game)))
                 if not candidates:
-                    st.error(tr("game.next.no_candidate", team=next_team))
+                    st.error(tr("game.next.no_candidate", team=team_name(next_team,game)))
                 else:
                     cmap={r["display_name_snapshot"]:r["student_id"] for r in candidates}
                     chosen=st.selectbox(
-                        tr("game.next.player", team=next_team),list(cmap),index=None,
+                        tr("game.next.player", team=team_name(next_team,game)),list(cmap),index=None,
                         placeholder=tr("game.person.select"),key=f"next_manual_{gid}_{game['turn_no']}"
                     )
                     if st.button(
@@ -1116,9 +1177,9 @@ elif PAGE==PAGE_GAME:
                         except Exception as e:
                             show_error(e)
             else:
-                st.markdown(tr("game.next.random.title", team=next_team))
+                st.markdown(tr("game.next.random.title", team=team_name(next_team,game)))
                 if not candidates:
-                    st.error(tr("game.next.no_candidate", team=next_team))
+                    st.error(tr("game.next.no_candidate", team=team_name(next_team,game)))
                 else:
                     st.warning(tr("game.next.random_failed"))
 
@@ -1185,6 +1246,54 @@ elif PAGE==PAGE_QUESTION_LOG:
         st.dataframe(pd.DataFrame(coverage),use_container_width=True,hide_index=True)
         complete=sum(1 for row in coverage if row[coverage_col]==tr("question_log.coverage.complete"))
         st.caption(tr("question_log.coverage.summary", complete=complete, total=len(coverage)))
+
+    st.subheader(tr("question_log.analysis.title"))
+    st.caption(tr("question_log.analysis.caption"))
+    analysis_courses=list_courses(conn, active_only=False)
+    scope_options=[None] + [c["id"] for c in analysis_courses]
+    scope_labels={None:tr("question_log.analysis.all_courses")}
+    scope_labels.update({c["id"]:c["code"] for c in analysis_courses})
+    analysis_course_id=st.selectbox(
+        tr("question_log.analysis.scope"),
+        scope_options,
+        format_func=lambda value:scope_labels[value],
+        key="question_analysis_scope",
+    )
+    analysis=question_analysis_rows(conn, analysis_course_id)
+    if analysis:
+        col_qid=tr("question_log.col.question_id")
+        col_unit=tr("question_log.col.unit")
+        col_question=tr("question_log.col.question")
+        col_attempts=tr("question_log.analysis.col.attempts")
+        col_correct=tr("question_log.analysis.col.correct")
+        col_wrong=tr("question_log.analysis.col.wrong")
+        col_rate=tr("question_log.analysis.col.success_rate")
+        analysis_data=[{
+            col_qid:f"F{row['question_id']:03d}",
+            col_unit:row["unit_code"],
+            col_question:row["question_text"],
+            col_attempts:row["attempts"],
+            col_correct:row["correct"],
+            col_wrong:row["wrong"],
+            col_rate:round(row["success_rate"],1),
+        } for row in analysis]
+        analysis_df=pd.DataFrame(analysis_data)
+        total_attempts=sum(row["attempts"] for row in analysis)
+        total_correct=sum(row["correct"] for row in analysis)
+        overall_rate=(100.0*total_correct/total_attempts) if total_attempts else 0.0
+        m1,m2,m3=st.columns(3)
+        m1.metric(tr("question_log.analysis.metric.questions"),len(analysis))
+        m2.metric(tr("question_log.analysis.metric.attempts"),total_attempts)
+        m3.metric(tr("question_log.analysis.metric.success_rate"),f"{overall_rate:.1f} %")
+        st.dataframe(analysis_df,use_container_width=True,hide_index=True)
+        st.download_button(
+            tr("question_log.analysis.export"),
+            analysis_df.to_csv(index=False).encode("utf-8-sig"),
+            "Syzeteo-Question-Analysis.csv",
+            "text/csv",
+        )
+    else:
+        st.info(tr("question_log.analysis.none"))
 
 elif PAGE==PAGE_INSTRUCTOR_SETTINGS:
     st.title(tr("settings.title"))
@@ -1254,8 +1363,8 @@ elif PAGE==PAGE_INSTRUCTOR_SETTINGS:
 
         c1,c2,c3,c4=st.columns(4,border=True)
         c1.metric(tr("settings.metric.students"),course_status["students"])
-        c2.metric(tr("team.1"),course_status["team1"])
-        c3.metric(tr("team.2"),course_status["team2"])
+        c2.metric(course_status["team1_name"],course_status["team1"])
+        c3.metric(course_status["team2_name"],course_status["team2"])
         c4.metric(tr("settings.metric.unassigned"),course_status["unassigned"])
         if course_status["students"]==0:
             st.warning(tr("settings.course.no_students", code=course_status["code"]))
@@ -1325,9 +1434,9 @@ elif PAGE==PAGE_INSTRUCTOR_SETTINGS:
             c1,c2,c3=st.columns(3,border=True)
             c1.metric(tr("settings.game.running"),running_game["round_name"])
             c2.metric(tr("settings.game.score"),f"{running_game['team1_points']} : {running_game['team2_points']}")
-            c3.metric(tr("settings.game.active_team"),team_name(running_game["current_team"]) if running_game["current_team"] else "–")
+            c3.metric(tr("settings.game.active_team"),team_name(running_game["current_team"],running_game) if running_game["current_team"] else "–")
             if player:
-                st.write(tr("settings.game.current_player", name=player["display_name_snapshot"], team=player["team_snapshot"]))
+                st.write(tr("settings.game.current_player", name=player["display_name_snapshot"], team=team_name(player["team_snapshot"],running_game)))
             running_mode="random" if running_game["player_selection_mode"]=="random" else "manual"
             st.radio(
                 tr("settings.player_mode.label"), ["random","manual"], index=0 if running_mode=="random" else 1,
@@ -1356,8 +1465,10 @@ elif PAGE==PAGE_INSTRUCTOR_SETTINGS:
                 "settings.aborted.option",
                 round_name=g["round_name"],
                 course_code=g["course_code"],
+                team1_name=g["team1_name_snapshot"],
                 team1=g["team1_points"],
                 team2=g["team2_points"],
+                team2_name=g["team2_name_snapshot"],
             ):int(g["id"])
             for g in aborted_games
         }

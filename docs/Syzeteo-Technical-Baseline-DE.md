@@ -1,83 +1,81 @@
-# Syzeteo – Technische Baseline 1.1.0
+# Syzeteo – Technische Baseline 1.1.1
 
-Datum: 2026-09-03
+Datum: 2026-09-10
 
-## 1. Zweck
+## 1. Status und Zweck
 
-Dieses Dokument definiert die technische Baseline für Syzeteo 1.1.0. Version 1.1.0 erweitert die veröffentlichte Baseline 1.0.0 um US #26 „Spiel abbrechen und löschen“ und GR #11.
+`1.1.1` ist die Syzeteo-1.1.1-Version auf Basis von Syzeteo 1.1.0. Er enthält die Rendering-Korrekturen für Fragen, US #27 „Teamnamen verwalten“, GR #12 „Kursbezogene Teamnamen“, den deterministischen Schema-3-Startup-Preflight, die lokalisierte Duplikatprüfung für Studierendennamen, US #28 „Fragen auswerten“ mit GR #13 „Fragenbezogene Ergebnisaggregation“ sowie die Korrektur der Runden-Fragenauswahl.
 
 ## 2. Laufzeit und Deployment
 
-- Anwendungsframework: Streamlit
+- Anwendungsframework: Streamlit 1.54.0
 - Implementierungssprache: Python
 - Persistenz: SQLite
-- vorgesehener Deployment-Weg: Docker / Docker Compose
-- Standard-Host-Port: `8502`
-- Anwendungsversion: `1.1.0`
-
-## 3. Persistenz und Kompatibilität
-
+- Deployment: Docker / Docker Compose
+- Datenverzeichnis: `SYZETEO_DATA_DIR`, Standard `./persistent`
 - Datenbankdatei: `syzeteo.sqlite3`
-- Standard-Datenverzeichnis: `./persistent`
-- optionale Environment-Variable: `SYZETEO_DATA_DIR`
-- SQLite-Schemaversion: `PRAGMA user_version = 2`
+- Anwendungsversion: `1.1.1`
+- SQLite-Schemaversion: `PRAGMA user_version = 3`
 
-Syzeteo 1.1.0 führt keine Schemaänderung gegenüber 1.0.0 durch. Es ist keine Datenmigration erforderlich. Bestehende 1.0.0-Datenbanken können unverändert weiterverwendet werden.
+## 3. Schemaänderung 2 → 3
 
-Der bestehende Textstatus eines Spiels kann zusätzlich den sprachneutralen Wert `aborted` annehmen. Dieser neue fachliche Zustand wird nur durch den expliziten Abbruch eines laufenden Spiels erzeugt.
+Schema 3 ergänzt ausschließlich additive Spalten:
 
-## 4. Spielzustände
+- `courses.team1_name`
+- `courses.team2_name`
+- `games.team1_name_snapshot`
+- `games.team2_name_snapshot`
 
-Syzeteo 1.1.0 unterscheidet fachlich:
+Bestehende Datenbanken mit Schema 2 werden beim Containerstart vor dem Start von Streamlit automatisch und idempotent auf Schema 3 erweitert. Bestehende Kurse und Spiele erhalten die bisherigen Anzeigenamen `Team 1` und `Team 2`. Bestehende fachliche Daten werden nicht gelöscht oder umgeschrieben.
 
-- `running`: laufendes Spiel;
-- `finished`: regulär abgeschlossenes Spiel;
-- `aborted`: abgebrochenes Spiel.
+## 4. Teamnamen
 
-Ein abgebrochenes Spiel:
+- Teamnamen sind kursbezogen.
+- Beide Namen müssen nicht leer und innerhalb des Kurses verschieden sein.
+- Interne Teamkennungen bleiben `1` und `2`.
+- Teamnamen können beim Anlegen eines Kurses festgelegt und später geändert werden.
+- Während für den Kurs ein Spiel mit Status `running` existiert, ist die Änderung gesperrt.
+- Beim Start eines Spiels werden beide Teamnamen als Snapshots im Spiel gespeichert.
+- Spätere Umbenennungen verändern laufende, abgebrochene oder abgeschlossene Spiele nicht rückwirkend.
 
-- gilt nicht mehr als laufend;
-- kann nicht fortgesetzt werden;
-- zählt nicht als regulär abgeschlossenes Ergebnis;
-- bleibt mit seinen spielbezogenen Daten erhalten, bis es explizit gelöscht wird;
-- kann auf der Instructor-Seite gelöscht werden;
-- gibt nach seiner Löschung die betreffende Kombination aus Kurs und Runde wieder frei.
+## 5. Rendering und Rundenbearbeitung
 
-Regulär abgeschlossene Spiele sind durch diese Funktion nicht löschbar.
+Frage- und Musterantworttexte werden als Nutzdaten behandelt und nicht als Markdown interpretiert. Nummerierte Zeilen bleiben sowohl auf Fragekarten als auch in geöffneten Fragen und in der Rundenübersicht wortgetreu erhalten. Die Runden-Fragenauswahl verwendet kein Streamlit-Auswahlmaximum mehr, dessen Overlay den Speichern-Button verdecken konnte; die Domänenlogik erzwingt weiterhin exakt acht Fachfragen.
 
-## 5. Löschverhalten
+## 6. Internationalisierung
 
-Die Löschung nach US #26 ist auf Spiele mit Status `aborted` beschränkt. Beim Löschen werden das Spiel und die ausschließlich diesem Spiel zugeordneten Datensätze über die vorhandenen Fremdschlüsselbeziehungen mit `ON DELETE CASCADE` entfernt.
+- Offiziell ausgeliefert werden `en.json` und `de.json`.
+- Beide Kataloge besitzen denselben Schlüsselbestand und kompatible Platzhalter.
+- Optional installierte vollständige lokale Präsentationsprofile werden als eigenständige Locale-IDs unterstützt.
+- Die aufgedeckte Challenge Card bezieht Titel und Unterzeile aus dem aktiven Katalog.
+- Domänenwerte, Datenmodell, Spielregeln und das technische Question-Pool-Austauschformat bleiben sprachneutral.
 
-Die bestehende Datenhistorie regulär abgeschlossener Spiele bleibt geschützt.
+## 7. Fragenauswertung
 
-## 6. Rundenabdeckung und Ergebnisse
+- Die Auswertung ist in die bestehende Seite „Fragenprotokoll“ integriert.
+- Der Instructor kann zwischen einem einzelnen Kurs und einer kursübergreifenden Aggregation wählen.
+- Ausgewertet werden ausschließlich Fachfragekarten aus Spielen mit Status `finished`.
+- Challenge Card und die letzte, vom Instructor beantwortete Karte werden ausgeschlossen.
+- Team-Assist-Antworten zählen als normale Beantwortungsversuche.
+- Kennzahlen pro gespielter Fragefassung: Beantwortungen, richtig, falsch und Erfolgsquote.
+- Geänderte Fragefassungen werden anhand von `question_id` plus gespeichertem `question_text_snapshot` getrennt ausgewertet.
+- Es werden keine Studierendennamen oder individuellen Leistungsdaten ausgewertet.
+- CSV-Export ist verfügbar.
 
-Die Rundenabdeckung unterscheidet `open`, `running`, `played` und `aborted`.
+## 8. Repository-Hygiene
 
-Abgebrochene Spiele werden nicht in reguläre Team- oder Kursergebnisse eingerechnet. Nach der Löschung eines abgebrochenen Spiels gilt die zugehörige Runde für den betreffenden Kurs wieder als offen.
+`persistent/`, SQLite-Dateien, WAL/SHM-Dateien und Backups sind über `.dockerignore` vom Docker-Build-Kontext ausgeschlossen. Der Release-Test REL-10 prüft zusätzlich, dass keine persistenten Datenbankdateien in den Release-Baum gelangen.
 
-## 7. Navigation
+## 9. Verifikation
 
-Programmatische Seitenwechsel werden über einen vorgemerkten Navigationswert ausgeführt, der vor der Instanziierung des Streamlit-Navigationswidgets angewendet wird. Damit wird vermieden, den Session-State-Key eines bereits erzeugten Widgets im selben Streamlit-Lauf zu verändern.
+Der Release enthält Domänen-, Migrations-, Rendering-, Release-, Navigations-, Authentifizierungs- und i18n-Tests. Geprüft werden insbesondere:
 
-## 8. Internationalisierung
-
-Die offiziellen Sprachkataloge `locales/en.json` und `locales/de.json` enthalten jeweils 493 identische Übersetzungsschlüssel. Die US-#26-Oberfläche einschließlich Status, Bestätigungsdialogen, Löschdialogen und Fehlermeldungen ist in beiden Sprachen vollständig enthalten.
-
-## 9. Tests und Abnahme
-
-Für Syzeteo 1.1.0 wurden folgende Prüfungen durchgeführt:
-
-- vollständige automatisierte Testsuite: **62/62 Tests erfolgreich**;
-- fünf Domänentests für Abbruch/Löschung;
-- ein Regressionstest für die Streamlit-Navigation;
-- Stage-Test mit einer Kopie des bestehenden Datenbestands;
-- manueller Smoke-Test der Use Cases „Spiel abbrechen“ und „Spiel löschen“;
-- produktiver Cutover ohne Schemaänderung;
-- anschließende HTTP-, SQLite-Integritäts- und Fremdschlüsselprüfung erfolgreich;
-- Bestandszählungen vor und nach dem Cutover unverändert.
-
-## 10. Release-Status
-
-Syzeteo 1.1.0 ist die freigegebene Nachfolgeversion von Syzeteo 1.0.0. Die Entwicklungsstände `1.1.0-dev1` und `1.1.0-dev2` sind keine eigenständigen Releases.
+- Teamnamen-Validierung, Änderungssperre und unveränderliche Spiel-Snapshots;
+- automatische Migration einer Schema-2-Datenbank auf Schema 3 ohne Datenverlust;
+- fail-closed Startup-Preflight bei falscher Schemaversion oder Foreign-Key-Verletzungen;
+- wortgetreues Fragen-Rendering;
+- lokalisierte Duplikatfehler für Studierendennamen;
+- Schlüssel- und Platzhalterparität von `en` und `de`;
+- Unterstützung optional installierter lokaler Präsentationsprofile;
+- kursbezogene und kursübergreifende Fragenauswertung ohne Individualauswertung;
+- Domänenvalidierung von exakt acht Fachfragen pro Runde.

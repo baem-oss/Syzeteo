@@ -21,6 +21,11 @@ def normalize_locale(locale: str | None) -> str:
     value = (locale or "").strip().lower().replace("-", "_")
     if not value:
         return DEFAULT_LOCALE
+    # Preserve explicitly installed locale/profile catalogs such as ``de_custom``.
+    # Ordinary regional language tags (for example de-DE) still collapse to
+    # their base language when no exact catalog exists.
+    if _catalog_path(value).exists():
+        return value
     return value.split("_", 1)[0]
 
 
