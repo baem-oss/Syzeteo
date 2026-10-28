@@ -56,6 +56,8 @@ The Challenge Card uses its special scoring rules during normal play. If any car
 
 Each person may take only one regular turn per round. A Team Assist does not count as a regular turn, so an assisting person remains eligible for a later regular turn.
 
+The cards double as a tic-tac-toe grid: a card scored by Team 1 gets a blue border, a card scored by Team 2 a red border. The first completed line is struck through in the team's color and the team is announced; the game continues unchanged and no points are awarded for it.
+
 ## Privacy by design
 
 Syzeteo does not store or evaluate individual student performance. Student names are used only for organizational purposes such as team assignment, attendance, player selection and Team Assist. Scores, statistics and results are stored and shown only at team or course level.

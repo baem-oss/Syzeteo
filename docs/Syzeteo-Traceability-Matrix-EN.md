@@ -1,6 +1,6 @@
 # Syzeteo – Traceability Matrix
 
-Status: 10 September 2026
+Status: 28 October 2026
 
 Source basis: `Syzeteo-L-US-EN.md`, `Syzeteo-RANF-etc-EN.md`, and `Syzeteo-Use-Cases-US26-EN.md`
 
@@ -18,6 +18,7 @@ In particular:
 - US #26 is specified by the use cases “Abort Game” and “Delete Game”.
 - US #27 and GR #12 govern course-specific team names; the names are copied into immutable game snapshots when a game starts.
 - US #28 and GR #13 govern question-level, non-personal analysis of regularly completed subject questions.
+- US #29 and GR #14 govern tic-tac-toe as a pure marking of the existing cards on the board; it is derived from the scored cards and changes neither points nor results.
 
 ## 2. Traceability Matrix: User Stories → Requirements
 
@@ -51,6 +52,7 @@ In particular:
 | **US #26** | Abort and Delete Game | GR #09, GR #11 | NFANF #02 | US #26 is specified by the use cases “Abort Game” and “Delete Game”. Aborting ends the ongoing game without regular completion; subsequent deletion makes the round open again for the respective course. |
 | **US #27** | Manage Team Names | GR #12 | NFANF #02 | Team names are course-specific display names. They must be non-empty and distinct, may be changed only when no game is running, and do not retroactively change games that already started because those games retain name snapshots. |
 | **US #28** | Analyze Questions | GR #13 | NFANF #01, NFANF #02 | Analysis aggregates only regularly scored subject questions from completed games at question level. The Challenge Card and final Instructor card are excluded; changed question versions remain separated through snapshots, and no individual performance data is evaluated. |
+| **US #29** | Tic-Tac-Toe on the Board | GR #12, GR #14 | NFANF #01, NFANF #03 | Scored cards get a border in the team color; the first completed line is struck through and the team is briefly shown. The marking is derived from the scored cards, awards no points, and needs no additional space. |
 
 ## 3. Cross-cutting Requirements
 
@@ -77,7 +79,7 @@ An explicitly initiated course deletion under GR #10 and deletion of a previousl
 NFANF #04 applies across the system:
 
 - US #05 provides the authentication mechanism.
-- US #01 through US #04 and US #06 through US #28 describe game or administration functions and may only be accessible after successful authentication.
+- US #01 through US #04 and US #06 through US #29 describe game or administration functions and may only be accessible after successful authentication.
 
 ## 4. Reverse Traceability: Requirements → User Stories
 
@@ -96,17 +98,18 @@ NFANF #04 applies across the system:
 | **GR #09 – Use a Round Once per Course** | US #16, US #21, US #23, US #24, US #25, US #26 |
 | **GR #10 – Complete Course Deletion** | US #07 |
 | **GR #11 – Abort and Delete Game** | US #21, US #23, US #24, US #25, US #26 |
-| **GR #12 – Course-specific Team Names** | US #16, US #21, US #23, US #27 |
+| **GR #12 – Course-specific Team Names** | US #16, US #21, US #23, US #27, US #29 |
 | **GR #13 – Question-level Result Aggregation** | US #28 |
+| **GR #14 – Tic-Tac-Toe Marking on the Board** | US #29 |
 
 ### 4.2 Non-functional Requirements
 
 | **Requirement** | Covered by User Stories |
 |---|---|
-| **NFANF #01 – No Individual Performance Evaluation** | US #01, US #02, US #03, US #08, US #09, US #10, US #11, US #16, US #17, US #18, US #19, US #23, US #28 |
+| **NFANF #01 – No Individual Performance Evaluation** | US #01, US #02, US #03, US #08, US #09, US #10, US #11, US #16, US #17, US #18, US #19, US #23, US #28, US #29 |
 | **NFANF #02 – Round-related Data Integrity** | US #03, US #07, US #08, US #09, US #10, US #12, US #13, US #14, US #21, US #23, US #24, US #25, US #26, US #27, US #28 |
-| **NFANF #03 – Compact Game View** | US #17, US #22 |
-| **NFANF #04 – Access Control** | US #05 as the authentication mechanism; US #01–US #04 and US #06–US #28 as protected game and administration functions |
+| **NFANF #03 – Compact Game View** | US #17, US #22, US #29 |
+| **NFANF #04 – Access Control** | US #05 as the authentication mechanism; US #01–US #04 and US #06–US #29 as protected game and administration functions |
 
 ### 4.3 Constraint
 
@@ -118,15 +121,15 @@ NFANF #04 applies across the system:
 
 The consolidated requirements baseline contains:
 
-- 28 User Stories
-- 13 business and game rules
+- 29 User Stories
+- 14 business and game rules
 - 4 non-functional requirements
 - 1 constraint
 - 2 use cases specifying US #26
 
-All 28 User Stories are included in the matrix.
+All 29 User Stories are included in the matrix.
 
-All 13 business and game rules have at least one traceable link.
+All 14 business and game rules have at least one traceable link.
 
 All 4 non-functional requirements are covered.
 
@@ -141,5 +144,7 @@ The clarifications are consolidated as follows:
 5. Last card: the last remaining card is answered by the Instructor and not scored regardless of card type; no points are awarded under GR #07.
 6. Game abort and deletion: an ongoing game can be aborted under US #26 and GR #11. The aborted game cannot be resumed, is offered for deletion on the Instructor page, and makes the round open again only after deletion. Regularly completed games cannot be deleted through this function.
 7. Team names: both teams have course-specific, freely chosen display names under US #27 and GR #12. Internal team identifiers remain stable; names are frozen at game start so later renaming does not change historical games.
+8. Question analysis: under US #28 and GR #13, only regularly scored subject questions from completed games are analyzed. The Challenge Card and the final Instructor card are excluded; question versions are aggregated separately based on their stored snapshots, and personal performance data is excluded.
+9. Tic-tac-toe: under US #29 and GR #14, scored cards get a border in the team color (identifier `1` blue, `2` red); the first completed line is struck through and the game continues unchanged. The marking is derived from the scored cards, is not stored separately, and affects neither points nor results.
 
 Result: Based on the consolidated documents, no identifiable domain contradictions or orphaned requirements remain.

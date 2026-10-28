@@ -1,6 +1,6 @@
 # Syzeteo – Randanforderungen, nichtfunktionale Anforderungen und Geschäftsregeln
 
-Stand: 10.09.2026
+Stand: 28.10.2026
 
 ## 1. Randanforderungen (RANF)
 
@@ -142,3 +142,10 @@ Stand: 10.09.2026
   Die Fragenauswertung berücksichtigt ausschließlich regulär gewertete Fachfragen aus Spielen mit Status `finished`. Die **Challenge Card** sowie die gemäß GR #07 durch den Instructor beantwortete letzte Karte eines Spiels werden nicht als studentische Beantwortungsversuche ausgewertet. Ein Einsatz des **Team Assist** zählt dagegen als regulärer Beantwortungsversuch der betreffenden Fachfrage. Die Auswertung kann für einen einzelnen Kurs oder kursübergreifend erfolgen. Aggregiert wird nach der tatsächlich gespielten Fragefassung; eine geänderte Fragefassung wird nicht mit einer früheren Fassung derselben Frage-ID vermischt. Individuelle Leistungsdaten oder Studierendennamen dürfen in der Fragenauswertung weder verwendet noch angezeigt werden.  
   **Begründung:**  
   Die Auswertung soll die didaktische Schwierigkeit und Bewährung von Fragen sichtbar machen, ohne Sonderkarten, den nicht gewerteten Rundenabschluss oder personenbezogene Leistungsprofile in die Erfolgsquoten einzubeziehen. Die Verwendung der gespeicherten Frage-Snapshots wahrt zugleich die historische Aussagekraft bei später geänderten Fragen.
+
+- [x] **GR #14 – Tic-Tac-Toe-Markierung auf dem Board**  
+  **Art:** Fachliche Spiel- und Darstellungsregel  
+  **Regel:**  
+  Die neun Karten des Boards bilden zugleich ein Tic-Tac-Toe-Feld. Eine gewertete Karte erhält einen Rand in der Farbe des Teams, das für sie Punkte erhalten hat: blau für das Team mit der internen Teamkennung `1`, rot für das Team mit der internen Teamkennung `2`. Eine ohne Punkte gewertete Karte, einschließlich der letzten Karte gemäß GR #07, bleibt ohne Teamfarbe. Die erste vollständige waagerechte, senkrechte oder diagonale Reihe wird in der Farbe ihres Teams durchgestrichen, und dieses Team wird mit seinem Teamnamen gemäß GR #12 kurz eingeblendet; das Spiel wird unverändert fortgesetzt. Die Markierung wird ausschließlich aus den gewerteten Karten abgeleitet, nicht gesondert gespeichert, vergibt keine Punkte und beansprucht keinen zusätzlichen Platz in der Spielansicht. Ein Rückgängigmachen gemäß US #20 wirkt sich unmittelbar auf die Markierung aus.  
+  **Begründung:**  
+  Das Tic-Tac-Toe schafft einen zusätzlichen spielerischen Anreiz bei der Kartenwahl, ohne Wertungslogik, Ergebnisdaten oder NFANF #01 zu berühren. Da nur die vorhandenen Karten markiert werden, bleibt die kompakte Spielansicht gemäß NFANF #03 erhalten.

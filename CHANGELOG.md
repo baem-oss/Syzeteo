@@ -2,6 +2,16 @@
 
 All notable changes to Syzeteo are documented here.
 
+## [Unreleased]
+
+### Added
+- US #29 / GR #14: tic-tac-toe on the board. Scored cards get a border in the color of the scoring team (team `1` blue, team `2` red); the first completed line is struck through in the team color and the team is briefly announced. The game continues unchanged.
+- German and English UI text for the announcement.
+
+### Compatibility
+- SQLite schema remains version `3`; no data migration is required.
+- The marking is derived from existing card results and does not affect points, round results, the dashboard, or question analysis.
+
 ## [1.1.1] - 2026-09-10
 
 Syzeteo 1.1.1 release.

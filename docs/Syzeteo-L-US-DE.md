@@ -1,6 +1,6 @@
 # Syzeteo – User Stories
 
-Stand: 10.09.2026
+Stand: 28.10.2026
 
 ## User Stories
 
@@ -88,4 +88,7 @@ Stand: 10.09.2026
 
 - [x] **US #28 – Fragen auswerten**  
   Als **Instructor** möchte ich die Ergebnisse gespielter Fachfragen für einen einzelnen Kurs sowie kursübergreifend auswerten können, damit ich erkenne, welche Fragen wie häufig und wie erfolgreich beantwortet wurden.
+
+- [x] **US #29 – Tic-Tac-Toe auf dem Board**  
+  Als **Instructor** möchte ich, dass gewertete Karten auf dem Board einen Rand in der Farbe des punktenden Teams erhalten und eine vollständige Reihe markiert wird, damit nebenbei ein Tic-Tac-Toe als zusätzlicher spielerischer Anreiz mitläuft, ohne die Spielansicht zu vergrößern oder die reguläre Wertung zu verändern.
 

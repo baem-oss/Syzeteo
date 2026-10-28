@@ -21,7 +21,7 @@ from storage import (
     resolve_question, set_next_player, undo_info, undo_last_action,
     dashboard_system_status, dashboard_course_status, dashboard_learning_unit_status,
     dashboard_round_status, dashboard_configuration_issues, CARD_TYPE_CHALLENGE,
-    get_app_setting, set_app_setting, StorageError,
+    get_app_setting, set_app_setting, StorageError, tic_tac_toe_line,
 )
 
 APP_VERSION = "1.1.1"
@@ -1025,6 +1025,7 @@ elif PAGE==PAGE_GAME:
             white-space: normal !important;
             overflow: visible !important;
             transition: transform 0.12s ease, box-shadow 0.12s ease;
+            position: relative;
         }
         [class*="st-key-syzeteo_card_"] button:hover:not(:disabled) {
             transform: translateY(-2px);
@@ -1060,13 +1061,48 @@ elif PAGE==PAGE_GAME:
             border-color: #d4d0c8;
             opacity: 0.82;
         }
+        /* GR #14: Rand in Teamfarbe; die erste volle Reihe wird bis zur Mitte der Lücken durchgestrichen. */
+        [class*="st-key-syzeteo_card_done_t1_"] button {
+            border: 4px solid #2563eb !important;
+            --tic-tac-toe: #2563eb;
+        }
+        [class*="st-key-syzeteo_card_done_t2_"] button {
+            border: 4px solid #dc2626 !important;
+            --tic-tac-toe: #dc2626;
+        }
+        [class*="_line_"] button::after {
+            content: "";
+            position: absolute;
+            inset: calc(-0.5rem - 4px);
+            --band: transparent calc(50% - 3px), var(--tic-tac-toe) calc(50% - 3px) calc(50% + 3px), transparent calc(50% + 3px);
+        }
+        [class*="_line_row_"] button::after {
+            background: linear-gradient(to bottom, var(--band));
+        }
+        [class*="_line_column_"] button::after {
+            background: linear-gradient(to right, var(--band));
+        }
+        [class*="_line_diagonal_"] button::after {
+            background: linear-gradient(to bottom left, var(--band));
+        }
+        [class*="_line_anti_diagonal_"] button::after {
+            background: linear-gradient(to bottom right, var(--band));
+        }
         </style>
         """.replace("__CARD_HEIGHT__",str(card_height))
         st.markdown(card_css,unsafe_allow_html=True)
+        # GR #14: Tic-Tac-Toe nebenbei – Rand in Teamfarbe, erste volle Reihe durchgestrichen, Toast einmalig.
+        tic_tac_toe=tic_tac_toe_line(cards)
+        if tic_tac_toe and st.session_state.get(f"tic_tac_toe_{gid}")!=tic_tac_toe:
+            st.toast(tr("game.tic_tac_toe.toast",team=team_name(tic_tac_toe[0],game)))
+        st.session_state[f"tic_tac_toe_{gid}"]=tic_tac_toe
         for row in range(3):
             cols=st.columns(3)
             for col in range(3):
                 card=cards[row*3+col]
+                marker=f"t{card['points_team']}_" if card["points_team"] else ""
+                if tic_tac_toe and row*3+col in tic_tac_toe[1]:
+                    marker+=f"line_{tic_tac_toe[2]}_"
                 if not card["revealed"]:
                     state="back"
                     label=tr("game.card.back", card_no=card["card_no"])
@@ -1080,7 +1116,7 @@ elif PAGE==PAGE_GAME:
                     unit=escape_markdown_literal(card["unit_code_snapshot"] or "")
                     question=escape_markdown_literal(card["question_text_snapshot"] or "")
                     label=f"{prefix}**{unit}**\n\n{question}"
-                with cols[col].container(key=f"syzeteo_card_{state}_{card['id']}"):
+                with cols[col].container(key=f"syzeteo_card_{state}_{marker}{card['id']}"):
                     if st.button(label,key=f"card_{gid}_{card['id']}",use_container_width=True,disabled=bool(open_cards and not card["revealed"]) or bool(awaiting_next_player and not card["revealed"]) or card["resolved"]):
                         try:
                             reveal_card(conn,gid,card["card_no"]); rerun()

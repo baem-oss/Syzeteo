@@ -261,6 +261,7 @@
   "game.last_card.info": "Letzte Karte: Sie wird vom Instructor aufgedeckt und beantwortet. Es gibt keine Teampunkte.",
   "game.current_player": "### Am Zug: {name} – {team}",
   "game.board": "### Board",
+  "game.tic_tac_toe.toast": "Tic-Tac-Toe! {team} gewinnt mit drei in einer Reihe.",
   "game.card.back": "**Syzeteo**\n\nKarte {card_no}",
   "game.model_answer": "Musterantwort",
   "game.last_challenge": "Die Challenge Card ist als letzte Karte übrig geblieben. Der Instructor beantwortet sie; sie wird ohne Punkte abgeschlossen.",

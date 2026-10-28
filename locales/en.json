@@ -261,6 +261,7 @@
   "game.last_card.info": "Last card: the Instructor reveals and answers it. No team points are awarded.",
   "game.current_player": "### Current player: {name} – {team}",
   "game.board": "### Board",
+  "game.tic_tac_toe.toast": "Tic-tac-toe! {team} wins with three in a row.",
   "game.card.back": "**Syzeteo**\n\nCard {card_no}",
   "game.model_answer": "Model answer",
   "game.last_challenge": "The Challenge Card is the last remaining card. The Instructor answers it; it is completed without points.",

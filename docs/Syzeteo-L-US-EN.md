@@ -1,6 +1,6 @@
 # Syzeteo – User Stories
 
-Status: 10 September 2026
+Status: 28 October 2026
 
 ## User Stories
 
@@ -88,4 +88,7 @@ Status: 10 September 2026
 
 - [x] **US #28 – Analyze Questions**  
   As an **Instructor**, I want to analyze the results of played subject questions for an individual course and across all courses, so that I can see how often and how successfully each question was answered.
+
+- [x] **US #29 – Tic-Tac-Toe on the Board**  
+  As an **Instructor**, I want scored cards on the board to get a border in the color of the scoring team and a completed line to be marked, so that a tic-tac-toe runs alongside as an additional playful incentive without enlarging the game view or changing the regular scoring.
 

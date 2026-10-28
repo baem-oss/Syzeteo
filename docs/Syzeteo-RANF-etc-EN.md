@@ -1,6 +1,6 @@
 # Syzeteo – Constraints, Non-functional Requirements, and Business Rules
 
-Status: 10 September 2026
+Status: 28 October 2026
 
 ## 1. Constraints (RANF)
 
@@ -142,3 +142,10 @@ Status: 10 September 2026
   Question analysis considers only regularly scored subject questions from games with status `finished`. The **Challenge Card** and the final card answered by the Instructor under GR #07 are not evaluated as student answer attempts. Use of **Team Assist**, however, counts as a regular answer attempt for the respective subject question. Analysis can be performed for an individual course or across all courses. Aggregation is based on the question version actually played; a changed wording is not merged with an earlier version of the same question ID. Individual performance data or student names must neither be used nor displayed in question analysis.  
   **Rationale:**  
   The analysis is intended to reveal the didactic difficulty and performance of questions without allowing special cards, the unscored end-of-round card, or personal performance profiles to distort success rates. Using stored question snapshots also preserves historical meaning when questions are changed later.
+
+- [x] **GR #14 – Tic-Tac-Toe Marking on the Board**  
+  **Type:** Domain game and display rule  
+  **Rule:**  
+  The nine cards of the board also form a tic-tac-toe grid. A scored card gets a border in the color of the team that received points for it: blue for the team with internal team identifier `1`, red for the team with internal team identifier `2`. A card scored without points, including the last card under GR #07, remains without team color. The first completed horizontal, vertical, or diagonal line is struck through in the color of its team, and that team is briefly shown with its team name under GR #12; the game continues unchanged. The marking is derived exclusively from the scored cards, is not stored separately, awards no points, and takes up no additional space in the game view. Undoing a game step under US #20 is reflected in the marking immediately.  
+  **Rationale:**  
+  Tic-tac-toe adds a playful incentive to card selection without affecting scoring logic, result data, or NFANF #01. Because only the existing cards are marked, the compact game view required by NFANF #03 is preserved.

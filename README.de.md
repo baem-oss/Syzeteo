@@ -54,6 +54,8 @@ Die Challenge Card wird im normalen Spielverlauf nach ihrer besonderen Wertungsl
 
 Eine Person darf pro Runde höchstens einmal regulär eingesetzt werden. Ein Team Assist gilt nicht als regulärer Einsatz. Eine helfende Person bleibt deshalb für einen späteren regulären Zug verfügbar.
 
+Die Karten bilden nebenbei ein Tic-Tac-Toe-Feld: Eine von Team 1 gepunktete Karte erhält einen blauen Rand, eine von Team 2 gepunktete Karte einen roten. Die erste vollständige Reihe wird in der Teamfarbe durchgestrichen und das Team angekündigt; das Spiel läuft unverändert weiter, Punkte werden dafür nicht vergeben.
+
 ## Privacy by Design
 
 Syzeteo erfasst und bewertet keine individuellen Leistungen einzelner Studierender. Namen dienen ausschließlich organisatorischen Zwecken wie Teamzuordnung, Anwesenheit, Spielerwahl und Team Assist. Punkte, Statistiken und Ergebnisse werden ausschließlich auf Team- oder Kursebene gespeichert und dargestellt.

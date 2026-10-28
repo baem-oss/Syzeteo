@@ -1176,6 +1176,23 @@ def game_cards(conn, game_id):
     return conn.execute("SELECT * FROM game_cards WHERE game_id=? ORDER BY card_no", (game_id,)).fetchall()
 
 
+TIC_TAC_TOE_LINES = {
+    (0, 1, 2): "row", (3, 4, 5): "row", (6, 7, 8): "row",
+    (0, 3, 6): "column", (1, 4, 7): "column", (2, 5, 8): "column",
+    (0, 4, 8): "diagonal", (2, 4, 6): "anti_diagonal",
+}
+
+
+def tic_tac_toe_line(cards):
+    """Return (team, positions, direction) of the first completed line in card_no order, or None (GR #14)."""
+    teams = [card["points_team"] for card in cards]
+    lines = [line for line in TIC_TAC_TOE_LINES if teams[line[0]] and teams[line[0]] == teams[line[1]] == teams[line[2]]]
+    if not lines:
+        return None
+    first = min(lines, key=lambda line: max(cards[pos]["resolved_at"] for pos in line))
+    return teams[first[0]], first, TIC_TAC_TOE_LINES[first]
+
+
 def game_roster(conn, game_id, team=None):
     if team:
         return conn.execute("SELECT * FROM game_roster WHERE game_id=? AND team_snapshot=? ORDER BY display_name_snapshot", (game_id,team)).fetchall()
