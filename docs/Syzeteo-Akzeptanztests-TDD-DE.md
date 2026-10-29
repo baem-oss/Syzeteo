@@ -130,11 +130,11 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 **AC-US10-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #10 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Studierende Teams zuordnen“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** **Kein hinreichend direkter Nachweis – Testlücke**.
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_us10_team_assignment.py` (fünf direkte Akzeptanztests; manuelle und zufällige Zuordnung, Validierung, Kursisolation).
 
 **Visueller Abnahmenachweis:** Nicht gesondert festgelegt; UI-Anteile im Story-Review prüfen.
 
-**Abdeckungsstatus:** kein direkter Akzeptanztest; offen.
+**Abdeckungsstatus:** fünf direkte Akzeptanztests; historische Team-Snapshots und UI-Abnahme offen.
 
 ### US #11 – Anwesenheit festlegen
 
