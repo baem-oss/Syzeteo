@@ -248,10 +248,15 @@
     {
       "id": 24,
       "criterion": "AC-US24-01",
-      "test_references": [],
+      "test_references": [
+        "test_us24_question_protocol.py::test_us24_resolved_questions_have_course_round_and_position",
+        "test_us24_question_protocol.py::test_us24_unresolved_and_challenge_cards_not_in_question_protocol",
+        "test_us24_question_protocol.py::test_us24_question_snapshot_is_independent_of_pool_changes",
+        "test_us24_question_protocol.py::test_us24_protocol_has_status_and_resolution_timestamp"
+      ],
       "manual_review": true,
-      "review_status": "no_direct_evidence",
-      "review_note": "Quelltest-Prüfzweck und Assertions fachlich geprüft; keine Vollabnahme der Story."
+      "review_status": "verified_partial",
+      "review_note": "Direkte Assertions für Protokollidentität, resolved-Filter, Snapshot und Status; CSV/Filter und fachliche Sonderfälle offen."
     },
     {
       "id": 25,
