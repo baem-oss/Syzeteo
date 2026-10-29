@@ -73,3 +73,7 @@ Die manuelle UI-Abnahme bleibt offen; auch die Frage, wie die letzte Instructor-
 Eine als letzte Karte abschließend behandelte Fachfrage wird gemäß US #24 im Fragenprotokoll dokumentiert, auch wenn der Instructor sie ohne Punkte beantwortet. Sie ist **kein studentischer Beantwortungsversuch** und bleibt gemäß GR #13 aus der statistischen Fragenauswertung (US #28) ausgeschlossen. Eine Challenge Card ist weiterhin keine Fachfrage und wird nicht in das Fragenprotokoll aufgenommen.
 
 Automatisierter Nachweis: `test_us24_question_protocol.py::test_us24_final_instructor_question_is_logged_but_not_analyzed`.
+
+## UI-Abnahme – Freigabe vom 29.10.2026
+
+**Status: PASS (ausdrückliche Nutzerfreigabe im Chat).** Die UI-Abnahme wurde vom Projektverantwortlichen als bestanden gemeldet. Keine eigenständige Browserprüfung durch den Assistenten und kein separat übermitteltes Prüfprotokoll. Browser-Version, tatsächlich verwendete Auflösung und Zoomstufe sind nicht nachgewiesen. Die zugehörigen automatisierten Regressionstests bleiben unabhängige Nachweise. Für US #24 gilt diese Freigabe als gemeldete manuelle UI-Abnahme; weitergehende fachliche Vollabdeckung wird daraus nicht abgeleitet.
