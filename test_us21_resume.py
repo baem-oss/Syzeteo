@@ -91,5 +91,34 @@ class US21ResumeAcceptanceTests(unittest.TestCase):
                  if c["card_no"] == next_card["card_no"])["revealed"], 1)
 
 
+    def test_us21_two_scored_turns_survive_restart_and_allow_third_score(self):
+        """Resume an actually progressed game, not only its initial database row."""
+        for _ in range(2):
+            card = next(c for c in game_cards(self.conn, self.gid)
+                        if c["card_type"] == "question" and not c["resolved"])
+            reveal_card(self.conn, self.gid, card["card_no"])
+            resolve_question(self.conn, self.gid, card["id"], 1)
+        before = get_game(self.conn, self.gid)
+        self.assertEqual(before["turn_no"], 3)
+        self.assertEqual(before["team1_points"] + before["team2_points"], 2)
+        prior_cards = [tuple(c) for c in game_cards(self.conn, self.gid)]
+        prior_roster = [tuple(p) for p in game_roster(self.conn, self.gid)]
+        self.reconnect()
+        restored = get_game(self.conn, self.gid)
+        self.assertEqual(restored["status"], "running")
+        for key in ("turn_no", "current_student_id", "current_team",
+                    "team1_points", "team2_points"):
+            self.assertEqual(restored[key], before[key], key)
+        self.assertEqual([tuple(c) for c in game_cards(self.conn, self.gid)], prior_cards)
+        self.assertEqual([tuple(p) for p in game_roster(self.conn, self.gid)], prior_roster)
+        third = next(c for c in game_cards(self.conn, self.gid)
+                     if c["card_type"] == "question" and not c["resolved"])
+        reveal_card(self.conn, self.gid, third["card_no"])
+        resolve_question(self.conn, self.gid, third["id"], 1)
+        after = get_game(self.conn, self.gid)
+        self.assertEqual(after["turn_no"], 4)
+        self.assertEqual(after["team1_points"] + after["team2_points"], 3)
+
+
 if __name__ == "__main__":
     unittest.main()
