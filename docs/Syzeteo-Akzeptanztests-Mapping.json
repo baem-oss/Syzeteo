@@ -219,10 +219,14 @@
     {
       "id": 21,
       "criterion": "AC-US21-01",
-      "test_references": [],
+      "test_references": [
+        "test_us21_resume.py::test_us21_running_game_can_be_found_after_restart",
+        "test_us21_resume.py::test_us21_game_state_cards_and_roster_survive_restart",
+        "test_us21_resume.py::test_us21_aborted_game_cannot_be_resumed_as_running"
+      ],
       "manual_review": false,
-      "review_status": "no_direct_evidence",
-      "review_note": "Quelltest-Prüfzweck und Assertions fachlich geprüft; keine Vollabnahme der Story."
+      "review_status": "verified_partial",
+      "review_note": "Direkte Persistenztests über erneutes Öffnen der SQLite-Datenbank; interaktiver UI-Fortsetzungsablauf bleibt offen."
     },
     {
       "id": 22,
