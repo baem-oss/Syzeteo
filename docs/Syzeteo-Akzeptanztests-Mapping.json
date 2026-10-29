@@ -256,7 +256,8 @@
         "test_us24_question_protocol.py::test_us24_aborted_game_keeps_resolved_questions_until_deleted",
         "test_us24_csv.py::test_us24_csv_contains_only_course_and_round_filtered_rows",
         "test_us24_csv.py::test_us24_csv_without_filters_preserves_all_rows_and_text",
-        "test_us24_csv.py::test_us24_filtered_empty_result_exports_header_only"
+        "test_us24_csv.py::test_us24_filtered_empty_result_exports_header_only",
+        "test_us24_question_protocol.py::test_us24_final_instructor_question_is_logged_but_not_analyzed"
       ],
       "manual_review": true,
       "review_status": "verified_partial",
