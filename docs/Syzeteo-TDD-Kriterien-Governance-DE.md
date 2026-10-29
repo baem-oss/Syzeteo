@@ -8,6 +8,12 @@ Stand: 29.10.2026
 - `Syzeteo-Akzeptanzkriterien-Baseline.json`: unveränderter eingefrorener Bestand vom 29.10.2026. Er ist **keine fachliche Freigabe**; bestehende generische Formulierungen tragen `legacy_provisional`.
 - `Syzeteo-Akzeptanztests-Mapping.json`: bisherige Story-zu-Test-Traceability und fachlich überprüfte Teilnachweise; weiterhin zu pflegen.
 
+## Konsolidierter Nachweisstand und Nummerierung
+
+Der aktuelle Story-Test-Status und die verbleibenden fachlichen Lücken stehen in `Syzeteo-Testabdeckung-Review-DE.md`. Der lesbare Akzeptanztestkatalog ist `Syzeteo-Akzeptanztests-TDD-DE.md`. Die Detaildokumente für US #10, #21 und #24 verwenden zusätzlich `S-USnn-mm` für **einzelne Testszenarien**. Solche Szenarien sind nicht automatisch neue verbindliche `AC-USnn-mm`-Kriterien: Maßgeblich registriert sind ausschließlich die IDs in `Syzeteo-Akzeptanzkriterien.json`. Eine spätere Aufspaltung in neue Kriterien ist fachliche Phase-2-Arbeit und muss das CI-Gate durchlaufen.
+
+Die manuelle UI-Freigabe PASS für US #10, #21, #22 und #24 wurde vom Projektverantwortlichen gemeldet. Sie darf nicht als vom CI bestätigter Browser-E2E-Test oder als vollständige Freigabe aller Kriterien ausgegeben werden.
+
 ## Durchsetzung
 
 Der Prüfer `acceptance_criteria_check.py` vergleicht jede aktive Kriterien-ID mit ihrer eingefrorenen Fassung.
