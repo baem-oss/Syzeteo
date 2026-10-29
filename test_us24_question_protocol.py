@@ -120,5 +120,17 @@ class US24QuestionProtocolAcceptanceTests(unittest.TestCase):
         self.assertEqual(protocol_rows(self.conn), [])
 
 
+    def test_us24_final_instructor_question_is_logged_but_not_analyzed(self):
+        from storage import question_analysis_rows
+        gid = self.game(status="finished")
+        self.card(gid, 1, 101, "Regulär gewertete Frage")
+        self.card(gid, 9, 109, "Letzte Instructor-Frage")
+        rows = protocol_rows(self.conn)
+        self.assertEqual({r["question_id"] for r in rows}, {101, 109})
+        analysis = question_analysis_rows(self.conn)
+        self.assertEqual([(r["question_id"], r["attempts"]) for r in analysis],
+                         [(101, 1)])
+
+
 if __name__ == "__main__":
     unittest.main()
