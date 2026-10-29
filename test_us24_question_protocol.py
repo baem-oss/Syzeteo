@@ -1,7 +1,7 @@
 """US #24 acceptance tests for the existing question protocol contract.
 
-Tests document current, unambiguous behavior. Pending domain decisions
-(revealed-only, aborted games, final instructor card) remain explicit in docs.
+Tests verify agreed domain behavior: resolved-only records, aborted games and
+final Instructor questions are governed by documented acceptance criteria.
 """
 import tempfile
 import unittest
@@ -133,6 +133,25 @@ class US24QuestionProtocolAcceptanceTests(unittest.TestCase):
         analysis = question_analysis_rows(self.conn)
         self.assertEqual([(r["question_id"], r["attempts"]) for r in analysis],
                          [(101, 1)])
+
+
+    def test_us24_correct_and_incorrect_resolved_questions_are_both_logged(self):
+        """A completed question is logged regardless of whether points were awarded."""
+        gid = self.game(status="finished")
+        self.card(gid, 1, 501, "Richtig beantwortet")
+        self.card(gid, 2, 502, "Falsch beantwortet")
+        self.card(gid, 3, 503, "Nur aufgedeckt", resolved=0)
+        self.conn.execute(
+            "UPDATE game_cards SET points_awarded=1,points_team=1 "
+            "WHERE game_id=? AND card_no=1", (gid,)
+        )
+        self.conn.commit()
+        recorded = {(row["question_id"], row["question_text"])
+                    for row in protocol_rows(self.conn)}
+        self.assertEqual(recorded, {
+            (501, "Richtig beantwortet"),
+            (502, "Falsch beantwortet"),
+        })
 
 
 if __name__ == "__main__":
