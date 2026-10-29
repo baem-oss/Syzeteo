@@ -63,6 +63,9 @@ def check(root=ROOT):
                 errors.append(f"{cid}: invalid reference {ref}: {exc}")
         if not refs:
             print(f"GAP {cid}: no automated test mapped")
+    covered_stories = {item.get("story_id") for item in active["criteria"]}
+    for story_id in stories - covered_stories:
+        errors.append(f"US #{story_id:02d}: no acceptance criterion defined")
     for cid in old.keys() - seen:
         errors.append(f"{cid}: baseline criterion removed")
     print(f"Acceptance criteria: {len(seen)} total; {result['legacy']} unchanged; "
