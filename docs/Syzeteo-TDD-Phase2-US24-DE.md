@@ -1,7 +1,7 @@
 # Syzeteo – Phase 2: TDD-Pilot US #24 (Vorbereitung)
 
 Stand: 29.10.2026  
-Status: **Fachliche Klärung erforderlich – keine Produktivlogik geändert**  
+Status: **Definition von „gespielt“ und Abbruchregel beschlossen; übrige Abnahmekriterien teilweise offen**  
 Quelle: `docs/Syzeteo-L-US-DE.md` (US #24), `docs/Syzeteo-RANF-etc-DE.md` (GR #01, #02, #09, #11; NFANF #02), `storage.py::protocol_rows`, `app.py` (PAGE_QUESTION_LOG).
 
 ## Ziel
@@ -47,3 +47,12 @@ Gespielte Fachfragen pro Kurs und Runde nachvollziehbar protokollieren und den a
 ## Abnahme
 
 Ein Kriterium gilt erst als automatisiert abgedeckt, wenn der Test dessen Nachbedingung konkret prüft, reproduzierbar läuft und im Traceability-Mapping aufgeführt ist. Andere bestehende Tests behalten den Status »Kandidat«.
+
+## Fachliche Festlegung vom 29.10.2026
+
+- „Gespielt“ bedeutet **abschließend behandelt / resolved=1**, nicht lediglich aufgedeckt.
+- Eine abgeschlossene Fachfrage wird unabhängig von richtiger oder falscher Wertung protokolliert.
+- Bei Abbruch bleiben bereits abgeschlossene Fragen mit Status `aborted` bis zur ausdrücklichen Löschung nachvollziehbar.
+- Durch die Löschung des abgebrochenen Spiels werden dessen Protokolleinträge vollständig entfernt.
+- Der technische Nachweis erfolgt durch `test_us24_question_protocol.py`, einschließlich `test_us24_aborted_game_keeps_resolved_questions_until_deleted`.
+- Die Interpretation der letzten Instructor-Karte und der CSV-Abnahme bleibt vorläufig; daraus wird keine geänderte Fachlogik abgeleitet.
