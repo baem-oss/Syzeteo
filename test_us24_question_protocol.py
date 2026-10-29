@@ -125,6 +125,9 @@ class US24QuestionProtocolAcceptanceTests(unittest.TestCase):
         gid = self.game(status="finished")
         self.card(gid, 1, 101, "Regulär gewertete Frage")
         self.card(gid, 9, 109, "Letzte Instructor-Frage")
+        self.conn.execute("UPDATE game_cards SET resolved_at=? WHERE game_id=? AND card_no=9",
+                          ("2026-10-01T10:09:00+00:00", gid))
+        self.conn.commit()
         rows = protocol_rows(self.conn)
         self.assertEqual({r["question_id"] for r in rows}, {101, 109})
         analysis = question_analysis_rows(self.conn)
