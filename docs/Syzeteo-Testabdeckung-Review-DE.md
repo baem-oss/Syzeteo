@@ -1,6 +1,6 @@
 # Syzeteo – Testabdeckung und TDD-Status (konsolidiert)
 
-**Stand:** 29.10.2026 · **Bezug:** GitHub `main` nach PR #9 · **Geltung:** Dokumentations- und Traceability-Status, **keine fachliche Vollabnahme**.
+**Stand:** 29.10.2026 · **Bezug:** aktueller Phase-2-Branch auf Basis von `main` nach PR #11 · **Geltung:** Dokumentations- und Traceability-Status, **keine fachliche Vollabnahme**.
 
 ## Verbindliche Quellen
 
