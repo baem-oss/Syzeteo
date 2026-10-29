@@ -102,13 +102,11 @@ python -m unittest discover -v
 
 Der Release enthält Regressionstests, Migrationstests, Release-Abnahmetests und Konsistenztests für die Internationalisierung, einschließlich dedizierter Tests für kursbezogene Teamnamen und die Migration von Schema 2 auf Schema 3.
 
-## Dokumentation und RE-Fallstudie
+## Projektdokumentation
 
-**Für Studierende:** Einstieg über die [Dokumentationsübersicht](docs/README.md), die [Fallstudie](docs/RE-Fallstudie-DE.md) und das [durchgearbeitete Methodenbeispiel](docs/RE-Methodenbeispiel-DE.md) mit US, UC, BPMN, FANF/NFANF/RANF und Traceability.
+Die [Dokumentationsübersicht](docs/README.md) verlinkt den [Projektüberblick](docs/Syzeteo-Projektueberblick-DE.md), die [User Stories](docs/Syzeteo-L-US-DE.md), die [Geschäftsregeln und Randbedingungen](docs/Syzeteo-RANF-etc-DE.md), die [Use Cases](docs/Syzeteo-Use-Cases-US26-DE.md), die [Traceability-Matrix](docs/Syzeteo-Traceability-Matrix-DE.md) sowie die [Akzeptanz- und Testnachweise](docs/Syzeteo-QS-und-Abnahme-DE.md).
 
-Die fachlich verbindlichen Quellen sind weiterhin die [User Stories](docs/Syzeteo-L-US-DE.md), die [Randanforderungen und Regeln](docs/Syzeteo-RANF-etc-DE.md), die [Use Cases](docs/Syzeteo-Use-Cases-US26-DE.md) sowie die [Traceability-Matrix](docs/Syzeteo-Traceability-Matrix-DE.md). [Akzeptanztests und QS-Nachweise](docs/Syzeteo-QS-und-Abnahme-DE.md) sind gesondert dokumentiert.
-
-Ältere technische Versionsstände, Upgrade- und i18n-Spezifikationen stehen im [Versionsarchiv](docs/archiv/README.md) und gehören nicht zur aktuellen RE-Spezifikation.
+Die Unterlagen beschreiben das reale Projekt und können als Referenz im Requirements Engineering verwendet werden. Sie enthalten keine Übungsaufgaben oder didaktisch konstruierten Musterlösungen. Historische technische Versionsstände sind [archiviert](docs/archiv/README.md).
 
 ## Repository-Hygiene
 
