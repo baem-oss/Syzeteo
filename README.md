@@ -106,11 +106,9 @@ The release contains regression, migration, release-acceptance, and internationa
 
 ## Documentation
 
-For students and instructors using Syzeteo as a **Requirements Engineering case study**, begin with the [German documentation index](docs/README.md) and the [worked US → UC → BPMN → requirements → acceptance criteria example](docs/RE-Methodenbeispiel-DE.md).
+The [project documentation](docs/README.md) describes Syzeteo as a reference system, with a [project overview](docs/Syzeteo-Projektueberblick-DE.md), [user stories](docs/Syzeteo-L-US-DE.md), [business rules and constraints](docs/Syzeteo-RANF-etc-DE.md), [use cases](docs/Syzeteo-Use-Cases-US26-DE.md), [traceability matrix](docs/Syzeteo-Traceability-Matrix-DE.md), and [acceptance evidence](docs/Syzeteo-QS-und-Abnahme-DE.md).
 
-The canonical requirements remain available as [User Stories](docs/Syzeteo-L-US-DE.md), [constraints/nonfunctional requirements/business rules](docs/Syzeteo-RANF-etc-DE.md), [Use Cases](docs/Syzeteo-Use-Cases-US26-DE.md), and the [Traceability Matrix](docs/Syzeteo-Traceability-Matrix-DE.md). See [QA and manual acceptance evidence](docs/Syzeteo-QS-und-Abnahme-DE.md) for the test status and known evidence limitations.
-
-Historical technical specifications and versioned migration notes are kept in the [technical archive](docs/archiv/README.md). These are not the current RE baseline.
+Previous technical releases and migration documentation are retained in the [archive](docs/archiv/README.md). No coursework or exercises are supplied.
 
 ## Repository hygiene
 

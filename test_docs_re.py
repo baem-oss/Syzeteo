@@ -1,7 +1,6 @@
-"""Verify educational RE documentation links and the editable BPMN example."""
+"""Verify the public project-reference documentation and its internal links."""
 import re
 import unittest
-import xml.etree.ElementTree as ET
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
@@ -13,8 +12,6 @@ ENTRY_POINTS = [
     DOCS / "archiv" / "README.md",
 ]
 LINK = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
-BPMN_NS = "http://www.omg.org/spec/BPMN/20100524/MODEL"
-DI_NS = "http://www.omg.org/spec/BPMN/20100524/DI"
 
 
 class RequirementsDocumentationTests(unittest.TestCase):
@@ -30,31 +27,18 @@ class RequirementsDocumentationTests(unittest.TestCase):
                         self.assertTrue((path.parent / cleaned).is_file(),
                                         f"Broken link in {path}: {target}")
 
-    def test_bpmn_example_is_valid_xml_with_two_lanes_and_exclusive_gateways(self):
-        path = DOCS / "RE-Beispiel-Spiel-abbrechen.bpmn"
-        tree = ET.parse(path)
-        root = tree.getroot()
-        process = root.find(f".//{{{BPMN_NS}}}process")
-        self.assertIsNotNone(process)
-        self.assertEqual(process.attrib["isExecutable"], "false")
-        lanes = root.findall(f".//{{{BPMN_NS}}}lane")
-        self.assertEqual({lane.attrib.get("name") for lane in lanes},
-                         {"Instructor", "Syzeteo"})
-        self.assertGreaterEqual(len(root.findall(
-            f".//{{{BPMN_NS}}}exclusiveGateway")), 2)
-        nodes = {
-            node.attrib["id"] for node in process.iter()
-            if node.tag.rsplit("}", 1)[-1] in {
-                "startEvent", "endEvent", "task", "userTask",
-                "exclusiveGateway"}
-        }
-        flows = root.findall(f".//{{{BPMN_NS}}}sequenceFlow")
-        self.assertGreaterEqual(len(flows), 10)
-        for flow in flows:
-            self.assertIn(flow.attrib["sourceRef"], nodes)
-            self.assertIn(flow.attrib["targetRef"], nodes)
-        diagram = root.findall(f".//{{{DI_NS}}}BPMNDiagram")
-        self.assertTrue(diagram)
+    def test_project_reference_is_present_without_teaching_examples(self):
+        self.assertTrue((DOCS / "Syzeteo-Projektueberblick-DE.md").is_file())
+        self.assertTrue((DOCS / "Syzeteo-L-US-DE.md").is_file())
+        self.assertTrue((DOCS / "Syzeteo-Use-Cases-US26-DE.md").is_file())
+        self.assertTrue((DOCS / "Syzeteo-Traceability-Matrix-DE.md").is_file())
+        for retired in (
+            "RE-Fallstudie-DE.md",
+            "RE-Methodenbeispiel-DE.md",
+            "RE-Beispiel-Spiel-abbrechen.bpmn",
+        ):
+            self.assertFalse((DOCS / retired).exists(),
+                             f"Course-only example should be retired: {retired}")
 
     def test_obsolete_tdd_working_documents_are_not_cited_as_current(self):
         removed_names = (

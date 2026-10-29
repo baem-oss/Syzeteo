@@ -2,9 +2,9 @@
 
 **Referenzstand: 29.10.2026 · Zweck:** Prüfbarkeit der Anforderungen nachvollziehen. Dies ist **keine Erklärung einer vollständigen fachlichen Abnahme**.
 
-[Zur Dokumentationsübersicht](README.md) · [RE-Methodenbeispiel](RE-Methodenbeispiel-DE.md)
+[Zur Dokumentationsübersicht](README.md)
 
-## 1. Welche Dokumente sind der Nachweis?
+## 1. Nachweisquellen
 
 | Frage | Verbindliche Quelle |
 |---|---|
@@ -30,13 +30,13 @@
 
 **Vorsicht beim Interpretieren:** 46 spezifizierte Kriterien sind nicht gleichbedeutend mit „46 vollständig abgenommenen Anforderungen“. Ein Kriterium `specified_partial` besitzt einen konkreten Prüfzweck und mindestens einen automatisierten Teilnachweis. Weitere fachliche Randfälle können fehlen. Die Zahl der Testmethoden ist **keine** prozentuale Anforderungsabdeckung.
 
-## 3. Drei anschauliche Testbeispiele
+## 3. Ausgewählte automatisierte Nachweise
 
-| RE-Frage | Kriterium | Was prüft der Test tatsächlich? |
+| Prüfgegenstand | Kriterium | Nachgewiesener Teilaspekt |
 |---|---|---|
-| Bleibt eine gestartete Runde historisch unverändert? | **AC-US10-05** | Nachträgliche Teamänderung im Kurs darf Team-Snapshots und aktuelle Spielerwahl im laufenden Spiel nicht überschreiben. Nachweis: `test_us10_team_assignment.py::test_us10_reassignment_does_not_change_running_game_team_snapshots`. |
-| Kann ein Spiel nach Unterbrechung weitergehen? | **AC-US21-01** | Nach zwei gewerteten Zügen bleiben Kader, Punkte und Karten nach erneutem Datenbankzugriff erhalten; ein dritter Zug ist möglich. Nachweis: `test_us21_resume.py::test_us21_two_scored_turns_survive_restart_and_allow_third_score`. |
-| Welche Fragen kommen in das Protokoll? | **AC-US24-01 / -06** | Abschließend behandelte Fachfragen erscheinen unabhängig von richtig/falsch. Eine letzte Instructor-Fachfrage erscheint im Protokoll, aber nicht als studentischer Versuch in der Statistik. Nachweise in `test_us24_question_protocol.py`. |
+| Historische Teamzuordnung | **AC-US10-05** | Nachträgliche Teamänderung im Kurs darf Team-Snapshots und aktuelle Spielerwahl im laufenden Spiel nicht überschreiben. Nachweis: `test_us10_team_assignment.py::test_us10_reassignment_does_not_change_running_game_team_snapshots`. |
+| Spielfortsetzung | **AC-US21-01** | Nach zwei gewerteten Zügen bleiben Kader, Punkte und Karten nach erneutem Datenbankzugriff erhalten; ein dritter Zug ist möglich. Nachweis: `test_us21_resume.py::test_us21_two_scored_turns_survive_restart_and_allow_third_score`. |
+| Fragenprotokoll | **AC-US24-01 / -06** | Abschließend behandelte Fachfragen erscheinen unabhängig von richtig/falsch. Eine letzte Instructor-Fachfrage erscheint im Protokoll, aber nicht als studentischer Versuch in der Statistik. Nachweise in `test_us24_question_protocol.py`. |
 
 Weitere Beispiele: **US #07** – vollständige Kurslöschung ohne Löschung des globalen Fragenpools; **US #26** – Abbruch, Löschung und erneutes Starten der Runde. Die eigentlichen Assertions stehen im Quellcode; in diesem Dokument werden sie nur erklärt.
 
@@ -65,15 +65,9 @@ Die folgenden PASS-Meldungen wurden am **29.10.2026** vom Projektverantwortliche
 
 **Referenz für reproduzierbare Sichtprüfungen:** **1920 × 1080 Pixel**, **100 % Browser-Zoom**, normale Spielansicht und Beameransicht. Dieser Referenzwert dokumentiert **nicht**, dass die bereits gemeldeten Abnahmen nachweislich unter diesen Bedingungen stattgefunden haben. Screenshot-/Ticket-Links sind nicht übermittelt.
 
-### Vorlage für eine künftige manuelle Abnahme
+**Evidenzgrenze:** Eine gemeldete UI-Freigabe und eine vollständig dokumentierte, reproduzierbare Einzelprüfung sind nicht gleichwertig. Die fehlenden Prüfdetails werden hier nicht ergänzt.
 
-| Datum | US / AC | Browser / Version | Auflösung / Zoom | Prüfschritte | Soll | Ist | PASS/FAIL | Prüfer | Beleg |
-|---|---|---|---|---|---|---|---|---|---|
-| *ausfüllen* | *ID* | *konkret* | *tatsächlich* | *reproduzierbar* | *prüfbar* | *beobachtet* | *Ergebnis* | *Name/Rolle* | *URL* |
-
-**Methodischer Unterschied:** Eine gemeldete Freigabe und ein reproduzierbarer Einzelprüfnachweis sind nicht dieselbe Evidenzstufe. Beide dürfen dokumentiert werden, müssen aber klar unterschieden bleiben.
-
-## 6. GitHub-Branchschutz – noch eine administrative Aufgabe
+## 6. GitHub-Branchschutz
 
 Am 29.10.2026 wurde das Ruleset [„Ruleset Syzeteo“ (ID 22184406)](https://github.com/baem-oss/Syzeteo/rules/22184406) über die GitHub-API geprüft:
 
@@ -85,7 +79,7 @@ Am 29.10.2026 wurde das Ruleset [„Ruleset Syzeteo“ (ID 22184406)](https://gi
 
 **Bis dahin:** Branch Protection ist eine **offene administrative Aufgabe**, nicht „erledigt“.
 
-## 7. Weitere Grenzen und gepflegter Änderungsprozess
+## 7. Grenzen und Änderungsprozess
 
 - **Nicht implementiert:** Eine vollständige automatisierte Browser-E2E-Suite für Streamlit; bei UI-Fragen sind manuelle Prüfungen weiterhin wichtig.
 - **Nicht behauptet:** Vollständige semantische Abdeckung aller fachlichen und nichtfunktionalen Randfälle.
@@ -93,6 +87,4 @@ Am 29.10.2026 wurde das Ruleset [„Ruleset Syzeteo“ (ID 22184406)](https://gi
 - **Bei neuen Anforderungen:** US/Regel fachlich klären → UC/BPMN prüfen → AC konkret formulieren → direkte Test-Assertions ergänzen → JSON-Mappings aktualisieren → Pipeline/Review → ggf. UI-Abnahme.
 - **Baseline-Migration:** Nur als separater fachlich geprüfter Vorgang, nicht durch stillschweigendes Überschreiben historischer Dateien.
 
-**Für Studierende:** Der Kern der Qualitätssicherung liegt darin, aus einer ungenauen Zielaussage **beobachtbare Nachbedingungen** zu gewinnen und ihre Erfüllung prüfbar zu machen. Ein grüner CI-Lauf unterstützt diese Prüfung; er ersetzt keine fachliche Modellkritik.
-
-[Zurück zum Leseweg](README.md) · [Zum Methodenbeispiel](RE-Methodenbeispiel-DE.md)
+[Zur Dokumentationsübersicht](README.md)
