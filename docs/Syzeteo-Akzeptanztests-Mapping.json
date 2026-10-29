@@ -253,11 +253,14 @@
         "test_us24_question_protocol.py::test_us24_unresolved_and_challenge_cards_not_in_question_protocol",
         "test_us24_question_protocol.py::test_us24_question_snapshot_is_independent_of_pool_changes",
         "test_us24_question_protocol.py::test_us24_protocol_has_status_and_resolution_timestamp",
-        "test_us24_question_protocol.py::test_us24_aborted_game_keeps_resolved_questions_until_deleted"
+        "test_us24_question_protocol.py::test_us24_aborted_game_keeps_resolved_questions_until_deleted",
+        "test_us24_csv.py::test_us24_csv_contains_only_course_and_round_filtered_rows",
+        "test_us24_csv.py::test_us24_csv_without_filters_preserves_all_rows_and_text",
+        "test_us24_csv.py::test_us24_filtered_empty_result_exports_header_only"
       ],
       "manual_review": true,
       "review_status": "verified_partial",
-      "review_note": "Direkte Assertions: abgeschlossene Fragen, Kurs/Runde, Snapshots, Abbruchstatus und Löschung. CSV-Export weiterhin offen."
+      "review_note": "Direkte Prüfungen von Protokoll, Snapshots, Abbruch/Löschung und CSV-Filter/Export; letzte Instructor-Karte und manuelle UI-Abnahme noch offen."
     },
     {
       "id": 25,
