@@ -21,6 +21,20 @@ jobs:
         run: python -m pip install -r requirements.txt
       - name: Validate TDD traceability (legacy gaps are warnings)
         run: python traceability_check.py
+      - name: Validate stable acceptance criteria
+        run: python acceptance_criteria_check.py
+      - name: Protect acceptance baseline against ordinary PR edits
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          git fetch --depth=1 origin "${{ github.base_ref }}"
+          BASE="docs/Syzeteo-Akzeptanzkriterien-Baseline.json"
+          if git cat-file -e "origin/${{ github.base_ref }}:$BASE" 2>/dev/null; then
+            if ! git diff --quiet "origin/${{ github.base_ref }}" HEAD -- "$BASE"; then
+              echo "::error::Frozen acceptance baseline changed. Separate reviewed migration required."
+              exit 1
+            fi
+          fi
       - name: Run canonical regression pipeline including release checks
         run: python regression_pipeline.py --native --release --json-report regression-results.json
       - name: Upload regression report
