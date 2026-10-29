@@ -9,6 +9,7 @@ from auth import authenticate, change_password, change_username, create_admin, u
 from config import resolve_data_dir, resolve_database_path
 from i18n import available_locales, initial_locale, locale_display_name, t
 from rendering import escape_markdown_literal, plain_text_html, round_question_html
+from question_protocol import filter_protocol_table, export_protocol_csv
 from storage import (
     add_late_player, add_learning_unit, add_question, add_student, archive_course, connect, course_scoreboard,
     abort_game, create_course, create_round, delete_aborted_game, delete_course, delete_learning_unit, delete_question,
@@ -1245,11 +1246,9 @@ elif PAGE==PAGE_QUESTION_LOG:
         course_filter=c1.multiselect(tr("question_log.filter.course"),courses)
         rounds=sorted(df[col_round].unique())
         round_filter=c2.multiselect(tr("question_log.filter.round"),rounds)
-        view=df.copy()
-        if course_filter: view=view[view[col_course].isin(course_filter)]
-        if round_filter: view=view[view[col_round].isin(round_filter)]
+        view=filter_protocol_table(df,col_course,col_round,course_filter,round_filter)
         st.dataframe(view,use_container_width=True,hide_index=True)
-        st.download_button(tr("question_log.export"),view.to_csv(index=False).encode("utf-8-sig"),"Syzeteo-Question-Log.csv","text/csv")
+        st.download_button(tr("question_log.export"),export_protocol_csv(view),"Syzeteo-Question-Log.csv","text/csv")
     else:
         st.info(tr("question_log.none"))
 
