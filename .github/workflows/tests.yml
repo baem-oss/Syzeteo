@@ -23,18 +23,24 @@ jobs:
         run: python traceability_check.py
       - name: Validate stable acceptance criteria
         run: python acceptance_criteria_check.py
-      - name: Protect acceptance baseline against ordinary PR edits
+      - name: Protect frozen baselines against ordinary PR edits
         if: github.event_name == 'pull_request'
         shell: bash
         run: |
-          git fetch --depth=1 origin "${{ github.base_ref }}"
-          BASE="docs/Syzeteo-Akzeptanzkriterien-Baseline.json"
-          if git cat-file -e "origin/${{ github.base_ref }}:$BASE" 2>/dev/null; then
-            if ! git diff --quiet "origin/${{ github.base_ref }}" HEAD -- "$BASE"; then
-              echo "::error::Frozen acceptance baseline changed. Separate reviewed migration required."
+          git fetch --no-tags --depth=1 origin "${{ github.base_ref }}"
+          for BASE in docs/Syzeteo-Akzeptanzkriterien-Baseline.json docs/Syzeteo-TDD-Baseline.json; do
+            if ! git cat-file -e "origin/${{ github.base_ref }}:$BASE" 2>/dev/null; then
+              echo "::error::Frozen baseline absent from base branch: $BASE"
               exit 1
             fi
-          fi
+            if ! git diff --quiet "origin/${{ github.base_ref }}" HEAD -- "$BASE"; then
+              echo "::error::Frozen baseline changed: $BASE. Separate reviewed migration required."
+              exit 1
+            fi
+          done
+      - name: Require changed PR criteria to have changed test assertions
+        if: github.event_name == 'pull_request'
+        run: python tdd_pr_evidence_check.py --base-ref "origin/${{ github.base_ref }}"
       - name: Run canonical regression pipeline including release checks
         run: python regression_pipeline.py --native --release --json-report regression-results.json
       - name: Upload regression report
