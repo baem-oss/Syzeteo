@@ -83,7 +83,17 @@ class US24QuestionProtocolAcceptanceTests(unittest.TestCase):
     def test_us24_question_snapshot_is_independent_of_pool_changes(self):
         gid = self.game()
         self.card(gid, 1, 101, "Ursprünglicher Fragetext")
-        # Protocol must read immutable game-card text instead of current pool.
+        self.conn.execute("INSERT INTO learning_units(code,title,position) VALUES('LE1','Unit',1)")
+        self.conn.execute(
+            """INSERT INTO questions(id,learning_unit_id,question_text,answer_text,created_at,updated_at)
+               VALUES(101,(SELECT id FROM learning_units WHERE code='LE1'),
+                      'Geänderter Fragetext','Antwort','2026-10-01','2026-10-01')"""
+        )
+        self.conn.commit()
+        self.assertEqual(
+            self.conn.execute("SELECT question_text FROM questions WHERE id=101").fetchone()[0],
+            "Geänderter Fragetext",
+        )
         self.assertEqual(protocol_rows(self.conn)[0]["question_text"],
                          "Ursprünglicher Fragetext")
         self.assertEqual(protocol_rows(self.conn)[0]["unit_code"], "LE1")
