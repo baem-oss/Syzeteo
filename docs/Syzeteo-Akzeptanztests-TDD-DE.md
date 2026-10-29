@@ -298,11 +298,11 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 **AC-US24-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #24 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Gespielte Fragen protokollieren“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** **Kein hinreichend direkter Nachweis – Testlücke**.
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_us24_question_protocol.py` (vier konkrete Assertions zu Kurs/Runde, resolved-Filter, Snapshot, Status; partielle Abdeckung).
 
 **Visueller Abnahmenachweis:** Export- und Protokollansicht prüfen; Datum, Browser, Prüfer, erwartetes/tatsächliches Ergebnis und Screenshotreferenz dokumentieren.
 
-**Abdeckungsstatus:** kein direkter Akzeptanztest; offen.
+**Abdeckungsstatus:** vier direkte Akzeptanztests; CSV-Filter, Löschung und fachliche Sonderfälle offen.
 
 ### US #25 – Rundenabdeckung prüfen
 
