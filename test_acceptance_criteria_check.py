@@ -17,7 +17,7 @@ class AcceptanceCriteriaGateTests(unittest.TestCase):
                          "statement": "Given A, when B, then C",
                          "status": "legacy_provisional", "manual_review": False,
                          "test_references": ["test_example.py::test_old"]}
-        self.active = [dict(self.original)]
+        self.active = [json.loads(json.dumps(self.original))]
         self.save()
 
     def tearDown(self):
