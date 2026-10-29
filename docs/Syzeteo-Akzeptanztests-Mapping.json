@@ -222,7 +222,8 @@
       "test_references": [
         "test_us21_resume.py::test_us21_running_game_can_be_found_after_restart",
         "test_us21_resume.py::test_us21_game_state_cards_and_roster_survive_restart",
-        "test_us21_resume.py::test_us21_aborted_game_cannot_be_resumed_as_running"
+        "test_us21_resume.py::test_us21_aborted_game_cannot_be_resumed_as_running",
+        "test_us21_resume.py::test_us21_scored_turn_can_continue_after_restart"
       ],
       "manual_review": false,
       "review_status": "verified_partial",
