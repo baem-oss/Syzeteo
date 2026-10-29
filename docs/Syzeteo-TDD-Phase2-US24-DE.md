@@ -56,3 +56,14 @@ Ein Kriterium gilt erst als automatisiert abgedeckt, wenn der Test dessen Nachbe
 - Durch die Löschung des abgebrochenen Spiels werden dessen Protokolleinträge vollständig entfernt.
 - Der technische Nachweis erfolgt durch `test_us24_question_protocol.py`, einschließlich `test_us24_aborted_game_keeps_resolved_questions_until_deleted`.
 - Die Interpretation der letzten Instructor-Karte und der CSV-Abnahme bleibt vorläufig; daraus wird keine geänderte Fachlogik abgeleitet.
+
+## CSV-Abnahme – Implementierung 29.10.2026
+
+Die bereits vorhandene Tabellenfilterung und der CSV-Export wurden ohne beabsichtigte Verhaltensänderung in `question_protocol.py` extrahiert. `app.py` verwendet diese beiden Funktionen nun unmittelbar. `test_us24_csv.py` prüft:
+
+- gemeinsame Kurs- und Rundenfilterung für angezeigte und exportierte Zeilen;
+- vollständigen Export ohne Filter, einschließlich Komma und Zeilenumbruch in Fragetexten;
+- leere Trefferliste mit beibehaltenen CSV-Spaltenüberschriften;
+- UTF-8 mit BOM, wie bislang von der Oberfläche erzeugt.
+
+Die manuelle UI-Abnahme bleibt offen; auch die Frage, wie die letzte Instructor-Karte fachlich zu behandeln ist, wird dadurch nicht entschieden.
