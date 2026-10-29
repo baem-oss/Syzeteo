@@ -27,7 +27,7 @@ Der Prüfer `acceptance_criteria_check.py` vergleicht jede aktive Kriterien-ID m
 | Ungültige Testreferenz | Blockieren |
 | Baseline im regulären PR geändert | Blockieren; gesonderte kontrollierte Migration erforderlich |
 
-**Grenze der Automatisierung:** Der Gate kann nachweisen, dass eine Testmethode existiert und neu referenziert wird. Er kann **nicht** semantisch beweisen, dass sie das Kriterium tatsächlich testet oder dass ein neuer Testcode geschrieben wurde. Das muss der Reviewer anhand der Assertions bestätigen. Gerade bei UI-Anforderungen bleibt die manuelle Abnahme zusätzlich verbindlich.
+**Phase-3-Erweiterung:** `acceptance_criteria_check.py` verlangt nun konsistente bidirektionale Story-/Kriterien-Test-Zuordnungen und Assertions in referenzierten Testmethoden. Bei einem PR verlangt `tdd_pr_evidence_check.py` **gegenüber dem Zielbranch** außerdem mindestens eine neue oder geänderte Assertion in einem referenzierten Test für jedes neu angelegte oder geänderte Kriterium. Beide eingefrorenen Baselines sind für normale PRs geschützt. **Grenze:** Die inhaltliche Eignung einer Assertion wird nicht maschinell bewiesen, sondern muss fachlich geprüft werden. Die manuelle UI-Abnahme bleibt eigenständig. Details und den noch offenen Branchschutz siehe `Syzeteo-TDD-Phase3-Governance-DE.md`.
 
 ## Ablauf bei neuen / geänderten Akzeptanzkriterien
 
@@ -35,7 +35,7 @@ Der Prüfer `acceptance_criteria_check.py` vergleicht jede aktive Kriterien-ID m
 2. Automatisierten Akzeptanztest mit fachlicher Assertion hinzufügen; neue Testreferenz eintragen.
 3. Bei UI-Anforderungen das manuelle Abnahmeprotokoll (Full HD 1920 × 1080, 100 % Zoom) ergänzen.
 4. Traceability-Mapping und lesbare Story-Spezifikation synchronisieren.
-5. Lokal `python acceptance_criteria_check.py` und `python regression_pipeline.py --native --release` ausführen.
+5. Lokal `python acceptance_criteria_check.py` und `python regression_pipeline.py --native --release` ausführen; bei PRs führt GitHub zusätzlich `tdd_pr_evidence_check.py` gegen den Zielbranch aus.
 6. PR erst nach grüner CI und fachlicher Prüfung der Assertions mergen.
 
 **Baseline-Regel:** Eine Änderung der eingefrorenen Baseline ist nicht Teil normaler Feature-PRs. Sollte eine neue Baseline nötig werden, benötigt dies einen gesonderten, dokumentierten Review und eine explizite Anpassung der Sperrregel.
@@ -44,4 +44,4 @@ Der Prüfer `acceptance_criteria_check.py` vergleicht jede aktive Kriterien-ID m
 
 - Es gibt keine aktiven generischen `legacy_provisional`-Kriterien mehr. Die 46 `specified_partial`-Kriterien beschreiben jeweils einen überprüfbaren Teilaspekt, **keine** garantierte vollständige Abnahme aller Story-Randfälle.
 - Die neuen Kriterien werden noch nicht automatisch aus dem Markdown-Katalog gespiegelt. Die JSON-Datei ist die verbindliche technische Referenz; menschliche Dokumentation muss im Review abgeglichen werden.
-- Der CI-Schutz der Baseline ist für Pull Requests implementiert. Direkte Pushes nach `main` sollten zusätzlich über GitHub Branch Protection unterbunden werden.
+- Beide historischen Baselines sind in PRs geschützt. Das bestehende GitHub-Ruleset `Ruleset Syzeteo` ist **deaktiviert**, seine Zielbranch-Liste leer (API-Befund 29.10.2026). Die Aktivierung eines wirksamen Branchschutzes für `main` mit verpflichtendem CI-Check benötigt Repository-Administration; siehe `Syzeteo-TDD-Phase3-Governance-DE.md`.
