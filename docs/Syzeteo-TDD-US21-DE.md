@@ -36,3 +36,7 @@ Referenzumgebung: 1920×1080 Pixel, Browser-Zoom 100 %.
 Automatisierter Test: `test_us21_resume.py::test_us21_scored_turn_can_continue_after_restart`.
 
 Die manuelle End-to-End-Abnahme der Streamlit-Oberfläche bleibt offen. Der automatisierte Test beweist den Persistenz- und Fortsetzungspfad auf Anwendungsebene, nicht die Darstellung im Browser.
+
+## UI-Abnahme – Freigabe vom 29.10.2026
+
+**Status: PASS (ausdrückliche Nutzerfreigabe im Chat).** Die UI-Abnahme wurde vom Projektverantwortlichen als bestanden gemeldet. Keine eigenständige Browserprüfung durch den Assistenten und kein separat übermitteltes Prüfprotokoll. Browser-Version, tatsächlich verwendete Auflösung und Zoomstufe sind nicht nachgewiesen. Die zugehörigen automatisierten Regressionstests bleiben unabhängige Nachweise. Für US #21 gilt diese Freigabe als gemeldete manuelle UI-Abnahme; weitergehende fachliche Vollabdeckung wird daraus nicht abgeleitet.

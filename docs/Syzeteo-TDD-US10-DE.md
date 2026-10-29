@@ -27,3 +27,7 @@ Implementiert in `test_us10_team_assignment.py` (isolierte temporäre Datenbank)
 ## Vorgehen
 
 Dieser Commit ändert keine Produktivlogik. Nach grünem CI wird der PR nach Review gemergt; anschließend sollen Akzeptanzkriteriumsänderungen zusätzlich im Traceability-Gate abgesichert werden.
+
+## UI-Abnahme – Freigabe vom 29.10.2026
+
+**Status: PASS (ausdrückliche Nutzerfreigabe im Chat).** Die UI-Abnahme wurde vom Projektverantwortlichen als bestanden gemeldet. Keine eigenständige Browserprüfung durch den Assistenten und kein separat übermitteltes Prüfprotokoll. Browser-Version, tatsächlich verwendete Auflösung und Zoomstufe sind nicht nachgewiesen. Die zugehörigen automatisierten Regressionstests bleiben unabhängige Nachweise. Für US #10 gilt diese Freigabe als gemeldete manuelle UI-Abnahme; weitergehende fachliche Vollabdeckung wird daraus nicht abgeleitet.

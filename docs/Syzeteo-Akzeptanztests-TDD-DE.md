@@ -370,7 +370,9 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 | Datum | US / AC | Browser / Version | Auflösung / Zoom | Schritte | Erwartetes Ergebnis | Tatsächliches Ergebnis | Bestanden? | Prüfer | Screenshot-/Ticketlink |
 |---|---|---|---|---|---|---|---|---|---|
-| – | US22 / AC-US22-01 | – | 1920×1080 / 100 % | Normal- und Beameransicht öffnen, Inhalte/Navigation/Scrollen prüfen | Lesbare Darstellung ohne störende Navigation, gemäß NFANF #03 möglichst ohne vertikales Scrollen | Nicht geprüft | offen | – | – |
+| 29.10.2026 (Freigabe) | US22 / AC-US22-01 | nicht angegeben | Referenz: 1920×1080 / 100 %; tatsächliche Umgebung nicht dokumentiert | Normal- und Beameransicht öffnen, Inhalte/Navigation/Scrollen prüfen (Prüfschritte nicht einzeln belegt) | Lesbare Darstellung ohne störende Navigation, gemäß NFANF #03 möglichst ohne vertikales Scrollen | UI-Abnahme vom Projektverantwortlichen pauschal als PASS erklärt; keine Einzelbeobachtungen übermittelt | PASS (Nutzerfreigabe) | Projektverantwortlicher | nicht vorgelegt |
+
+**Hinweis zur US22-Abnahme:** Der Status dokumentiert die vom Projektverantwortlichen erteilte UI-Freigabe, keine vom Assistenten durchgeführte Sichtprüfung. Eine protokollierte Einzelprüfung der Beameransicht und der Scrollfreiheit ist nicht belegt.
 
 ## Grenzen des aktuellen Bestands
 
