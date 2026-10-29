@@ -105,14 +105,56 @@
     {
       "id": "AC-US10-01",
       "story_id": 10,
-      "statement": "Gegeben sind die in US #10 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Studierende Teams zuordnen“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
-      "status": "legacy_provisional",
+      "statement": "Gegeben sind aktive Studierende eines Kurses mit Teamzuordnungen; wenn der Instructor eine Person manuell Team 1 oder 2 zuweist, dann wird nur deren aktuelle Teamzuordnung geändert und die Zuordnungen anderer Studierender bleiben unverändert.",
+      "status": "specified_partial",
       "test_references": [
         "test_us10_team_assignment.py::test_us10_manual_assignment_changes_only_selected_student",
         "test_us10_team_assignment.py::test_us10_random_assignment_balances_odd_number",
         "test_us10_team_assignment.py::test_us10_random_assignment_ignores_inactive_and_other_courses",
         "test_us10_team_assignment.py::test_us10_random_assignment_rejects_less_than_two_active",
+        "test_us10_team_assignment.py::test_us10_manual_assignment_rejects_invalid_team_without_mutation",
+        "test_us10_team_assignment.py::test_us10_reassignment_does_not_change_running_game_team_snapshots"
+      ],
+      "manual_review": false
+    },
+    {
+      "id": "AC-US10-02",
+      "story_id": 10,
+      "statement": "Gegeben sind sieben aktive Studierende eines Kurses; wenn der Instructor die zufällige Teamzuordnung ausführt, dann sind alle sieben einem der zwei Teams zugeordnet und deren Größen unterscheiden sich um höchstens eins.",
+      "status": "specified_partial",
+      "test_references": [
+        "test_us10_team_assignment.py::test_us10_random_assignment_balances_odd_number"
+      ],
+      "manual_review": false
+    },
+    {
+      "id": "AC-US10-03",
+      "story_id": 10,
+      "statement": "Gegeben sind aktive und inaktive Studierende sowie ein weiterer Kurs; wenn für einen Kurs Teams zufällig zugeordnet werden, dann werden nur die aktiven Studierenden dieses Kurses neu verteilt; inaktive Studierende und andere Kurse bleiben unverändert.",
+      "status": "specified_partial",
+      "test_references": [
+        "test_us10_team_assignment.py::test_us10_random_assignment_ignores_inactive_and_other_courses"
+      ],
+      "manual_review": false
+    },
+    {
+      "id": "AC-US10-04",
+      "story_id": 10,
+      "statement": "Gegeben sind weniger als zwei aktive Studierende oder eine ungültige manuelle Teamkennung; wenn die jeweilige Teamzuordnung ausgelöst wird, dann wird sie mit fachlichem Fehler abgewiesen und der vorhandene Zuordnungsstand nicht verändert.",
+      "status": "specified_partial",
+      "test_references": [
+        "test_us10_team_assignment.py::test_us10_random_assignment_rejects_less_than_two_active",
         "test_us10_team_assignment.py::test_us10_manual_assignment_rejects_invalid_team_without_mutation"
+      ],
+      "manual_review": false
+    },
+    {
+      "id": "AC-US10-05",
+      "story_id": 10,
+      "statement": "Gegeben ist ein laufendes Spiel mit gespeichertem Spielerkader und Team-Snapshots; wenn danach eine Studierenden-Teamzuordnung im Kurs geändert wird, dann bleiben die im gestarteten Spiel gespeicherten Teamzuordnungen und die aktuelle Spielerwahl unverändert (NFANF #02).",
+      "status": "specified_partial",
+      "test_references": [
+        "test_us10_team_assignment.py::test_us10_reassignment_does_not_change_running_game_team_snapshots"
       ],
       "manual_review": false
     },
@@ -226,13 +268,35 @@
     {
       "id": "AC-US21-01",
       "story_id": 21,
-      "statement": "Gegeben sind die in US #21 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Laufendes Spiel fortsetzen“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
-      "status": "legacy_provisional",
+      "statement": "Gegeben ist ein laufendes Spiel mit zwei abgeschlossenen und gewerteten regulären Spielzügen; wenn die persistierte Sitzung neu geöffnet wird, dann bleiben Punkte, aktueller Spieler, Zugnummer, Karten und Spielerkader erhalten und ein weiterer Spielzug lässt sich abschließen.",
+      "status": "specified_partial",
       "test_references": [
         "test_us21_resume.py::test_us21_running_game_can_be_found_after_restart",
         "test_us21_resume.py::test_us21_game_state_cards_and_roster_survive_restart",
         "test_us21_resume.py::test_us21_aborted_game_cannot_be_resumed_as_running",
-        "test_us21_resume.py::test_us21_scored_turn_can_continue_after_restart"
+        "test_us21_resume.py::test_us21_scored_turn_can_continue_after_restart",
+        "test_us21_resume.py::test_us21_two_scored_turns_survive_restart_and_allow_third_score"
+      ],
+      "manual_review": false
+    },
+    {
+      "id": "AC-US21-02",
+      "story_id": 21,
+      "statement": "Gegeben ist ein laufendes Spiel; wenn die Datenbankverbindung neu geöffnet wird, dann bleibt es mit Status running auffindbar und sein gespeicherter Anfangszustand mit Kader und Karten ist unverändert.",
+      "status": "specified_partial",
+      "test_references": [
+        "test_us21_resume.py::test_us21_running_game_can_be_found_after_restart",
+        "test_us21_resume.py::test_us21_game_state_cards_and_roster_survive_restart"
+      ],
+      "manual_review": false
+    },
+    {
+      "id": "AC-US21-03",
+      "story_id": 21,
+      "statement": "Gegeben ist ein abgebrochenes Spiel; wenn die Datenbankverbindung neu geöffnet wird, dann wird das Spiel nicht als laufendes Spiel zur Fortsetzung angeboten (GR #11).",
+      "status": "specified_partial",
+      "test_references": [
+        "test_us21_resume.py::test_us21_aborted_game_cannot_be_resumed_as_running"
       ],
       "manual_review": false
     },
@@ -260,8 +324,8 @@
     {
       "id": "AC-US24-01",
       "story_id": 24,
-      "statement": "Gegeben sind die in US #24 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Gespielte Fragen protokollieren“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
-      "status": "legacy_provisional",
+      "statement": "Gegeben sind richtig und falsch beantwortete, abschließend behandelte Fachfragen sowie eine nur aufgedeckte Fachfrage; wenn das Fragenprotokoll angezeigt wird, dann werden beide abgeschlossenen Fachfragen unabhängig von der Wertung protokolliert, die bloß aufgedeckte dagegen nicht.",
+      "status": "specified_partial",
       "test_references": [
         "test_us24_question_protocol.py::test_us24_resolved_questions_have_course_round_and_position",
         "test_us24_question_protocol.py::test_us24_unresolved_and_challenge_cards_not_in_question_protocol",
@@ -271,6 +335,60 @@
         "test_us24_csv.py::test_us24_csv_contains_only_course_and_round_filtered_rows",
         "test_us24_csv.py::test_us24_csv_without_filters_preserves_all_rows_and_text",
         "test_us24_csv.py::test_us24_filtered_empty_result_exports_header_only",
+        "test_us24_question_protocol.py::test_us24_final_instructor_question_is_logged_but_not_analyzed",
+        "test_us24_question_protocol.py::test_us24_correct_and_incorrect_resolved_questions_are_both_logged"
+      ],
+      "manual_review": true
+    },
+    {
+      "id": "AC-US24-02",
+      "story_id": 24,
+      "statement": "Gegeben sind abgeschlossene Fachfragen in verschiedenen Kursen und Runden; wenn das Protokoll gelesen wird, dann enthält jede Fachfrage ihre Kurs-, Runden- und Kartenpositionszuordnung.",
+      "status": "specified_partial",
+      "test_references": [
+        "test_us24_question_protocol.py::test_us24_resolved_questions_have_course_round_and_position"
+      ],
+      "manual_review": true
+    },
+    {
+      "id": "AC-US24-03",
+      "story_id": 24,
+      "statement": "Gegeben ist eine bereits gespielte Frage, deren Wortlaut im globalen Fragenpool später geändert wurde; wenn das Protokoll gelesen wird, dann erscheint weiterhin der gespeicherte historische Fragetext und Lerneinheitencode.",
+      "status": "specified_partial",
+      "test_references": [
+        "test_us24_question_protocol.py::test_us24_question_snapshot_is_independent_of_pool_changes"
+      ],
+      "manual_review": true
+    },
+    {
+      "id": "AC-US24-04",
+      "story_id": 24,
+      "statement": "Gegeben ist ein abgebrochenes Spiel mit abschließend behandelten Fachfragen; wenn das Protokoll gelesen wird, dann werden diese samt Abbruchstatus und Zeitstempel angezeigt; nach ausdrücklicher Löschung des Spiels sind dessen Protokolleinträge entfernt.",
+      "status": "specified_partial",
+      "test_references": [
+        "test_us24_question_protocol.py::test_us24_protocol_has_status_and_resolution_timestamp",
+        "test_us24_question_protocol.py::test_us24_aborted_game_keeps_resolved_questions_until_deleted"
+      ],
+      "manual_review": true
+    },
+    {
+      "id": "AC-US24-05",
+      "story_id": 24,
+      "statement": "Gegeben ist ein Fragenprotokoll über mehrere Kurse und Runden; wenn nach Kurs und Runde gefiltert und als CSV exportiert wird, dann enthält die CSV ausschließlich die gefilterte Ansicht, einschließlich Sonderzeichen, UTF-8-BOM und Spaltenköpfen auch bei leerer Treffermenge.",
+      "status": "specified_partial",
+      "test_references": [
+        "test_us24_csv.py::test_us24_csv_contains_only_course_and_round_filtered_rows",
+        "test_us24_csv.py::test_us24_csv_without_filters_preserves_all_rows_and_text",
+        "test_us24_csv.py::test_us24_filtered_empty_result_exports_header_only"
+      ],
+      "manual_review": true
+    },
+    {
+      "id": "AC-US24-06",
+      "story_id": 24,
+      "statement": "Gegeben ist eine abschließend behandelte letzte Instructor-Fachfrage; wenn Protokoll und statistische Fragenauswertung gelesen werden, dann erscheint die Fachfrage nur im Protokoll, nicht aber als studentischer Versuch in der Fragenauswertung (GR #07 und #13).",
+      "status": "specified_partial",
+      "test_references": [
         "test_us24_question_protocol.py::test_us24_final_instructor_question_is_logged_but_not_analyzed"
       ],
       "manual_review": true
