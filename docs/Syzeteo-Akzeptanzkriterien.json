@@ -1,0 +1,344 @@
+{
+  "schema_version": 1,
+  "policy": "incremental",
+  "criteria": [
+    {
+      "id": "AC-US01-01",
+      "story_id": 1,
+      "statement": "Gegeben sind die in US #01 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Startspieler ändern“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
+      "status": "legacy_provisional",
+      "test_references": [
+        "test_storage.py::test_first_player_can_be_selected_manually_before_start",
+        "test_storage.py::test_manual_first_player_must_be_present_and_selected",
+        "test_storage.py::test_start_player_cannot_be_changed_after_game_creation"
+      ],
+      "manual_review": false
+    },
+    {
+      "id": "AC-US02-01",
+      "story_id": 2,
+      "statement": "Gegeben sind die in US #02 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Spielerwahlmodus festlegen“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
+      "status": "legacy_provisional",
+      "test_references": [
+        "test_storage.py::test_random_mode_selects_next_player_and_undo_restores_pre_score_state",
+        "test_storage.py::test_manual_next_player_selection_is_rejected_in_random_mode",
+        "test_storage.py::test_manual_regular_mode_waits_for_instructor_and_accepts_only_next_team"
+      ],
+      "manual_review": false
+    },
+    {
+      "id": "AC-US03-01",
+      "story_id": 3,
+      "statement": "Gegeben sind die in US #03 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Nachzügler aufnehmen“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
+      "status": "legacy_provisional",
+      "test_references": [
+        "test_storage.py::test_late_player_is_added_to_running_roster_and_undoable",
+        "test_storage.py::test_late_player_can_unblock_random_selection"
+      ],
+      "manual_review": false
+    },
+    {
+      "id": "AC-US04-01",
+      "story_id": 4,
+      "statement": "Gegeben sind die in US #04 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Zentrale Instructor Settings“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
+      "status": "legacy_provisional",
+      "test_references": [
+        "test_i18n.py::test_i18n_language_selection_is_only_login_and_instructor_settings",
+        "test_storage.py::test_dashboard_configuration_issues_are_language_neutral"
+      ],
+      "manual_review": true
+    },
+    {
+      "id": "AC-US05-01",
+      "story_id": 5,
+      "statement": "Gegeben sind die in US #05 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Am System anmelden“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
+      "status": "legacy_provisional",
+      "test_references": [
+        "test_auth.py::test_admin_login_and_changes"
+      ],
+      "manual_review": false
+    },
+    {
+      "id": "AC-US06-01",
+      "story_id": 6,
+      "statement": "Gegeben sind die in US #06 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Eigenen Account verwalten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
+      "status": "legacy_provisional",
+      "test_references": [
+        "test_auth.py::test_admin_login_and_changes"
+      ],
+      "manual_review": false
+    },
+    {
+      "id": "AC-US07-01",
+      "story_id": 7,
+      "statement": "Gegeben sind die in US #07 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Kurse verwalten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
+      "status": "legacy_provisional",
+      "test_references": [
+        "test_storage.py::test_course_archive_preserves_data_hides_course_and_can_be_reactivated",
+        "test_storage.py::test_course_with_running_game_cannot_be_archived"
+      ],
+      "manual_review": false
+    },
+    {
+      "id": "AC-US08-01",
+      "story_id": 8,
+      "statement": "Gegeben sind die in US #08 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Studierende verwalten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
+      "status": "legacy_provisional",
+      "test_references": [
+        "test_student_duplicates.py::test_manual_duplicate_raises_localizable_storage_error",
+        "test_student_duplicates.py::test_duplicate_name_is_allowed_in_different_course",
+        "test_student_duplicates.py::test_rename_to_existing_name_raises_same_storage_error",
+        "test_student_duplicates.py::test_csv_import_still_skips_duplicate_names"
+      ],
+      "manual_review": false
+    },
+    {
+      "id": "AC-US09-01",
+      "story_id": 9,
+      "statement": "Gegeben sind die in US #09 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Studierende importieren“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
+      "status": "legacy_provisional",
+      "test_references": [
+        "test_student_duplicates.py::test_csv_import_still_skips_duplicate_names"
+      ],
+      "manual_review": false
+    },
+    {
+      "id": "AC-US10-01",
+      "story_id": 10,
+      "statement": "Gegeben sind die in US #10 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Studierende Teams zuordnen“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
+      "status": "legacy_provisional",
+      "test_references": [
+        "test_us10_team_assignment.py::test_us10_manual_assignment_changes_only_selected_student",
+        "test_us10_team_assignment.py::test_us10_random_assignment_balances_odd_number",
+        "test_us10_team_assignment.py::test_us10_random_assignment_ignores_inactive_and_other_courses",
+        "test_us10_team_assignment.py::test_us10_random_assignment_rejects_less_than_two_active",
+        "test_us10_team_assignment.py::test_us10_manual_assignment_rejects_invalid_team_without_mutation"
+      ],
+      "manual_review": false
+    },
+    {
+      "id": "AC-US11-01",
+      "story_id": 11,
+      "statement": "Gegeben sind die in US #11 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Anwesenheit festlegen“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
+      "status": "legacy_provisional",
+      "test_references": [
+        "test_storage.py::test_start_requires_four_present_per_team"
+      ],
+      "manual_review": true
+    },
+    {
+      "id": "AC-US12-01",
+      "story_id": 12,
+      "statement": "Gegeben sind die in US #12 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Lerneinheiten verwalten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
+      "status": "legacy_provisional",
+      "test_references": [
+        "test_storage.py::test_learning_unit_can_be_reordered_edited_and_only_deleted_without_questions"
+      ],
+      "manual_review": false
+    },
+    {
+      "id": "AC-US13-01",
+      "story_id": 13,
+      "statement": "Gegeben sind die in US #13 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Fragenpool verwalten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
+      "status": "legacy_provisional",
+      "test_references": [
+        "test_storage.py::test_question_delete_requires_removal_from_unlocked_round_but_preserves_locked_history"
+      ],
+      "manual_review": false
+    },
+    {
+      "id": "AC-US14-01",
+      "story_id": 14,
+      "statement": "Gegeben sind die in US #14 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Lerninhalte importieren und exportieren“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
+      "status": "legacy_provisional",
+      "test_references": [
+        "test_release.py::test_rel_04_new_exports_use_syzeteo_format",
+        "test_storage.py::test_question_pool_import_only_adds_new_content_and_never_overwrites_existing"
+      ],
+      "manual_review": false
+    },
+    {
+      "id": "AC-US15-01",
+      "story_id": 15,
+      "statement": "Gegeben sind die in US #15 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Runden konfigurieren“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
+      "status": "legacy_provisional",
+      "test_references": [
+        "test_round_selection_ui.py::test_exact_eight_remains_a_domain_rule",
+        "test_storage.py::test_round_has_eight_questions_and_locks_on_start"
+      ],
+      "manual_review": false
+    },
+    {
+      "id": "AC-US16-01",
+      "story_id": 16,
+      "statement": "Gegeben sind die in US #16 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Spiel starten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
+      "status": "legacy_provisional",
+      "test_references": [
+        "test_storage.py::test_round_has_eight_questions_and_locks_on_start",
+        "test_storage.py::test_start_requires_four_present_per_team"
+      ],
+      "manual_review": false
+    },
+    {
+      "id": "AC-US17-01",
+      "story_id": 17,
+      "statement": "Gegeben sind die in US #17 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Fachfragen durchführen und werten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
+      "status": "legacy_provisional",
+      "test_references": [
+        "test_release.py::test_rel_09_last_card_is_always_instructor_zero_points",
+        "test_storage.py::test_no_individual_answer_performance_is_stored",
+        "test_storage.py::test_random_mode_can_complete_all_student_turns_without_repetition"
+      ],
+      "manual_review": true
+    },
+    {
+      "id": "AC-US18-01",
+      "story_id": 18,
+      "statement": "Gegeben sind die in US #18 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Team Assist einsetzen“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
+      "status": "legacy_provisional",
+      "test_references": [
+        "test_release.py::test_rel_08_team_assist_does_not_block_later_regular_turn"
+      ],
+      "manual_review": false
+    },
+    {
+      "id": "AC-US19-01",
+      "story_id": 19,
+      "statement": "Gegeben sind die in US #19 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Challenge Card werten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
+      "status": "legacy_provisional",
+      "test_references": [
+        "test_release.py::test_rel_06_challenge_card_uses_native_value"
+      ],
+      "manual_review": false
+    },
+    {
+      "id": "AC-US20-01",
+      "story_id": 20,
+      "statement": "Gegeben sind die in US #20 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Spielschritt rückgängig machen“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
+      "status": "legacy_provisional",
+      "test_references": [
+        "test_storage.py::test_random_mode_selects_next_player_and_undo_restores_pre_score_state",
+        "test_storage.py::test_manual_regular_mode_player_choice_shares_scoring_undo",
+        "test_storage.py::test_undo_restores_last_scoring_step"
+      ],
+      "manual_review": false
+    },
+    {
+      "id": "AC-US21-01",
+      "story_id": 21,
+      "statement": "Gegeben sind die in US #21 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Laufendes Spiel fortsetzen“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
+      "status": "legacy_provisional",
+      "test_references": [
+        "test_us21_resume.py::test_us21_running_game_can_be_found_after_restart",
+        "test_us21_resume.py::test_us21_game_state_cards_and_roster_survive_restart",
+        "test_us21_resume.py::test_us21_aborted_game_cannot_be_resumed_as_running",
+        "test_us21_resume.py::test_us21_scored_turn_can_continue_after_restart"
+      ],
+      "manual_review": false
+    },
+    {
+      "id": "AC-US22-01",
+      "story_id": 22,
+      "statement": "Gegeben sind die in US #22 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Beamer-Modus verwenden“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
+      "status": "legacy_provisional",
+      "test_references": [
+        "test_rendering.py::test_plain_multiline_html_escapes_markup_and_preserves_literal_content",
+        "test_rendering.py::test_opened_question_renderer_bypasses_streamlit_markdown"
+      ],
+      "manual_review": true
+    },
+    {
+      "id": "AC-US23-01",
+      "story_id": 23,
+      "statement": "Gegeben sind die in US #23 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Ergebnisse überblicken“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
+      "status": "legacy_provisional",
+      "test_references": [
+        "test_game_abort.py::test_aborted_game_is_excluded_from_results"
+      ],
+      "manual_review": true
+    },
+    {
+      "id": "AC-US24-01",
+      "story_id": 24,
+      "statement": "Gegeben sind die in US #24 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Gespielte Fragen protokollieren“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
+      "status": "legacy_provisional",
+      "test_references": [
+        "test_us24_question_protocol.py::test_us24_resolved_questions_have_course_round_and_position",
+        "test_us24_question_protocol.py::test_us24_unresolved_and_challenge_cards_not_in_question_protocol",
+        "test_us24_question_protocol.py::test_us24_question_snapshot_is_independent_of_pool_changes",
+        "test_us24_question_protocol.py::test_us24_protocol_has_status_and_resolution_timestamp",
+        "test_us24_question_protocol.py::test_us24_aborted_game_keeps_resolved_questions_until_deleted",
+        "test_us24_csv.py::test_us24_csv_contains_only_course_and_round_filtered_rows",
+        "test_us24_csv.py::test_us24_csv_without_filters_preserves_all_rows_and_text",
+        "test_us24_csv.py::test_us24_filtered_empty_result_exports_header_only",
+        "test_us24_question_protocol.py::test_us24_final_instructor_question_is_logged_but_not_analyzed"
+      ],
+      "manual_review": true
+    },
+    {
+      "id": "AC-US25-01",
+      "story_id": 25,
+      "statement": "Gegeben sind die in US #25 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Rundenabdeckung prüfen“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
+      "status": "legacy_provisional",
+      "test_references": [
+        "test_game_abort.py::test_delete_aborted_game_cascades_and_round_can_be_started_again"
+      ],
+      "manual_review": true
+    },
+    {
+      "id": "AC-US26-01",
+      "story_id": 26,
+      "statement": "Gegeben sind die in US #26 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Spiel abbrechen und löschen“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
+      "status": "legacy_provisional",
+      "test_references": [
+        "test_game_abort.py::test_running_game_can_be_aborted_and_is_not_running_afterwards",
+        "test_game_abort.py::test_only_running_games_can_be_aborted",
+        "test_game_abort.py::test_only_aborted_games_can_be_deleted",
+        "test_game_abort.py::test_delete_aborted_game_cascades_and_round_can_be_started_again"
+      ],
+      "manual_review": false
+    },
+    {
+      "id": "AC-US27-01",
+      "story_id": 27,
+      "statement": "Gegeben sind die in US #27 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Teamnamen verwalten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
+      "status": "legacy_provisional",
+      "test_references": [
+        "test_team_names.py::test_custom_team_names_can_be_set_on_course_creation",
+        "test_team_names.py::test_team_names_must_be_nonempty_and_distinct",
+        "test_team_names.py::test_team_names_can_be_changed_without_changing_internal_team_assignment",
+        "test_team_names.py::test_running_game_locks_team_names_and_game_keeps_snapshots"
+      ],
+      "manual_review": true
+    },
+    {
+      "id": "AC-US28-01",
+      "story_id": 28,
+      "statement": "Gegeben sind die in US #28 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Fragen auswerten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
+      "status": "legacy_provisional",
+      "test_references": [
+        "test_question_analysis.py::test_analysis_counts_correct_and_incorrect_regular_questions",
+        "test_question_analysis.py::test_analysis_excludes_final_instructor_card_and_challenge_card",
+        "test_question_analysis.py::test_analysis_excludes_running_and_aborted_games",
+        "test_question_analysis.py::test_analysis_can_be_scoped_to_one_course_or_all_courses",
+        "test_question_analysis.py::test_analysis_separates_changed_question_versions",
+        "test_question_analysis.py::test_analysis_contains_no_individual_student_fields_and_counts_team_assist_normally"
+      ],
+      "manual_review": false
+    },
+    {
+      "id": "AC-US29-01",
+      "story_id": 29,
+      "statement": "Gegeben sind die in US #29 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Tic-Tac-Toe auf dem Board“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
+      "status": "legacy_provisional",
+      "test_references": [
+        "test_tic_tac_toe.py::test_no_line_without_three_scored_cards_of_one_team",
+        "test_tic_tac_toe.py::test_every_line_is_detected_with_its_direction",
+        "test_tic_tac_toe.py::test_first_completed_line_wins",
+        "test_tic_tac_toe.py::test_scored_game_cards_form_line_and_undo_removes_it",
+        "test_tic_tac_toe.py::test_card_markers_have_matching_css"
+      ],
+      "manual_review": true
+    }
+  ]
+}
