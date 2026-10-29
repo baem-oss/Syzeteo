@@ -8,7 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 DOC = ROOT / "docs"
-PATTERN = re.compile(r"^- \[x\] \*\*US #(\d+) – ([^\n*]+)\*\*([\s\S]*?)(?=\n- \[x\] \*\*US #|\s*$)", re.M)
+PATTERN = re.compile(r"^- \[x\] \*\*US #(\d+) – ([^\n*]+)\*\*([\s\S]*?)(?=\n- \[x\] \*\*US #|\Z)", re.M)
 
 def load(name):
     return json.loads((DOC / name).read_text(encoding="utf-8"))
