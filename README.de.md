@@ -102,9 +102,13 @@ python -m unittest discover -v
 
 Der Release enthält Regressionstests, Migrationstests, Release-Abnahmetests und Konsistenztests für die Internationalisierung, einschließlich dedizierter Tests für kursbezogene Teamnamen und die Migration von Schema 2 auf Schema 3.
 
-## Spezifikation
+## Dokumentation und RE-Fallstudie
 
-Im Verzeichnis `docs/` liegen User Stories, Anforderungen/Geschäftsregeln und Traceability Matrix jeweils in deutscher und englischer Fassung sowie die aktuelle technische Baseline, historische Baselines, Internationalisierungsspezifikationen und Upgrade-Sicherheitsdokumente.
+**Für Studierende:** Einstieg über die [Dokumentationsübersicht](docs/README.md), die [Fallstudie](docs/RE-Fallstudie-DE.md) und das [durchgearbeitete Methodenbeispiel](docs/RE-Methodenbeispiel-DE.md) mit US, UC, BPMN, FANF/NFANF/RANF und Traceability.
+
+Die fachlich verbindlichen Quellen sind weiterhin die [User Stories](docs/Syzeteo-L-US-DE.md), die [Randanforderungen und Regeln](docs/Syzeteo-RANF-etc-DE.md), die [Use Cases](docs/Syzeteo-Use-Cases-US26-DE.md) sowie die [Traceability-Matrix](docs/Syzeteo-Traceability-Matrix-DE.md). [Akzeptanztests und QS-Nachweise](docs/Syzeteo-QS-und-Abnahme-DE.md) sind gesondert dokumentiert.
+
+Ältere technische Versionsstände, Upgrade- und i18n-Spezifikationen stehen im [Versionsarchiv](docs/archiv/README.md) und gehören nicht zur aktuellen RE-Spezifikation.
 
 ## Repository-Hygiene
 
