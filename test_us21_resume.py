@@ -6,6 +6,7 @@ from pathlib import Path
 from storage import (connect, create_course, add_learning_unit, add_question,
                      create_round, add_student, randomize_teams, start_game,
                      get_game, list_games, game_cards, game_roster, current_player,
+                     reveal_card, resolve_question,
                      abort_game)
 
 
@@ -64,6 +65,30 @@ class US21ResumeAcceptanceTests(unittest.TestCase):
         self.reconnect()
         self.assertEqual(list_games(self.conn, "running"), [])
         self.assertEqual(get_game(self.conn, self.gid)["status"], "aborted")
+
+
+    def test_us21_scored_turn_can_continue_after_restart(self):
+        first = game_cards(self.conn, self.gid)[0]
+        reveal_card(self.conn, self.gid, first["card_no"])
+        resolve_question(self.conn, self.gid, first["id"], 1)
+        before = get_game(self.conn, self.gid)
+        before_cards = [tuple(r) for r in game_cards(self.conn, self.gid)]
+        before_roster = [tuple(r) for r in game_roster(self.conn, self.gid)]
+        self.assertEqual(before["turn_no"], 2)
+        self.assertEqual(before["team1_points"] + before["team2_points"], 1)
+        self.reconnect()
+        restored = get_game(self.conn, self.gid)
+        self.assertEqual(restored["status"], "running")
+        for field in ("current_student_id", "current_team", "turn_no",
+                      "team1_points", "team2_points", "player_selection_mode"):
+            self.assertEqual(restored[field], before[field], field)
+        self.assertEqual([tuple(r) for r in game_cards(self.conn, self.gid)], before_cards)
+        self.assertEqual([tuple(r) for r in game_roster(self.conn, self.gid)], before_roster)
+        next_card = next(c for c in game_cards(self.conn, self.gid) if not c["resolved"])
+        reveal_card(self.conn, self.gid, next_card["card_no"])
+        self.assertEqual(
+            next(c for c in game_cards(self.conn, self.gid)
+                 if c["card_no"] == next_card["card_no"])["revealed"], 1)
 
 
 if __name__ == "__main__":
