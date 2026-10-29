@@ -104,10 +104,16 @@
     {
       "id": 10,
       "criterion": "AC-US10-01",
-      "test_references": [],
+      "test_references": [
+        "test_us10_team_assignment.py::test_us10_manual_assignment_changes_only_selected_student",
+        "test_us10_team_assignment.py::test_us10_random_assignment_balances_odd_number",
+        "test_us10_team_assignment.py::test_us10_random_assignment_ignores_inactive_and_other_courses",
+        "test_us10_team_assignment.py::test_us10_random_assignment_rejects_less_than_two_active",
+        "test_us10_team_assignment.py::test_us10_manual_assignment_rejects_invalid_team_without_mutation"
+      ],
       "manual_review": false,
-      "review_status": "no_direct_evidence",
-      "review_note": "Quelltest-Prüfzweck und Assertions fachlich geprüft; keine Vollabnahme der Story."
+      "review_status": "verified_partial",
+      "review_note": "Direkte Assertions für manuelle und zufällige Zuordnung, Inaktive, Kursisolation und Validierung. Historische Spiel-Snapshots und UI-Abnahme separat."
     },
     {
       "id": 11,
