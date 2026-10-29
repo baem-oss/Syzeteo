@@ -1,42 +1,35 @@
-# Syzeteo – US #21: Akzeptanztests für das Fortsetzen laufender Spiele
+# Syzeteo – US #21: Laufendes Spiel fortsetzen
 
-Stand: 29.10.2026
+**Stand:** 29.10.2026 · **Status:** vier direkte automatisierte Teilnachweise; UI-Freigabe PASS (vom Nutzer gemeldet).
 
 ## Fachliche Grundlage
 
-US #21 verlangt, dass ein bereits laufendes Spiel später wieder geöffnet und am gespeicherten Zustand fortgesetzt werden kann. GR #11 untersagt die Fortsetzung abgebrochener Spiele. Die Testfälle verwenden eine isolierte temporäre SQLite-Datei und öffnen die Verbindung neu, um einen Prozess-/Sitzungswechsel auf Persistenzebene nachzubilden.
+Ein laufendes Spiel bleibt nach Unterbrechung verfügbar und wird am gespeicherten Zustand fortgesetzt. Abgebrochene Spiele dürfen nicht als laufende Spiele angeboten werden (GR #11). Die automatisierten Tests verwenden eine temporäre SQLite-Datenbank und öffnen die Verbindung erneut.
+
+**Verbindliche maschinenlesbare Kriterien-ID:** `AC-US21-01` (Status `legacy_provisional`). Die folgenden **S-US21-xx** sind konkretisierte Testszenarien und **noch keine gesondert registrierten AC-IDs**.
 
 ## Automatisierte Szenarien
 
-| ID | Gegeben | Wenn | Dann | Test |
+| Szenario | Gegeben | Wenn | Dann | Direkter Test |
 |---|---|---|---|---|
-| AC-US21-01 | Ein laufendes Spiel ist gestartet | Die Datenbank wird geschlossen und erneut geöffnet | Das Spiel ist weiter als `running` auffindbar | `test_us21_running_game_can_be_found_after_restart` |
-| AC-US21-02 | Ein laufendes Spiel hat Startspieler, Teams und neun Karten | Die Datenbankverbindung wird neu aufgebaut | Karten, Spielerbestand, aktueller Spieler, Modus und Spielstand sind unverändert | `test_us21_game_state_cards_and_roster_survive_restart` |
-| AC-US21-03 | Ein Spiel wurde abgebrochen | Das System wird erneut gestartet | Das Spiel wird nicht als laufend angeboten | `test_us21_aborted_game_cannot_be_resumed_as_running` |
+| S-US21-01 | Laufendes Spiel | Datenbank neu geöffnet | Spiel weiter als `running` auffindbar | `test_us21_running_game_can_be_found_after_restart` |
+| S-US21-02 | Startzustand mit Spieler, Teams und neun Karten | Verbindung neu geöffnet | Karten, Kader, aktuelle Spielerwahl und Spielstand unverändert | `test_us21_game_state_cards_and_roster_survive_restart` |
+| S-US21-03 | Abgebrochenes Spiel | Verbindung neu geöffnet | Nicht mehr als laufend auswählbar | `test_us21_aborted_game_cannot_be_resumed_as_running` |
+| S-US21-04 | Spiel mit gewerteter Fachfrage | Verbindung neu geöffnet; nächste Karte aufgedeckt | Punkte, Karten, Spielerwahl und Zug bleiben erhalten; nächste Karte ist bedienbar | `test_us21_scored_turn_can_continue_after_restart` |
+
+Alle vier Methoden liegen in `test_us21_resume.py` und sind im Story-Mapping referenziert.
+
+## UI-Abnahme und Prüfanleitung
+
+**PASS – vom Projektverantwortlichen am 29.10.2026 gemeldet.** Dies ist keine vom Assistenten durchgeführte Browser-E2E-Prüfung. Einzelbeobachtungen, Browserversion und tatsächliche Auflösung/Zoomstufe sind nicht übermittelt.
+
+Referenz für eine künftig einzeln dokumentierte Wiederholungsprüfung: 1920×1080, Browser-Zoom 100 %. Spiel starten und eine Fachfrage werten; Sitzung beenden, erneut anmelden und „Spiel fortsetzen“ wählen; Punkte, Karten, Spieler/Teams und Team-Assist-Zustand vergleichen; nach Abbruch prüfen, dass keine Fortsetzung mehr angeboten wird.
 
 ## Grenzen
 
-Dies sind echte Assertions zum persistierten Spielzustand, aber noch kein automatisierter Streamlit-End-to-End-Test des Buttons „Spiel fortsetzen“. Der vorhandene UI-Pfad ist in `app.py` (Dashboard und Instructor Settings) implementiert und erfordert eine dokumentierte manuelle UI-Abnahme. Außerdem prüft AC-US21-02 bislang den unmittelbar nach Spielstart gespeicherten Zustand; eine zusätzliche Fortsetzung nach mehreren gewerteten Spielzügen bleibt ein sinnvoller nächster Test.
+- Die automatisierten Tests beweisen persistierten Zustand und weitere Bedienbarkeit **auf Anwendungsebene**; sie ersetzen keinen automatisierten Streamlit-Browsertest.
+- Der testweise Neustart ist ein erneutes Öffnen der Datenbankverbindung, kein vollständig automatisierter Browser-Login oder Prozessneustart.
+- Mehrere hintereinander gewertete Züge und weitere UI-Randfälle sind nicht als vollständig abgedeckt ausgewiesen.
+- Für eine revisionsfähige manuelle Einzelabnahme fehlen Browser-/Umgebungsdetails und ggf. Screenshots.
 
-## Manuelle Abnahme
-
-Referenzumgebung: 1920×1080 Pixel, Browser-Zoom 100 %.
-
-1. Spiel starten, eine Fachfrage werten und den aktuellen Spielstand notieren.
-2. Browser-Sitzung schließen, erneut anmelden und „Spiel fortsetzen“ öffnen.
-3. Aktuelle Punkte, Karten, Start-/Folgespieler, Teamnamen und Team-Assist-Verbrauch vergleichen.
-4. Spiel abbrechen und erneut anmelden; prüfen, dass dieses Spiel nicht fortgesetzt werden kann.
-
-**Nachweisstatus:** Offen, bis Datum, Prüfer, Browser-Version und Ist-Ergebnis dokumentiert sind.
-
-## Erweiterung: Fortsetzung nach Wertung
-
-**AC-US21-04:** Gegeben ist ein laufendes Spiel mit einem bereits gewerteten regulären Spielzug. Wenn die SQLite-Verbindung geschlossen und neu geöffnet wird, dann bleiben Team-Punkte, aktuelle Spielerwahl, Zugnummer, Karten und Spielerkader unverändert. Eine weitere Karte lässt sich anschließend erfolgreich aufdecken.
-
-Automatisierter Test: `test_us21_resume.py::test_us21_scored_turn_can_continue_after_restart`.
-
-Die manuelle End-to-End-Abnahme der Streamlit-Oberfläche bleibt offen. Der automatisierte Test beweist den Persistenz- und Fortsetzungspfad auf Anwendungsebene, nicht die Darstellung im Browser.
-
-## UI-Abnahme – Freigabe vom 29.10.2026
-
-**Status: PASS (ausdrückliche Nutzerfreigabe im Chat).** Die UI-Abnahme wurde vom Projektverantwortlichen als bestanden gemeldet. Keine eigenständige Browserprüfung durch den Assistenten und kein separat übermitteltes Prüfprotokoll. Browser-Version, tatsächlich verwendete Auflösung und Zoomstufe sind nicht nachgewiesen. Die zugehörigen automatisierten Regressionstests bleiben unabhängige Nachweise. Für US #21 gilt diese Freigabe als gemeldete manuelle UI-Abnahme; weitergehende fachliche Vollabdeckung wird daraus nicht abgeleitet.
+Siehe `Syzeteo-Testabdeckung-Review-DE.md` und `Syzeteo-TDD-Kriterien-Governance-DE.md`.
