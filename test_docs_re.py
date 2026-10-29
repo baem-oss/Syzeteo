@@ -9,10 +9,7 @@ DOCS = ROOT / "docs"
 ENTRY_POINTS = [
     ROOT / "README.md",
     ROOT / "README.de.md",
-    DOCS / "README.md",
-    DOCS / "RE-Fallstudie-DE.md",
-    DOCS / "RE-Methodenbeispiel-DE.md",
-    DOCS / "Syzeteo-QS-und-Abnahme-DE.md",
+    *sorted(DOCS.glob("*.md")),
     DOCS / "archiv" / "README.md",
 ]
 LINK = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
