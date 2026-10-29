@@ -7,11 +7,15 @@
       "test_references": [
         "test_storage.py::test_first_player_can_be_selected_manually_before_start",
         "test_storage.py::test_manual_first_player_must_be_present_and_selected",
-        "test_storage.py::test_start_player_cannot_be_changed_after_game_creation"
+        "test_storage.py::test_start_player_cannot_be_changed_after_game_creation",
+        "test_tdd_phase2_remaining.py::test_us01_manual_starter_selection_replaces_random_choice_before_first_card"
       ],
       "manual_review": false,
       "review_status": "verified_partial",
-      "review_note": "Quelltest-Prüfzweck und Assertions fachlich geprüft; keine Vollabnahme der Story."
+      "review_note": "Phase 2: AC-US-01 als konkreter, direkt getesteter Teilaspekt spezifiziert; fachliche Vollabnahme und ggf. weitere Given-When-Then-Szenarien bleiben eigenständige Prüfaufgaben.",
+      "criteria": [
+        "AC-US01-01"
+      ]
     },
     {
       "id": 2,
@@ -19,33 +23,45 @@
       "test_references": [
         "test_storage.py::test_random_mode_selects_next_player_and_undo_restores_pre_score_state",
         "test_storage.py::test_manual_next_player_selection_is_rejected_in_random_mode",
-        "test_storage.py::test_manual_regular_mode_waits_for_instructor_and_accepts_only_next_team"
+        "test_storage.py::test_manual_regular_mode_waits_for_instructor_and_accepts_only_next_team",
+        "test_tdd_phase2_remaining.py::test_us02_selection_mode_is_frozen_in_running_game"
       ],
       "manual_review": false,
       "review_status": "verified_partial",
-      "review_note": "Quelltest-Prüfzweck und Assertions fachlich geprüft; keine Vollabnahme der Story."
+      "review_note": "Phase 2: AC-US-01 als konkreter, direkt getesteter Teilaspekt spezifiziert; fachliche Vollabnahme und ggf. weitere Given-When-Then-Szenarien bleiben eigenständige Prüfaufgaben.",
+      "criteria": [
+        "AC-US02-01"
+      ]
     },
     {
       "id": 3,
       "criterion": "AC-US03-01",
       "test_references": [
         "test_storage.py::test_late_player_is_added_to_running_roster_and_undoable",
-        "test_storage.py::test_late_player_can_unblock_random_selection"
+        "test_storage.py::test_late_player_can_unblock_random_selection",
+        "test_tdd_phase2_remaining.py::test_us03_late_arrival_is_added_only_to_running_roster"
       ],
       "manual_review": false,
       "review_status": "verified_partial",
-      "review_note": "Quelltest-Prüfzweck und Assertions fachlich geprüft; keine Vollabnahme der Story."
+      "review_note": "Phase 2: AC-US-01 als konkreter, direkt getesteter Teilaspekt spezifiziert; fachliche Vollabnahme und ggf. weitere Given-When-Then-Szenarien bleiben eigenständige Prüfaufgaben.",
+      "criteria": [
+        "AC-US03-01"
+      ]
     },
     {
       "id": 4,
       "criterion": "AC-US04-01",
       "test_references": [
         "test_i18n.py::test_i18n_language_selection_is_only_login_and_instructor_settings",
-        "test_storage.py::test_dashboard_configuration_issues_are_language_neutral"
+        "test_storage.py::test_dashboard_configuration_issues_are_language_neutral",
+        "test_tdd_phase2_remaining.py::test_us04_instructor_settings_reports_empty_course_with_action"
       ],
       "manual_review": true,
       "review_status": "verified_partial",
-      "review_note": "Quelltest-Prüfzweck und Assertions fachlich geprüft; keine Vollabnahme der Story."
+      "review_note": "Phase 2: AC-US-01 als konkreter, direkt getesteter Teilaspekt spezifiziert; fachliche Vollabnahme und ggf. weitere Given-When-Then-Szenarien bleiben eigenständige Prüfaufgaben.",
+      "criteria": [
+        "AC-US04-01"
+      ]
     },
     {
       "id": 5,
@@ -156,64 +172,88 @@
       "id": 11,
       "criterion": "AC-US11-01",
       "test_references": [
-        "test_storage.py::test_start_requires_four_present_per_team"
+        "test_storage.py::test_start_requires_four_present_per_team",
+        "test_tdd_phase2_remaining.py::test_us11_only_present_students_enter_initial_game_roster"
       ],
       "manual_review": true,
       "review_status": "verified_partial",
-      "review_note": "Quelltest-Prüfzweck und Assertions fachlich geprüft; keine Vollabnahme der Story."
+      "review_note": "Phase 2: AC-US-01 als konkreter, direkt getesteter Teilaspekt spezifiziert; fachliche Vollabnahme und ggf. weitere Given-When-Then-Szenarien bleiben eigenständige Prüfaufgaben.",
+      "criteria": [
+        "AC-US11-01"
+      ]
     },
     {
       "id": 12,
       "criterion": "AC-US12-01",
       "test_references": [
-        "test_storage.py::test_learning_unit_can_be_reordered_edited_and_only_deleted_without_questions"
+        "test_storage.py::test_learning_unit_can_be_reordered_edited_and_only_deleted_without_questions",
+        "test_tdd_phase2_remaining.py::test_us12_learning_unit_can_be_renamed_and_reordered"
       ],
       "manual_review": false,
       "review_status": "verified_partial",
-      "review_note": "Quelltest-Prüfzweck und Assertions fachlich geprüft; keine Vollabnahme der Story."
+      "review_note": "Phase 2: AC-US-01 als konkreter, direkt getesteter Teilaspekt spezifiziert; fachliche Vollabnahme und ggf. weitere Given-When-Then-Szenarien bleiben eigenständige Prüfaufgaben.",
+      "criteria": [
+        "AC-US12-01"
+      ]
     },
     {
       "id": 13,
       "criterion": "AC-US13-01",
       "test_references": [
-        "test_storage.py::test_question_delete_requires_removal_from_unlocked_round_but_preserves_locked_history"
+        "test_storage.py::test_question_delete_requires_removal_from_unlocked_round_but_preserves_locked_history",
+        "test_tdd_phase2_remaining.py::test_us13_question_edit_and_archive_preserve_global_pool_entry"
       ],
       "manual_review": false,
       "review_status": "verified_partial",
-      "review_note": "Quelltest-Prüfzweck und Assertions fachlich geprüft; keine Vollabnahme der Story."
+      "review_note": "Phase 2: AC-US-01 als konkreter, direkt getesteter Teilaspekt spezifiziert; fachliche Vollabnahme und ggf. weitere Given-When-Then-Szenarien bleiben eigenständige Prüfaufgaben.",
+      "criteria": [
+        "AC-US13-01"
+      ]
     },
     {
       "id": 14,
       "criterion": "AC-US14-01",
       "test_references": [
         "test_release.py::test_rel_04_new_exports_use_syzeteo_format",
-        "test_storage.py::test_question_pool_import_only_adds_new_content_and_never_overwrites_existing"
+        "test_storage.py::test_question_pool_import_only_adds_new_content_and_never_overwrites_existing",
+        "test_tdd_phase2_remaining.py::test_us14_question_pool_export_import_preserves_unit_and_question"
       ],
       "manual_review": false,
       "review_status": "verified_partial",
-      "review_note": "Quelltest-Prüfzweck und Assertions fachlich geprüft; keine Vollabnahme der Story."
+      "review_note": "Phase 2: AC-US-01 als konkreter, direkt getesteter Teilaspekt spezifiziert; fachliche Vollabnahme und ggf. weitere Given-When-Then-Szenarien bleiben eigenständige Prüfaufgaben.",
+      "criteria": [
+        "AC-US14-01"
+      ]
     },
     {
       "id": 15,
       "criterion": "AC-US15-01",
       "test_references": [
         "test_round_selection_ui.py::test_exact_eight_remains_a_domain_rule",
-        "test_storage.py::test_round_has_eight_questions_and_locks_on_start"
+        "test_storage.py::test_round_has_eight_questions_and_locks_on_start",
+        "test_tdd_phase2_remaining.py::test_us15_round_has_exactly_eight_distinct_questions_in_order"
       ],
       "manual_review": false,
       "review_status": "verified_partial",
-      "review_note": "Quelltest-Prüfzweck und Assertions fachlich geprüft; keine Vollabnahme der Story."
+      "review_note": "Phase 2: AC-US-01 als konkreter, direkt getesteter Teilaspekt spezifiziert; fachliche Vollabnahme und ggf. weitere Given-When-Then-Szenarien bleiben eigenständige Prüfaufgaben.",
+      "criteria": [
+        "AC-US15-01"
+      ]
     },
     {
       "id": 16,
       "criterion": "AC-US16-01",
       "test_references": [
         "test_storage.py::test_round_has_eight_questions_and_locks_on_start",
-        "test_storage.py::test_start_requires_four_present_per_team"
+        "test_storage.py::test_start_requires_four_present_per_team",
+        "test_tdd_phase2_remaining.py::test_us16_start_creates_nine_cards_and_disallows_second_start_for_same_course"
       ],
       "manual_review": false,
       "review_status": "verified_partial",
-      "review_note": "Quelltest-Prüfzweck und Assertions fachlich geprüft; keine Vollabnahme der Story."
+      "review_note": "Phase 2: AC-US-01 als konkreter, direkt getesteter Teilaspekt spezifiziert; fachliche Vollabnahme und ggf. weitere Given-When-Then-Szenarien bleiben eigenständige Prüfaufgaben.",
+      "criteria": [
+        "AC-US16-01"
+      ]
     },
     {
       "id": 17,
@@ -221,31 +261,43 @@
       "test_references": [
         "test_release.py::test_rel_09_last_card_is_always_instructor_zero_points",
         "test_storage.py::test_no_individual_answer_performance_is_stored",
-        "test_storage.py::test_random_mode_can_complete_all_student_turns_without_repetition"
+        "test_storage.py::test_random_mode_can_complete_all_student_turns_without_repetition",
+        "test_tdd_phase2_remaining.py::test_us17_scoring_question_updates_only_current_team_points"
       ],
       "manual_review": true,
       "review_status": "verified_partial",
-      "review_note": "Quelltest-Prüfzweck und Assertions fachlich geprüft; keine Vollabnahme der Story."
+      "review_note": "Phase 2: AC-US-01 als konkreter, direkt getesteter Teilaspekt spezifiziert; fachliche Vollabnahme und ggf. weitere Given-When-Then-Szenarien bleiben eigenständige Prüfaufgaben.",
+      "criteria": [
+        "AC-US17-01"
+      ]
     },
     {
       "id": 18,
       "criterion": "AC-US18-01",
       "test_references": [
-        "test_release.py::test_rel_08_team_assist_does_not_block_later_regular_turn"
+        "test_release.py::test_rel_08_team_assist_does_not_block_later_regular_turn",
+        "test_tdd_phase2_remaining.py::test_us18_team_assist_is_consumed_once_and_does_not_store_person_performance"
       ],
       "manual_review": false,
       "review_status": "verified_partial",
-      "review_note": "Quelltest-Prüfzweck und Assertions fachlich geprüft; keine Vollabnahme der Story."
+      "review_note": "Phase 2: AC-US-01 als konkreter, direkt getesteter Teilaspekt spezifiziert; fachliche Vollabnahme und ggf. weitere Given-When-Then-Szenarien bleiben eigenständige Prüfaufgaben.",
+      "criteria": [
+        "AC-US18-01"
+      ]
     },
     {
       "id": 19,
       "criterion": "AC-US19-01",
       "test_references": [
-        "test_release.py::test_rel_06_challenge_card_uses_native_value"
+        "test_release.py::test_rel_06_challenge_card_uses_native_value",
+        "test_tdd_phase2_remaining.py::test_us19_challenge_card_can_award_two_points_to_active_team"
       ],
       "manual_review": false,
       "review_status": "verified_partial",
-      "review_note": "Quelltest-Prüfzweck und Assertions fachlich geprüft; keine Vollabnahme der Story."
+      "review_note": "Phase 2: AC-US-01 als konkreter, direkt getesteter Teilaspekt spezifiziert; fachliche Vollabnahme und ggf. weitere Given-When-Then-Szenarien bleiben eigenständige Prüfaufgaben.",
+      "criteria": [
+        "AC-US19-01"
+      ]
     },
     {
       "id": 20,
@@ -253,11 +305,15 @@
       "test_references": [
         "test_storage.py::test_random_mode_selects_next_player_and_undo_restores_pre_score_state",
         "test_storage.py::test_manual_regular_mode_player_choice_shares_scoring_undo",
-        "test_storage.py::test_undo_restores_last_scoring_step"
+        "test_storage.py::test_undo_restores_last_scoring_step",
+        "test_tdd_phase2_remaining.py::test_us20_undo_restores_points_and_unresolved_card"
       ],
       "manual_review": false,
       "review_status": "verified_partial",
-      "review_note": "Quelltest-Prüfzweck und Assertions fachlich geprüft; keine Vollabnahme der Story."
+      "review_note": "Phase 2: AC-US-01 als konkreter, direkt getesteter Teilaspekt spezifiziert; fachliche Vollabnahme und ggf. weitere Given-When-Then-Szenarien bleiben eigenständige Prüfaufgaben.",
+      "criteria": [
+        "AC-US20-01"
+      ]
     },
     {
       "id": 21,
@@ -283,21 +339,29 @@
       "criterion": "AC-US22-01",
       "test_references": [
         "test_rendering.py::test_plain_multiline_html_escapes_markup_and_preserves_literal_content",
-        "test_rendering.py::test_opened_question_renderer_bypasses_streamlit_markdown"
+        "test_rendering.py::test_opened_question_renderer_bypasses_streamlit_markdown",
+        "test_tdd_phase2_remaining.py::test_us22_question_text_escapes_html_in_projection_rendering"
       ],
       "manual_review": true,
       "review_status": "verified_partial",
-      "review_note": "Quelltest-Prüfzweck und Assertions fachlich geprüft; keine Vollabnahme der Story."
+      "review_note": "Phase 2: AC-US-01 als konkreter, direkt getesteter Teilaspekt spezifiziert; fachliche Vollabnahme und ggf. weitere Given-When-Then-Szenarien bleiben eigenständige Prüfaufgaben.",
+      "criteria": [
+        "AC-US22-01"
+      ]
     },
     {
       "id": 23,
       "criterion": "AC-US23-01",
       "test_references": [
-        "test_game_abort.py::test_aborted_game_is_excluded_from_results"
+        "test_game_abort.py::test_aborted_game_is_excluded_from_results",
+        "test_tdd_phase2_remaining.py::test_us23_finished_results_are_included_but_running_games_not_scored"
       ],
       "manual_review": true,
       "review_status": "verified_partial",
-      "review_note": "Quelltest-Prüfzweck und Assertions fachlich geprüft; keine Vollabnahme der Story."
+      "review_note": "Phase 2: AC-US-01 als konkreter, direkt getesteter Teilaspekt spezifiziert; fachliche Vollabnahme und ggf. weitere Given-When-Then-Szenarien bleiben eigenständige Prüfaufgaben.",
+      "criteria": [
+        "AC-US23-01"
+      ]
     },
     {
       "id": 24,
@@ -330,11 +394,15 @@
       "id": 25,
       "criterion": "AC-US25-01",
       "test_references": [
-        "test_game_abort.py::test_delete_aborted_game_cascades_and_round_can_be_started_again"
+        "test_game_abort.py::test_delete_aborted_game_cascades_and_round_can_be_started_again",
+        "test_tdd_phase2_remaining.py::test_us25_round_coverage_distinguishes_running_played_and_open_courses"
       ],
       "manual_review": true,
       "review_status": "verified_partial",
-      "review_note": "Quelltest-Prüfzweck und Assertions fachlich geprüft; keine Vollabnahme der Story."
+      "review_note": "Phase 2: AC-US-01 als konkreter, direkt getesteter Teilaspekt spezifiziert; fachliche Vollabnahme und ggf. weitere Given-When-Then-Szenarien bleiben eigenständige Prüfaufgaben.",
+      "criteria": [
+        "AC-US25-01"
+      ]
     },
     {
       "id": 26,
@@ -343,11 +411,15 @@
         "test_game_abort.py::test_running_game_can_be_aborted_and_is_not_running_afterwards",
         "test_game_abort.py::test_only_running_games_can_be_aborted",
         "test_game_abort.py::test_only_aborted_games_can_be_deleted",
-        "test_game_abort.py::test_delete_aborted_game_cascades_and_round_can_be_started_again"
+        "test_game_abort.py::test_delete_aborted_game_cascades_and_round_can_be_started_again",
+        "test_tdd_phase2_remaining.py::test_us26_aborted_game_deletion_removes_cards_and_releases_round"
       ],
       "manual_review": false,
       "review_status": "verified_partial",
-      "review_note": "Quelltest-Prüfzweck und Assertions fachlich geprüft; keine Vollabnahme der Story."
+      "review_note": "Phase 2: AC-US-01 als konkreter, direkt getesteter Teilaspekt spezifiziert; fachliche Vollabnahme und ggf. weitere Given-When-Then-Szenarien bleiben eigenständige Prüfaufgaben.",
+      "criteria": [
+        "AC-US26-01"
+      ]
     },
     {
       "id": 27,
@@ -356,11 +428,15 @@
         "test_team_names.py::test_custom_team_names_can_be_set_on_course_creation",
         "test_team_names.py::test_team_names_must_be_nonempty_and_distinct",
         "test_team_names.py::test_team_names_can_be_changed_without_changing_internal_team_assignment",
-        "test_team_names.py::test_running_game_locks_team_names_and_game_keeps_snapshots"
+        "test_team_names.py::test_running_game_locks_team_names_and_game_keeps_snapshots",
+        "test_tdd_phase2_remaining.py::test_us27_team_name_changes_preserve_running_game_snapshots"
       ],
       "manual_review": true,
       "review_status": "verified_partial",
-      "review_note": "Quelltest-Prüfzweck und Assertions fachlich geprüft; keine Vollabnahme der Story."
+      "review_note": "Phase 2: AC-US-01 als konkreter, direkt getesteter Teilaspekt spezifiziert; fachliche Vollabnahme und ggf. weitere Given-When-Then-Szenarien bleiben eigenständige Prüfaufgaben.",
+      "criteria": [
+        "AC-US27-01"
+      ]
     },
     {
       "id": 28,
@@ -371,11 +447,15 @@
         "test_question_analysis.py::test_analysis_excludes_running_and_aborted_games",
         "test_question_analysis.py::test_analysis_can_be_scoped_to_one_course_or_all_courses",
         "test_question_analysis.py::test_analysis_separates_changed_question_versions",
-        "test_question_analysis.py::test_analysis_contains_no_individual_student_fields_and_counts_team_assist_normally"
+        "test_question_analysis.py::test_analysis_contains_no_individual_student_fields_and_counts_team_assist_normally",
+        "test_tdd_phase2_remaining.py::test_us28_analysis_excludes_unfinished_games_and_student_identity"
       ],
       "manual_review": false,
       "review_status": "verified_partial",
-      "review_note": "Quelltest-Prüfzweck und Assertions fachlich geprüft; keine Vollabnahme der Story."
+      "review_note": "Phase 2: AC-US-01 als konkreter, direkt getesteter Teilaspekt spezifiziert; fachliche Vollabnahme und ggf. weitere Given-When-Then-Szenarien bleiben eigenständige Prüfaufgaben.",
+      "criteria": [
+        "AC-US28-01"
+      ]
     },
     {
       "id": 29,
@@ -385,11 +465,15 @@
         "test_tic_tac_toe.py::test_every_line_is_detected_with_its_direction",
         "test_tic_tac_toe.py::test_first_completed_line_wins",
         "test_tic_tac_toe.py::test_scored_game_cards_form_line_and_undo_removes_it",
-        "test_tic_tac_toe.py::test_card_markers_have_matching_css"
+        "test_tic_tac_toe.py::test_card_markers_have_matching_css",
+        "test_tdd_phase2_remaining.py::test_us29_tic_tac_toe_recognizes_scored_team_row_without_changing_points"
       ],
       "manual_review": true,
       "review_status": "verified_partial",
-      "review_note": "Quelltest-Prüfzweck und Assertions fachlich geprüft; keine Vollabnahme der Story."
+      "review_note": "Phase 2: AC-US-01 als konkreter, direkt getesteter Teilaspekt spezifiziert; fachliche Vollabnahme und ggf. weitere Given-When-Then-Szenarien bleiben eigenständige Prüfaufgaben.",
+      "criteria": [
+        "AC-US29-01"
+      ]
     }
   ]
 }

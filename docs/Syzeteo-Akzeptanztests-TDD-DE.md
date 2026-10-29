@@ -4,7 +4,7 @@
 
 Diese Spezifikation dient der schrittweisen Synchronisation von User Stories und Regressionstests. **Die Mappings dokumentieren fachlich begründete Teilnachweise (Review-Status `verified_partial`), keine vollständige Abnahme der User Stories.** Die fachliche Referenz bilden `Syzeteo-L-US-DE.md`, `Syzeteo-RANF-etc-DE.md` und `Syzeteo-Traceability-Matrix-DE.md`.
 
-Für US #05 bis #10 sowie US #21 und #24 sind die Akzeptanzkriterien in Phase 2 konkretisiert und maschinenlesbar hinterlegt. Die restlichen Stories enthalten weiterhin vorläufige generische Mindestformulierungen, die konkrete Szenarien nicht ersetzen.
+Alle 29 User Stories besitzen jetzt mindestens ein konkretisiertes, maschinenlesbares und durch eine direkte Testmethode referenziertes Kriterium. Zusätzliche fachliche Randfälle können weitere Szenarien und Tests erfordern; die Vervollständigung der ursprünglichen generischen Kriterien ist keine vollständige Story-Abnahme.
 
 ## TDD-Regel (beschlossen)
 
@@ -14,7 +14,7 @@ Für US #05 bis #10 sowie US #21 und #24 sind die Akzeptanzkriterien in Phase 2 
 4. Visuelle Kriterien werden hybrid geprüft: technische Tests plus dokumentierte manuelle Abnahme. Die Referenz ist **1920 × 1080 Pixel bei 100 % Browser-Zoom**, jeweils normale Spielansicht und Beamer-Modus.
 5. Baseline-Änderungen werden nicht automatisch vorgenommen und gehören in ein gesondert überprüftes Review.
 
-**Aktueller Phase-2-Stand:** 29 User Stories, 88 Story-Test-Zuordnungen (82 verschiedene Testmethoden), kein ungemappter Story-Eintrag. 25 Kriterien sind `specified_partial`, 21 bleiben `legacy_provisional`. Autoritativer Detailbericht: `Syzeteo-Testabdeckung-Review-DE.md`.
+**Abschlussstand der initialen Kriterienkonkretisierung:** 29 User Stories, 109 Story-Test-Zuordnungen (103 verschiedene referenzierte Testmethoden), kein ungemappter Story-Eintrag. Alle 46 registrierten Kriterien sind `specified_partial`, keines bleibt `legacy_provisional`. Die Teilnachweis-Kennzeichnung ist kein Beweis vollständiger fachlicher Abdeckung. Autoritativer Detailbericht: `Syzeteo-Testabdeckung-Review-DE.md`.
 
 ## Übersicht der Akzeptanzkriterien und Teilnachweise
 
@@ -22,49 +22,49 @@ Für US #05 bis #10 sowie US #21 und #24 sind die Akzeptanzkriterien in Phase 2 
 
 **Fachliche Anforderung:** Als **Instructor** möchte ich den automatisch zufällig bestimmten Startspieler vor der ersten Frage durch eine andere anwesende Person ersetzen können, damit ich den tatsächlichen Startspieler bei Bedarf an die konkrete Spielsituation anpassen kann.
 
-**AC-US01-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #01 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Startspieler ändern“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
+**AC-US01-01 (konkretisiertes Akzeptanzkriterium, Status `specified_partial`):** Gegeben sind vor Spielbeginn anwesende Studierende beider Teams; wenn der Instructor einen bestimmten anwesenden Startspieler festlegt und das Spiel startet, dann ist diese Person der einzige regulär als eingesetzt markierte Startspieler und ihr Team beginnt; nach Spielstart ist ein erneuter Startspielerwechsel gesperrt.
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_storage.py::test_first_player_can_be_selected_manually_before_start`, `test_storage.py::test_manual_first_player_must_be_present_and_selected`, `test_storage.py::test_start_player_cannot_be_changed_after_game_creation`.
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** test_tdd_phase2_remaining.py::test_us01_manual_starter_selection_replaces_random_choice_before_first_card (direkter neuer Assertions-Test); weitere frühere Teilnachweise siehe `Syzeteo-Akzeptanzkriterien.json`.
 
 **Visueller Abnahmenachweis:** Nicht gesondert festgelegt; UI-Anteile im Story-Review prüfen.
 
-**Abdeckungsstatus:** fachlich begründeter Teilnachweis; übrige Kriterien offen.
+**Abdeckungsstatus:** mindestens ein konkretisiertes, direkt getestetes Kriterium; `specified_partial` bedeutet Teilnachweis, keine Vollabnahme der Story.
 
 ### US #02 – Spielerwahlmodus festlegen
 
 **Fachliche Anforderung:** Als **Instructor** möchte ich vor Beginn eines Spiels in den **Instructor Settings** festlegen können, ob die reguläre Auswahl der Spieler ab Spieler 2 zufällig oder manuell erfolgt, damit ich die Spielerbestimmung an die jeweilige Unterrichts- und Spielsituation anpassen kann.
 
-**AC-US02-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #02 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Spielerwahlmodus festlegen“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
+**AC-US02-01 (konkretisiertes Akzeptanzkriterium, Status `specified_partial`):** Gegeben ist ein noch nicht gestartetes Spiel; wenn der Instructor den regulären Spielerwahlmodus 'manuell' festlegt und das Spiel startet, dann bleibt dieser Modus während des laufenden Spiels gespeichert und die nächste Spielerwahl erfolgt nicht automatisch beim Werten der ersten Fachfrage.
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_storage.py::test_random_mode_selects_next_player_and_undo_restores_pre_score_state`, `test_storage.py::test_manual_next_player_selection_is_rejected_in_random_mode`, `test_storage.py::test_manual_regular_mode_waits_for_instructor_and_accepts_only_next_team`.
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** test_tdd_phase2_remaining.py::test_us02_selection_mode_is_frozen_in_running_game (direkter neuer Assertions-Test); weitere frühere Teilnachweise siehe `Syzeteo-Akzeptanzkriterien.json`.
 
 **Visueller Abnahmenachweis:** Nicht gesondert festgelegt; UI-Anteile im Story-Review prüfen.
 
-**Abdeckungsstatus:** fachlich begründeter Teilnachweis; übrige Kriterien offen.
+**Abdeckungsstatus:** mindestens ein konkretisiertes, direkt getestetes Kriterium; `specified_partial` bedeutet Teilnachweis, keine Vollabnahme der Story.
 
 ### US #03 – Nachzügler aufnehmen
 
 **Fachliche Anforderung:** Als **Instructor** möchte ich während eines laufenden Spiels verspätet eingetroffene Studierende nachträglich in die Runde aufnehmen können, damit diese trotz ihrer Abwesenheit zu Spielbeginn noch am weiteren Spiel teilnehmen können.
 
-**AC-US03-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #03 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Nachzügler aufnehmen“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
+**AC-US03-01 (konkretisiertes Akzeptanzkriterium, Status `specified_partial`):** Gegeben ist ein laufendes Spiel mit einem zum Spielstart abwesenden aktiven Studierenden; wenn der Instructor diesen als Nachzügler aufnimmt, dann wird er in den Spielerkader aufgenommen, während eine doppelte Aufnahme abgewiesen wird.
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_storage.py::test_late_player_is_added_to_running_roster_and_undoable`, `test_storage.py::test_late_player_can_unblock_random_selection`.
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** test_tdd_phase2_remaining.py::test_us03_late_arrival_is_added_only_to_running_roster (direkter neuer Assertions-Test); weitere frühere Teilnachweise siehe `Syzeteo-Akzeptanzkriterien.json`.
 
 **Visueller Abnahmenachweis:** Nicht gesondert festgelegt; UI-Anteile im Story-Review prüfen.
 
-**Abdeckungsstatus:** fachlich begründeter Teilnachweis; übrige Kriterien offen.
+**Abdeckungsstatus:** mindestens ein konkretisiertes, direkt getestetes Kriterium; `specified_partial` bedeutet Teilnachweis, keine Vollabnahme der Story.
 
 ### US #04 – Zentrale Instructor Settings
 
 **Fachliche Anforderung:** Als **Instructor** möchte ich systemweite und spielelevante Einstellungen und Statusinformationen auf einer zentralen Seite **„Instructor Settings“** einsehen und, soweit sinnvoll, direkt verwalten können, damit ich jederzeit einen vollständigen Überblick über die aktuelle Konfiguration habe und notwendige Änderungen gezielt vornehmen kann.
 
-**AC-US04-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #04 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Zentrale Instructor Settings“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
+**AC-US04-01 (konkretisiertes Akzeptanzkriterium, Status `specified_partial`):** Gegeben ist ein Kurs ohne Studierende; wenn die Instructor-Settings-Konfigurationsprüfung ausgeführt wird, dann meldet sie den leeren Kurs als sprachneutral beschriebenes Warnproblem mit einer Aktion zur Studierendenverwaltung.
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_i18n.py::test_i18n_language_selection_is_only_login_and_instructor_settings`, `test_storage.py::test_dashboard_configuration_issues_are_language_neutral`.
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** test_tdd_phase2_remaining.py::test_us04_instructor_settings_reports_empty_course_with_action (direkter neuer Assertions-Test); weitere frühere Teilnachweise siehe `Syzeteo-Akzeptanzkriterien.json`.
 
 **Visueller Abnahmenachweis:** Instruktor-Einstellungen prüfen; Datum, Browser, Prüfer, erwartetes/tatsächliches Ergebnis und Screenshotreferenz dokumentieren.
 
-**Abdeckungsstatus:** fachlich begründeter Teilnachweis; übrige Kriterien offen.
+**Abdeckungsstatus:** mindestens ein konkretisiertes, direkt getestetes Kriterium; `specified_partial` bedeutet Teilnachweis, keine Vollabnahme der Story.
 
 ### US #05 – Am System anmelden
 
@@ -164,121 +164,121 @@ Für US #05 bis #10 sowie US #21 und #24 sind die Akzeptanzkriterien in Phase 2 
 
 **Fachliche Anforderung:** Als **Instructor** möchte ich vor Spielbeginn festlegen können, welche Studierenden der beiden Teams anwesend sind, damit während des Spiels nur tatsächlich anwesende Personen für die vorgesehenen Spielerrollen berücksichtigt werden.
 
-**AC-US11-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #11 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Anwesenheit festlegen“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
+**AC-US11-01 (konkretisiertes Akzeptanzkriterium, Status `specified_partial`):** Gegeben sind mehr als acht aktive Studierende aus zwei Teams, von denen genau vier je Team anwesend ausgewählt wurden; wenn ein Spiel gestartet wird, dann umfasst sein gespeicherter Kader ausschließlich diese acht anwesenden Personen, mit unveränderten Teamzuordnungen.
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_storage.py::test_start_requires_four_present_per_team`.
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** test_tdd_phase2_remaining.py::test_us11_only_present_students_enter_initial_game_roster (direkter neuer Assertions-Test); weitere frühere Teilnachweise siehe `Syzeteo-Akzeptanzkriterien.json`.
 
 **Visueller Abnahmenachweis:** Anwesenheitsansicht bedienen; Datum, Browser, Prüfer, erwartetes/tatsächliches Ergebnis und Screenshotreferenz dokumentieren.
 
-**Abdeckungsstatus:** fachlich begründeter Teilnachweis; übrige Kriterien offen.
+**Abdeckungsstatus:** mindestens ein konkretisiertes, direkt getestetes Kriterium; `specified_partial` bedeutet Teilnachweis, keine Vollabnahme der Story.
 
 ### US #12 – Lerneinheiten verwalten
 
 **Fachliche Anforderung:** Als **Instructor** möchte ich Lerneinheiten anlegen, bearbeiten und sortieren können, damit der Fragenpool fachlich strukturiert verwaltet werden kann.
 
-**AC-US12-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #12 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Lerneinheiten verwalten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
+**AC-US12-01 (konkretisiertes Akzeptanzkriterium, Status `specified_partial`):** Gegeben ist eine bereits angelegte Lerneinheit; wenn der Instructor Code, Titel und Position bearbeitet, dann werden alle drei geänderten Werte gespeichert und in der Lerneinheitenliste angezeigt.
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_storage.py::test_learning_unit_can_be_reordered_edited_and_only_deleted_without_questions`.
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** test_tdd_phase2_remaining.py::test_us12_learning_unit_can_be_renamed_and_reordered (direkter neuer Assertions-Test); weitere frühere Teilnachweise siehe `Syzeteo-Akzeptanzkriterien.json`.
 
 **Visueller Abnahmenachweis:** Nicht gesondert festgelegt; UI-Anteile im Story-Review prüfen.
 
-**Abdeckungsstatus:** fachlich begründeter Teilnachweis; übrige Kriterien offen.
+**Abdeckungsstatus:** mindestens ein konkretisiertes, direkt getestetes Kriterium; `specified_partial` bedeutet Teilnachweis, keine Vollabnahme der Story.
 
 ### US #13 – Fragenpool verwalten
 
 **Fachliche Anforderung:** Als **Instructor** möchte ich Fragen mit Musterantworten im globalen, kursübergreifenden Fragenpool anlegen, bearbeiten, Lerneinheiten zuordnen und archivieren können, damit die für Syzeteo verfügbaren Fachfragen zentral gepflegt werden können.
 
-**AC-US13-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #13 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Fragenpool verwalten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
+**AC-US13-01 (konkretisiertes Akzeptanzkriterium, Status `specified_partial`):** Gegeben ist eine Frage mit Musterantwort im globalen Fragenpool; wenn der Instructor Text und Musterantwort ändert und die Frage archiviert, dann bleiben der geänderte Datensatz erhalten und die Frage wird aus der Liste aktiver Fragen ausgeschlossen.
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_storage.py::test_question_delete_requires_removal_from_unlocked_round_but_preserves_locked_history`.
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** test_tdd_phase2_remaining.py::test_us13_question_edit_and_archive_preserve_global_pool_entry (direkter neuer Assertions-Test); weitere frühere Teilnachweise siehe `Syzeteo-Akzeptanzkriterien.json`.
 
 **Visueller Abnahmenachweis:** Nicht gesondert festgelegt; UI-Anteile im Story-Review prüfen.
 
-**Abdeckungsstatus:** fachlich begründeter Teilnachweis; übrige Kriterien offen.
+**Abdeckungsstatus:** mindestens ein konkretisiertes, direkt getestetes Kriterium; `specified_partial` bedeutet Teilnachweis, keine Vollabnahme der Story.
 
 ### US #14 – Lerninhalte importieren und exportieren
 
 **Fachliche Anforderung:** Als **Instructor** möchte ich Lerneinheiten und Fragen exportieren und in Syzeteo importieren können, damit der fachliche Datenbestand gesichert und zwischen Installationen übertragen werden kann.
 
-**AC-US14-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #14 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Lerninhalte importieren und exportieren“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
+**AC-US14-01 (konkretisiertes Akzeptanzkriterium, Status `specified_partial`):** Gegeben ist ein Fragenpool mit acht Fachfragen in einer Lerneinheit; wenn die Lerninhalte als JSON exportiert und in eine neue leere Installation importiert werden, dann entstehen dort dieselbe Lerneinheit und acht Fachfragen einschließlich ihrer Musterantworten.
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_release.py::test_rel_04_new_exports_use_syzeteo_format`, `test_storage.py::test_question_pool_import_only_adds_new_content_and_never_overwrites_existing`.
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** test_tdd_phase2_remaining.py::test_us14_question_pool_export_import_preserves_unit_and_question (direkter neuer Assertions-Test); weitere frühere Teilnachweise siehe `Syzeteo-Akzeptanzkriterien.json`.
 
 **Visueller Abnahmenachweis:** Nicht gesondert festgelegt; UI-Anteile im Story-Review prüfen.
 
-**Abdeckungsstatus:** fachlich begründeter Teilnachweis; übrige Kriterien offen.
+**Abdeckungsstatus:** mindestens ein konkretisiertes, direkt getestetes Kriterium; `specified_partial` bedeutet Teilnachweis, keine Vollabnahme der Story.
 
 ### US #15 – Runden konfigurieren
 
 **Fachliche Anforderung:** Als **Instructor** möchte ich eine Runde aus Fachfragen des globalen Fragenpools konfigurieren können, damit für die Durchführung einer Runde ein definierter Fragensatz bereitsteht.
 
-**AC-US15-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #15 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Runden konfigurieren“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
+**AC-US15-01 (konkretisiertes Akzeptanzkriterium, Status `specified_partial`):** Gegeben sind acht voneinander verschiedene vorhandene Fachfragen; wenn der Instructor daraus eine Runde anlegt, dann enthält diese genau acht Fragen in definierter Positionsreihenfolge; ein Versuch mit sieben Fragen wird abgewiesen.
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_round_selection_ui.py::test_exact_eight_remains_a_domain_rule`, `test_storage.py::test_round_has_eight_questions_and_locks_on_start`.
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** test_tdd_phase2_remaining.py::test_us15_round_has_exactly_eight_distinct_questions_in_order (direkter neuer Assertions-Test); weitere frühere Teilnachweise siehe `Syzeteo-Akzeptanzkriterien.json`.
 
 **Visueller Abnahmenachweis:** Nicht gesondert festgelegt; UI-Anteile im Story-Review prüfen.
 
-**Abdeckungsstatus:** fachlich begründeter Teilnachweis; übrige Kriterien offen.
+**Abdeckungsstatus:** mindestens ein konkretisiertes, direkt getestetes Kriterium; `specified_partial` bedeutet Teilnachweis, keine Vollabnahme der Story.
 
 ### US #16 – Spiel starten
 
 **Fachliche Anforderung:** Als **Instructor** möchte ich für einen ausgewählten Kurs eine konfigurierte Runde mit den anwesenden Studierenden starten können, damit die Runde durchgeführt werden kann.
 
-**AC-US16-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #16 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Spiel starten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
+**AC-US16-01 (konkretisiertes Akzeptanzkriterium, Status `specified_partial`):** Gegeben ist eine konfigurierte Runde mit acht Fachfragen und acht anwesenden Studierenden aus zwei Teams; wenn das Spiel gestartet wird, dann werden acht Fachfragekarten und eine Challenge Card angelegt, das Spiel ist laufend und dieselbe Runde kann in diesem Kurs nicht erneut gestartet werden.
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_storage.py::test_round_has_eight_questions_and_locks_on_start`, `test_storage.py::test_start_requires_four_present_per_team`.
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** test_tdd_phase2_remaining.py::test_us16_start_creates_nine_cards_and_disallows_second_start_for_same_course (direkter neuer Assertions-Test); weitere frühere Teilnachweise siehe `Syzeteo-Akzeptanzkriterien.json`.
 
 **Visueller Abnahmenachweis:** Nicht gesondert festgelegt; UI-Anteile im Story-Review prüfen.
 
-**Abdeckungsstatus:** fachlich begründeter Teilnachweis; übrige Kriterien offen.
+**Abdeckungsstatus:** mindestens ein konkretisiertes, direkt getestetes Kriterium; `specified_partial` bedeutet Teilnachweis, keine Vollabnahme der Story.
 
 ### US #17 – Fachfragen durchführen und werten
 
 **Fachliche Anforderung:** Als **Instructor** möchte ich während eines Spiels Karten aufdecken, die zugehörige Fachfrage und Musterantwort anzeigen sowie die Antwort werten können, damit der Spielverlauf und die Teampunkte regelkonform fortgeschrieben werden.
 
-**AC-US17-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #17 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Fachfragen durchführen und werten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
+**AC-US17-01 (konkretisiertes Akzeptanzkriterium, Status `specified_partial`):** Gegeben ist ein laufendes Spiel mit aktuellem Team; wenn der Instructor eine Fachfrage aufdeckt und diese mit einem Punkt wertet, dann ist die Karte abgeschlossen, genau ein Punkt wird dem aktuellen Team gutgeschrieben und der Punktestand des anderen Teams bleibt unverändert.
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_release.py::test_rel_09_last_card_is_always_instructor_zero_points`, `test_storage.py::test_no_individual_answer_performance_is_stored`, `test_storage.py::test_random_mode_can_complete_all_student_turns_without_repetition`.
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** test_tdd_phase2_remaining.py::test_us17_scoring_question_updates_only_current_team_points (direkter neuer Assertions-Test); weitere frühere Teilnachweise siehe `Syzeteo-Akzeptanzkriterien.json`.
 
 **Visueller Abnahmenachweis:** Kartenansicht und Wertungsanzeige prüfen; Datum, Browser, Prüfer, erwartetes/tatsächliches Ergebnis und Screenshotreferenz dokumentieren.
 
-**Abdeckungsstatus:** fachlich begründeter Teilnachweis; übrige Kriterien offen.
+**Abdeckungsstatus:** mindestens ein konkretisiertes, direkt getestetes Kriterium; `specified_partial` bedeutet Teilnachweis, keine Vollabnahme der Story.
 
 ### US #18 – Team Assist einsetzen
 
 **Fachliche Anforderung:** Als **Instructor** möchte ich für das aktive Team den **Team Assist** einsetzen und eine anwesende Person dieses Teams zur Beantwortung der aktuellen Fachfrage auswählen können, damit der vorgesehene Team Assist im Spiel genutzt werden kann.
 
-**AC-US18-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #18 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Team Assist einsetzen“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
+**AC-US18-01 (konkretisiertes Akzeptanzkriterium, Status `specified_partial`):** Gegeben ist ein laufendes Spiel mit einer aufgedeckten Fachfrage; wenn der Instructor für das aktive Team einen anwesenden Teamkollegen über Team Assist auswählt und die Fachfrage wertet, dann wird der Assist als verbraucht markiert und keine individuelle Leistungszuordnung gespeichert.
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_release.py::test_rel_08_team_assist_does_not_block_later_regular_turn`.
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** test_tdd_phase2_remaining.py::test_us18_team_assist_is_consumed_once_and_does_not_store_person_performance (direkter neuer Assertions-Test); weitere frühere Teilnachweise siehe `Syzeteo-Akzeptanzkriterien.json`.
 
 **Visueller Abnahmenachweis:** Nicht gesondert festgelegt; UI-Anteile im Story-Review prüfen.
 
-**Abdeckungsstatus:** fachlich begründeter Teilnachweis; übrige Kriterien offen.
+**Abdeckungsstatus:** mindestens ein konkretisiertes, direkt getestetes Kriterium; `specified_partial` bedeutet Teilnachweis, keine Vollabnahme der Story.
 
 ### US #19 – Challenge Card werten
 
 **Fachliche Anforderung:** Als **Instructor** möchte ich die **Challenge Card** entsprechend dem Ergebnis der Challenge-Frage werten können, damit die daraus resultierenden Teampunkte korrekt vergeben werden.
 
-**AC-US19-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #19 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Challenge Card werten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
+**AC-US19-01 (konkretisiertes Akzeptanzkriterium, Status `specified_partial`):** Gegeben ist ein laufendes Spiel mit verfügbarer Challenge Card; wenn diese aufgedeckt und für das aktive Team mit zwei Punkten gewertet wird, dann erhöht sich der Punktestand dieses Teams um zwei Punkte.
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_release.py::test_rel_06_challenge_card_uses_native_value`.
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** test_tdd_phase2_remaining.py::test_us19_challenge_card_can_award_two_points_to_active_team (direkter neuer Assertions-Test); weitere frühere Teilnachweise siehe `Syzeteo-Akzeptanzkriterien.json`.
 
 **Visueller Abnahmenachweis:** Nicht gesondert festgelegt; UI-Anteile im Story-Review prüfen.
 
-**Abdeckungsstatus:** fachlich begründeter Teilnachweis; übrige Kriterien offen.
+**Abdeckungsstatus:** mindestens ein konkretisiertes, direkt getestetes Kriterium; `specified_partial` bedeutet Teilnachweis, keine Vollabnahme der Story.
 
 ### US #20 – Spielschritt rückgängig machen
 
 **Fachliche Anforderung:** Als **Instructor** möchte ich den zuletzt ausgeführten Spielschritt rückgängig machen können, damit eine versehentliche Wertung oder Spielerwahl korrigiert werden kann, ohne das gesamte Spiel neu starten zu müssen.
 
-**AC-US20-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #20 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Spielschritt rückgängig machen“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
+**AC-US20-01 (konkretisiertes Akzeptanzkriterium, Status `specified_partial`):** Gegeben ist eine aufgedeckte, anschließend mit einem Punkt gewertete Fachfrage; wenn der Instructor die letzte Wertung rückgängig macht, dann wird der vorherige Teampunktestand wiederhergestellt und die Karte bleibt aufgedeckt, aber noch nicht abgeschlossen.
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_storage.py::test_random_mode_selects_next_player_and_undo_restores_pre_score_state`, `test_storage.py::test_manual_regular_mode_player_choice_shares_scoring_undo`, `test_storage.py::test_undo_restores_last_scoring_step`.
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** test_tdd_phase2_remaining.py::test_us20_undo_restores_points_and_unresolved_card (direkter neuer Assertions-Test); weitere frühere Teilnachweise siehe `Syzeteo-Akzeptanzkriterien.json`.
 
 **Visueller Abnahmenachweis:** Nicht gesondert festgelegt; UI-Anteile im Story-Review prüfen.
 
-**Abdeckungsstatus:** fachlich begründeter Teilnachweis; übrige Kriterien offen.
+**Abdeckungsstatus:** mindestens ein konkretisiertes, direkt getestetes Kriterium; `specified_partial` bedeutet Teilnachweis, keine Vollabnahme der Story.
 
 ### US #21 – Laufendes Spiel fortsetzen
 
@@ -300,25 +300,25 @@ Für US #05 bis #10 sowie US #21 und #24 sind die Akzeptanzkriterien in Phase 2 
 
 **Fachliche Anforderung:** Als **Instructor** möchte ich die Spielansicht in einen Beamer-Modus umschalten können, damit Karten, Fragen und Spielstand für die Studierenden groß und ohne störende Navigation dargestellt werden.
 
-**AC-US22-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #22 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Beamer-Modus verwenden“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
+**AC-US22-01 (konkretisiertes Akzeptanzkriterium, Status `specified_partial`):** Gegeben ist ein Fragetext mit HTML-Sonderzeichen und Zeilenumbruch für die Spiel-/Beameranzeige; wenn er über die sichere Textdarstellung ausgegeben wird, dann erscheint HTML-Markup als sichtbarer Text und wird nicht als ausführbarer HTML-Code übernommen.
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_rendering.py::test_plain_multiline_html_escapes_markup_and_preserves_literal_content`, `test_rendering.py::test_opened_question_renderer_bypasses_streamlit_markdown`.
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** test_tdd_phase2_remaining.py::test_us22_question_text_escapes_html_in_projection_rendering (direkter neuer Assertions-Test); weitere frühere Teilnachweise siehe `Syzeteo-Akzeptanzkriterien.json`.
 
 **Visueller Abnahmenachweis:** Normalansicht und Beamer-Modus bei 1920×1080, 100 % Zoom abnehmen; Datum, Browser, Prüfer, erwartetes/tatsächliches Ergebnis und Screenshotreferenz dokumentieren.
 
-**Abdeckungsstatus:** Rendering-Teilnachweise; UI-Abnahme vom Projektverantwortlichen am 29.10.2026 als PASS gemeldet (siehe manuelle Prüftabelle). Kein separater technischer Nachweis der tatsächlichen Testumgebung; übrige fachliche Kriterien bleiben offen.
+**Abdeckungsstatus:** mindestens ein konkretisiertes, direkt getestetes Kriterium; `specified_partial` bedeutet Teilnachweis, keine Vollabnahme der Story.
 
 ### US #23 – Ergebnisse überblicken
 
 **Fachliche Anforderung:** Als **Instructor** möchte ich nach dem Login Teamstände, Rundenergebnisse, kumulierte Ergebnisse und die Spielhistorie eines Kurses im Ergebnis-Dashboard sehen können, damit ich den bisherigen Spielverlauf und den Gesamtstand jederzeit überblicken kann.
 
-**AC-US23-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #23 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Ergebnisse überblicken“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
+**AC-US23-01 (konkretisiertes Akzeptanzkriterium, Status `specified_partial`):** Gegeben ist ein Kurs mit regulär abgeschlossenem Spiel und ein anderer ohne Abschluss; wenn der Instructor den Ergebnisstand aufruft, dann enthält das Dashboard ausschließlich die abgeschlossenen Teampunkte im jeweiligen Kurs und die abgeschlossene Runde ist in dessen Spielhistorie enthalten.
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_game_abort.py::test_aborted_game_is_excluded_from_results`.
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** test_tdd_phase2_remaining.py::test_us23_finished_results_are_included_but_running_games_not_scored (direkter neuer Assertions-Test); weitere frühere Teilnachweise siehe `Syzeteo-Akzeptanzkriterien.json`.
 
 **Visueller Abnahmenachweis:** Ergebnis-Dashboard visuell prüfen; Datum, Browser, Prüfer, erwartetes/tatsächliches Ergebnis und Screenshotreferenz dokumentieren.
 
-**Abdeckungsstatus:** fachlich begründeter Teilnachweis; übrige Kriterien offen.
+**Abdeckungsstatus:** mindestens ein konkretisiertes, direkt getestetes Kriterium; `specified_partial` bedeutet Teilnachweis, keine Vollabnahme der Story.
 
 ### US #24 – Gespielte Fragen protokollieren
 
@@ -345,61 +345,61 @@ Für US #05 bis #10 sowie US #21 und #24 sind die Akzeptanzkriterien in Phase 2 
 
 **Fachliche Anforderung:** Als **Instructor** möchte ich sehen können, welche Runden in welchen aktiven Kursen bereits gespielt wurden, noch laufen, abgebrochen oder noch offen sind, damit ich die kursübergreifende Durchführung der vorgesehenen Runden überblicken kann.
 
-**AC-US25-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #25 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Rundenabdeckung prüfen“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
+**AC-US25-01 (konkretisiertes Akzeptanzkriterium, Status `specified_partial`):** Gegeben ist eine konfigurierte Runde für zwei aktive Kurse; wenn in einem Kurs ein Spiel läuft und im anderen noch kein Spiel existiert, dann zeigt die Rundenabdeckung 'running' bzw. 'open'; nach regulärem Abschluss wird der erste Eintrag zu 'played'.
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_game_abort.py::test_delete_aborted_game_cascades_and_round_can_be_started_again`.
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** test_tdd_phase2_remaining.py::test_us25_round_coverage_distinguishes_running_played_and_open_courses (direkter neuer Assertions-Test); weitere frühere Teilnachweise siehe `Syzeteo-Akzeptanzkriterien.json`.
 
 **Visueller Abnahmenachweis:** Rundenabdeckung visuell prüfen; Datum, Browser, Prüfer, erwartetes/tatsächliches Ergebnis und Screenshotreferenz dokumentieren.
 
-**Abdeckungsstatus:** fachlich begründeter Teilnachweis; übrige Kriterien offen.
+**Abdeckungsstatus:** mindestens ein konkretisiertes, direkt getestetes Kriterium; `specified_partial` bedeutet Teilnachweis, keine Vollabnahme der Story.
 
 ### US #26 – Spiel abbrechen und löschen
 
 **Fachliche Anforderung:** Als **Instructor** möchte ich ein laufendes Spiel abbrechen und ein abgebrochenes Spiel auf der **Instructor-Seite** löschen können, damit irrtümlich gestartete oder nicht fortzuführende Spiele den weiteren Spielbetrieb und die Rundenabdeckung nicht blockieren.
 
-**AC-US26-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #26 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Spiel abbrechen und löschen“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
+**AC-US26-01 (konkretisiertes Akzeptanzkriterium, Status `specified_partial`):** Gegeben ist ein laufendes Spiel; wenn der Instructor es abbricht und anschließend löscht, dann verschwinden dessen Spiel, Karten und zugehörige Daten; für denselben Kurs kann die betroffene Runde erneut gestartet werden.
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_game_abort.py::test_running_game_can_be_aborted_and_is_not_running_afterwards`, `test_game_abort.py::test_only_running_games_can_be_aborted`, `test_game_abort.py::test_only_aborted_games_can_be_deleted`, `test_game_abort.py::test_delete_aborted_game_cascades_and_round_can_be_started_again`.
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** test_tdd_phase2_remaining.py::test_us26_aborted_game_deletion_removes_cards_and_releases_round (direkter neuer Assertions-Test); weitere frühere Teilnachweise siehe `Syzeteo-Akzeptanzkriterien.json`.
 
 **Visueller Abnahmenachweis:** Nicht gesondert festgelegt; UI-Anteile im Story-Review prüfen.
 
-**Abdeckungsstatus:** fachlich begründeter Teilnachweis; übrige Kriterien offen.
+**Abdeckungsstatus:** mindestens ein konkretisiertes, direkt getestetes Kriterium; `specified_partial` bedeutet Teilnachweis, keine Vollabnahme der Story.
 
 ### US #27 – Teamnamen verwalten
 
 **Fachliche Anforderung:** Als **Instructor** möchte ich für die beiden Teams eines Kurses frei wählbare Namen vergeben und diese später ändern können, damit die Teams im Spiel unter passenden Bezeichnungen angezeigt werden.
 
-**AC-US27-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #27 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Teamnamen verwalten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
+**AC-US27-01 (konkretisiertes Akzeptanzkriterium, Status `specified_partial`):** Gegeben ist ein Kurs mit benannten Teams; wenn das Spiel gestartet wurde, dann enthalten die Spiel-Snapshots diese beiden Namen und eine nachträgliche Umbenennung während des laufenden Spiels wird abgewiesen, ohne die historischen Namen zu verändern.
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_team_names.py::test_custom_team_names_can_be_set_on_course_creation`, `test_team_names.py::test_team_names_must_be_nonempty_and_distinct`, `test_team_names.py::test_team_names_can_be_changed_without_changing_internal_team_assignment`, `test_team_names.py::test_running_game_locks_team_names_and_game_keeps_snapshots`.
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** test_tdd_phase2_remaining.py::test_us27_team_name_changes_preserve_running_game_snapshots (direkter neuer Assertions-Test); weitere frühere Teilnachweise siehe `Syzeteo-Akzeptanzkriterien.json`.
 
 **Visueller Abnahmenachweis:** Teamnamen im Spiel und Dashboard prüfen; Datum, Browser, Prüfer, erwartetes/tatsächliches Ergebnis und Screenshotreferenz dokumentieren.
 
-**Abdeckungsstatus:** fachlich begründeter Teilnachweis; übrige Kriterien offen.
+**Abdeckungsstatus:** mindestens ein konkretisiertes, direkt getestetes Kriterium; `specified_partial` bedeutet Teilnachweis, keine Vollabnahme der Story.
 
 ### US #28 – Fragen auswerten
 
 **Fachliche Anforderung:** Als **Instructor** möchte ich die Ergebnisse gespielter Fachfragen für einen einzelnen Kurs sowie kursübergreifend auswerten können, damit ich erkenne, welche Fragen wie häufig und wie erfolgreich beantwortet wurden.
 
-**AC-US28-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #28 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Fragen auswerten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
+**AC-US28-01 (konkretisiertes Akzeptanzkriterium, Status `specified_partial`):** Gegeben ist eine gewertete Fachfrage aus einem noch laufenden Spiel; wenn die Fragenauswertung erfolgt, dann erscheint dieses Spiel nicht in der Statistik; personenbezogene Leistungsfelder werden nicht ausgegeben.
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_question_analysis.py::test_analysis_counts_correct_and_incorrect_regular_questions`, `test_question_analysis.py::test_analysis_excludes_final_instructor_card_and_challenge_card`, `test_question_analysis.py::test_analysis_excludes_running_and_aborted_games`, `test_question_analysis.py::test_analysis_can_be_scoped_to_one_course_or_all_courses`, `test_question_analysis.py::test_analysis_separates_changed_question_versions`, `test_question_analysis.py::test_analysis_contains_no_individual_student_fields_and_counts_team_assist_normally`.
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** test_tdd_phase2_remaining.py::test_us28_analysis_excludes_unfinished_games_and_student_identity (direkter neuer Assertions-Test); weitere frühere Teilnachweise siehe `Syzeteo-Akzeptanzkriterien.json`.
 
 **Visueller Abnahmenachweis:** Nicht gesondert festgelegt; UI-Anteile im Story-Review prüfen.
 
-**Abdeckungsstatus:** fachlich begründeter Teilnachweis; übrige Kriterien offen.
+**Abdeckungsstatus:** mindestens ein konkretisiertes, direkt getestetes Kriterium; `specified_partial` bedeutet Teilnachweis, keine Vollabnahme der Story.
 
 ### US #29 – Tic-Tac-Toe auf dem Board
 
 **Fachliche Anforderung:** Als **Instructor** möchte ich, dass gewertete Karten auf dem Board einen Rand in der Farbe des punktenden Teams erhalten und eine vollständige Reihe markiert wird, damit nebenbei ein Tic-Tac-Toe als zusätzlicher spielerischer Anreiz mitläuft, ohne die Spielansicht zu vergrößern oder die reguläre Wertung zu verändern.
 
-**AC-US29-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #29 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Tic-Tac-Toe auf dem Board“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
+**AC-US29-01 (konkretisiertes Akzeptanzkriterium, Status `specified_partial`):** Gegeben ist ein Board, auf dem die drei Karten einer waagerechten Reihe Punkte für Team 1 tragen; wenn die Tic-Tac-Toe-Auswertung durchgeführt wird, dann erkennt sie diese Reihe und Team 1 als Gewinner der Markierung, ohne Punktewerte zu verändern.
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_tic_tac_toe.py::test_no_line_without_three_scored_cards_of_one_team`, `test_tic_tac_toe.py::test_every_line_is_detected_with_its_direction`, `test_tic_tac_toe.py::test_first_completed_line_wins`, `test_tic_tac_toe.py::test_scored_game_cards_form_line_and_undo_removes_it`, `test_tic_tac_toe.py::test_card_markers_have_matching_css`.
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** test_tdd_phase2_remaining.py::test_us29_tic_tac_toe_recognizes_scored_team_row_without_changing_points (direkter neuer Assertions-Test); weitere frühere Teilnachweise siehe `Syzeteo-Akzeptanzkriterien.json`.
 
 **Visueller Abnahmenachweis:** Boardmarkierung, Linie und Einblendung visuell prüfen; Datum, Browser, Prüfer, erwartetes/tatsächliches Ergebnis und Screenshotreferenz dokumentieren.
 
-**Abdeckungsstatus:** fachlich begründeter Teilnachweis; übrige Kriterien offen.
+**Abdeckungsstatus:** mindestens ein konkretisiertes, direkt getestetes Kriterium; `specified_partial` bedeutet Teilnachweis, keine Vollabnahme der Story.
 
 ## Dokumentation manueller Prüfungen
 
@@ -419,5 +419,5 @@ Die folgenden **PASS**-Einträge sind Freigaben des Projektverantwortlichen im C
 - Die GitHub-CI führt Python-Regressionstests aus, jedoch keine automatisierten Browser-End-to-End-Tests.
 - Eine Testmethodenzuordnung beweist weder vollständige Randfallabdeckung noch die semantische Angemessenheit ihrer Assertions.
 - `traceability_check.py` prüft Änderungen an User Stories. `acceptance_criteria_check.py` prüft zusätzlich neue oder geänderte Akzeptanzkriterien gegen die eingefrorene Kriterien-Baseline; fachliche Aussagekraft bleibt Review-Aufgabe.
-- 21 Kriterien bleiben `legacy_provisional`; 25 Kriterien für US #05–#10, #21 und #24 sind als `specified_partial` mit direkten Assertions hinterlegt. Dies ist keine Vollabnahme der Stories.
+- Alle 46 registrierten Kriterien sind `specified_partial` und mit Testreferenzen hinterlegt. Es gibt keine unveränderten generischen Baseline-Kriterien mehr im aktiven Katalog; die eingefrorene historische Baseline bleibt unverändert. Weitere fachliche Einzelkriterien und vollständige Story-Abnahmen können erforderlich bleiben.
 - Für aktuelle Zählwerte und verbleibende Aufgaben gilt `Syzeteo-Testabdeckung-Review-DE.md`; die Detaildokumente von US #10, #21 und #24 enthalten fachliche Testszenarien und gemeldete UI-Freigaben.
