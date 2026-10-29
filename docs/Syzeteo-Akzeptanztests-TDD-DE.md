@@ -18,7 +18,7 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 ### US #01 – Startspieler ändern
 
-**Fachliche Anforderung:** 
+**Fachliche Anforderung:** Als **Instructor** möchte ich den automatisch zufällig bestimmten Startspieler vor der ersten Frage durch eine andere anwesende Person ersetzen können, damit ich den tatsächlichen Startspieler bei Bedarf an die konkrete Spielsituation anpassen kann.
 
 **AC-US01-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #01 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Startspieler ändern“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
@@ -30,7 +30,7 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 ### US #02 – Spielerwahlmodus festlegen
 
-**Fachliche Anforderung:** 
+**Fachliche Anforderung:** Als **Instructor** möchte ich vor Beginn eines Spiels in den **Instructor Settings** festlegen können, ob die reguläre Auswahl der Spieler ab Spieler 2 zufällig oder manuell erfolgt, damit ich die Spielerbestimmung an die jeweilige Unterrichts- und Spielsituation anpassen kann.
 
 **AC-US02-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #02 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Spielerwahlmodus festlegen“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
@@ -42,7 +42,7 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 ### US #03 – Nachzügler aufnehmen
 
-**Fachliche Anforderung:** 
+**Fachliche Anforderung:** Als **Instructor** möchte ich während eines laufenden Spiels verspätet eingetroffene Studierende nachträglich in die Runde aufnehmen können, damit diese trotz ihrer Abwesenheit zu Spielbeginn noch am weiteren Spiel teilnehmen können.
 
 **AC-US03-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #03 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Nachzügler aufnehmen“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
@@ -54,7 +54,7 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 ### US #04 – Zentrale Instructor Settings
 
-**Fachliche Anforderung:** 
+**Fachliche Anforderung:** Als **Instructor** möchte ich systemweite und spielelevante Einstellungen und Statusinformationen auf einer zentralen Seite **„Instructor Settings“** einsehen und, soweit sinnvoll, direkt verwalten können, damit ich jederzeit einen vollständigen Überblick über die aktuelle Konfiguration habe und notwendige Änderungen gezielt vornehmen kann.
 
 **AC-US04-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #04 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Zentrale Instructor Settings“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
@@ -66,7 +66,7 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 ### US #05 – Am System anmelden
 
-**Fachliche Anforderung:** 
+**Fachliche Anforderung:** Als **Instructor** möchte ich mich an Syzeteo anmelden können, damit ich auf die für mich vorgesehenen Spiel- und Verwaltungsfunktionen zugreifen kann.
 
 **AC-US05-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #05 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Am System anmelden“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
@@ -78,7 +78,7 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 ### US #06 – Eigenen Account verwalten
 
-**Fachliche Anforderung:** 
+**Fachliche Anforderung:** Als **Instructor** möchte ich meinen Benutzernamen und mein Passwort ändern können, damit ich meine Zugangsdaten selbst verwalten kann.
 
 **AC-US06-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #06 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Eigenen Account verwalten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
@@ -90,7 +90,7 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 ### US #07 – Kurse verwalten
 
-**Fachliche Anforderung:** 
+**Fachliche Anforderung:** Als **Instructor** möchte ich Kurse anlegen, archivieren, reaktivieren und bei Bedarf vollständig löschen können, damit ich die in Syzeteo verwendeten Lehrveranstaltungen aktuell halten kann. Bei der Löschung eines Kurses werden sämtliche mit diesem Kurs zusammenhängenden Daten gelöscht.
 
 **AC-US07-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #07 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Kurse verwalten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
@@ -102,7 +102,7 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 ### US #08 – Studierende verwalten
 
-**Fachliche Anforderung:** 
+**Fachliche Anforderung:** Als **Instructor** möchte ich Studierende eines Kurses anlegen, bearbeiten sowie aktiv oder inaktiv setzen können, damit der für den Spielbetrieb relevante Teilnehmerbestand aktuell gehalten werden kann.
 
 **AC-US08-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #08 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Studierende verwalten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
@@ -114,7 +114,7 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 ### US #09 – Studierende importieren
 
-**Fachliche Anforderung:** 
+**Fachliche Anforderung:** Als **Instructor** möchte ich Studierendenlisten aus einer CSV-Datei in einen Kurs importieren können, damit ich größere Teilnehmergruppen nicht einzeln erfassen muss.
 
 **AC-US09-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #09 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Studierende importieren“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
@@ -126,7 +126,7 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 ### US #10 – Studierende Teams zuordnen
 
-**Fachliche Anforderung:** 
+**Fachliche Anforderung:** Als **Instructor** möchte ich Studierende manuell oder zufällig Team 1 oder Team 2 zuordnen können, damit für jeden Kurs eine geeignete Teamstruktur für den Spielbetrieb besteht.
 
 **AC-US10-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #10 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Studierende Teams zuordnen“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
@@ -138,7 +138,7 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 ### US #11 – Anwesenheit festlegen
 
-**Fachliche Anforderung:** 
+**Fachliche Anforderung:** Als **Instructor** möchte ich vor Spielbeginn festlegen können, welche Studierenden der beiden Teams anwesend sind, damit während des Spiels nur tatsächlich anwesende Personen für die vorgesehenen Spielerrollen berücksichtigt werden.
 
 **AC-US11-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #11 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Anwesenheit festlegen“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
@@ -150,7 +150,7 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 ### US #12 – Lerneinheiten verwalten
 
-**Fachliche Anforderung:** 
+**Fachliche Anforderung:** Als **Instructor** möchte ich Lerneinheiten anlegen, bearbeiten und sortieren können, damit der Fragenpool fachlich strukturiert verwaltet werden kann.
 
 **AC-US12-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #12 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Lerneinheiten verwalten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
@@ -162,7 +162,7 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 ### US #13 – Fragenpool verwalten
 
-**Fachliche Anforderung:** 
+**Fachliche Anforderung:** Als **Instructor** möchte ich Fragen mit Musterantworten im globalen, kursübergreifenden Fragenpool anlegen, bearbeiten, Lerneinheiten zuordnen und archivieren können, damit die für Syzeteo verfügbaren Fachfragen zentral gepflegt werden können.
 
 **AC-US13-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #13 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Fragenpool verwalten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
@@ -174,7 +174,7 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 ### US #14 – Lerninhalte importieren und exportieren
 
-**Fachliche Anforderung:** 
+**Fachliche Anforderung:** Als **Instructor** möchte ich Lerneinheiten und Fragen exportieren und in Syzeteo importieren können, damit der fachliche Datenbestand gesichert und zwischen Installationen übertragen werden kann.
 
 **AC-US14-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #14 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Lerninhalte importieren und exportieren“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
@@ -186,7 +186,7 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 ### US #15 – Runden konfigurieren
 
-**Fachliche Anforderung:** 
+**Fachliche Anforderung:** Als **Instructor** möchte ich eine Runde aus Fachfragen des globalen Fragenpools konfigurieren können, damit für die Durchführung einer Runde ein definierter Fragensatz bereitsteht.
 
 **AC-US15-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #15 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Runden konfigurieren“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
@@ -198,7 +198,7 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 ### US #16 – Spiel starten
 
-**Fachliche Anforderung:** 
+**Fachliche Anforderung:** Als **Instructor** möchte ich für einen ausgewählten Kurs eine konfigurierte Runde mit den anwesenden Studierenden starten können, damit die Runde durchgeführt werden kann.
 
 **AC-US16-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #16 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Spiel starten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
@@ -210,7 +210,7 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 ### US #17 – Fachfragen durchführen und werten
 
-**Fachliche Anforderung:** 
+**Fachliche Anforderung:** Als **Instructor** möchte ich während eines Spiels Karten aufdecken, die zugehörige Fachfrage und Musterantwort anzeigen sowie die Antwort werten können, damit der Spielverlauf und die Teampunkte regelkonform fortgeschrieben werden.
 
 **AC-US17-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #17 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Fachfragen durchführen und werten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
@@ -222,7 +222,7 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 ### US #18 – Team Assist einsetzen
 
-**Fachliche Anforderung:** 
+**Fachliche Anforderung:** Als **Instructor** möchte ich für das aktive Team den **Team Assist** einsetzen und eine anwesende Person dieses Teams zur Beantwortung der aktuellen Fachfrage auswählen können, damit der vorgesehene Team Assist im Spiel genutzt werden kann.
 
 **AC-US18-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #18 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Team Assist einsetzen“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
@@ -234,7 +234,7 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 ### US #19 – Challenge Card werten
 
-**Fachliche Anforderung:** 
+**Fachliche Anforderung:** Als **Instructor** möchte ich die **Challenge Card** entsprechend dem Ergebnis der Challenge-Frage werten können, damit die daraus resultierenden Teampunkte korrekt vergeben werden.
 
 **AC-US19-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #19 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Challenge Card werten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
@@ -246,7 +246,7 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 ### US #20 – Spielschritt rückgängig machen
 
-**Fachliche Anforderung:** 
+**Fachliche Anforderung:** Als **Instructor** möchte ich den zuletzt ausgeführten Spielschritt rückgängig machen können, damit eine versehentliche Wertung oder Spielerwahl korrigiert werden kann, ohne das gesamte Spiel neu starten zu müssen.
 
 **AC-US20-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #20 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Spielschritt rückgängig machen“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
@@ -258,7 +258,7 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 ### US #21 – Laufendes Spiel fortsetzen
 
-**Fachliche Anforderung:** 
+**Fachliche Anforderung:** Als **Instructor** möchte ich ein laufendes Spiel später wieder öffnen und am gespeicherten Spielstand fortsetzen können, damit ein Spiel bei Unterbrechungen nicht verloren geht.
 
 **AC-US21-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #21 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Laufendes Spiel fortsetzen“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
@@ -270,7 +270,7 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 ### US #22 – Beamer-Modus verwenden
 
-**Fachliche Anforderung:** 
+**Fachliche Anforderung:** Als **Instructor** möchte ich die Spielansicht in einen Beamer-Modus umschalten können, damit Karten, Fragen und Spielstand für die Studierenden groß und ohne störende Navigation dargestellt werden.
 
 **AC-US22-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #22 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Beamer-Modus verwenden“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
@@ -282,7 +282,7 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 ### US #23 – Ergebnisse überblicken
 
-**Fachliche Anforderung:** 
+**Fachliche Anforderung:** Als **Instructor** möchte ich nach dem Login Teamstände, Rundenergebnisse, kumulierte Ergebnisse und die Spielhistorie eines Kurses im Ergebnis-Dashboard sehen können, damit ich den bisherigen Spielverlauf und den Gesamtstand jederzeit überblicken kann.
 
 **AC-US23-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #23 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Ergebnisse überblicken“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
@@ -294,7 +294,7 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 ### US #24 – Gespielte Fragen protokollieren
 
-**Fachliche Anforderung:** 
+**Fachliche Anforderung:** Als **Instructor** möchte ich nachvollziehen können, welche Fachfragen in welcher Runde und in welchem Kurs tatsächlich gespielt wurden, und dieses Protokoll exportieren können, damit die Verwendung der Fragen für die weitere Lehr- und Klausurplanung dokumentiert ist.
 
 **AC-US24-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #24 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Gespielte Fragen protokollieren“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
@@ -306,7 +306,7 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 ### US #25 – Rundenabdeckung prüfen
 
-**Fachliche Anforderung:** 
+**Fachliche Anforderung:** Als **Instructor** möchte ich sehen können, welche Runden in welchen aktiven Kursen bereits gespielt wurden, noch laufen, abgebrochen oder noch offen sind, damit ich die kursübergreifende Durchführung der vorgesehenen Runden überblicken kann.
 
 **AC-US25-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #25 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Rundenabdeckung prüfen“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
@@ -318,7 +318,7 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 ### US #26 – Spiel abbrechen und löschen
 
-**Fachliche Anforderung:** 
+**Fachliche Anforderung:** Als **Instructor** möchte ich ein laufendes Spiel abbrechen und ein abgebrochenes Spiel auf der **Instructor-Seite** löschen können, damit irrtümlich gestartete oder nicht fortzuführende Spiele den weiteren Spielbetrieb und die Rundenabdeckung nicht blockieren.
 
 **AC-US26-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #26 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Spiel abbrechen und löschen“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
@@ -330,7 +330,7 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 ### US #27 – Teamnamen verwalten
 
-**Fachliche Anforderung:** 
+**Fachliche Anforderung:** Als **Instructor** möchte ich für die beiden Teams eines Kurses frei wählbare Namen vergeben und diese später ändern können, damit die Teams im Spiel unter passenden Bezeichnungen angezeigt werden.
 
 **AC-US27-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #27 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Teamnamen verwalten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
@@ -342,7 +342,7 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 ### US #28 – Fragen auswerten
 
-**Fachliche Anforderung:** 
+**Fachliche Anforderung:** Als **Instructor** möchte ich die Ergebnisse gespielter Fachfragen für einen einzelnen Kurs sowie kursübergreifend auswerten können, damit ich erkenne, welche Fragen wie häufig und wie erfolgreich beantwortet wurden.
 
 **AC-US28-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #28 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Fragen auswerten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
@@ -354,7 +354,7 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 ### US #29 – Tic-Tac-Toe auf dem Board
 
-**Fachliche Anforderung:** 
+**Fachliche Anforderung:** Als **Instructor** möchte ich, dass gewertete Karten auf dem Board einen Rand in der Farbe des punktenden Teams erhalten und eine vollständige Reihe markiert wird, damit nebenbei ein Tic-Tac-Toe als zusätzlicher spielerischer Anreiz mitläuft, ohne die Spielansicht zu vergrößern oder die reguläre Wertung zu verändern.
 
 **AC-US29-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #29 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Tic-Tac-Toe auf dem Board“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
