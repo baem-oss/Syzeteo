@@ -1,101 +1,75 @@
-# Syzeteo – Testabdeckung und TDD-Status (konsolidiert)
+# Syzeteo – TDD-Testabdeckung und Phase-2-Abschlussstand
 
-**Stand:** 29.10.2026 · **Bezug:** aktueller Phase-2-Branch auf Basis von `main` nach PR #11 · **Geltung:** Dokumentations- und Traceability-Status, **keine fachliche Vollabnahme**.
+**Stand:** 29.10.2026 · **Bezugsstand:** Branch `feature/tdd-phase2-completion-remaining21` · **Art:** nachvollziehbare Teilnachweise, **keine fachliche Vollabnahme sämtlicher 29 Stories**.
 
-## Verbindliche Quellen
+## Überblick
 
-- `docs/Syzeteo-L-US-DE.md`: 29 fachliche User Stories.
-- `docs/Syzeteo-Akzeptanztests-Mapping.json`: aktuelle Story-zu-Test-Zuordnung; maßgeblich für die Zahlen dieses Berichts.
-- `docs/Syzeteo-Akzeptanzkriterien.json`: Kriterien mit stabilen IDs, Wortlaut, Status und Testreferenzen.
-- `docs/Syzeteo-TDD-Baseline.json` und `docs/Syzeteo-Akzeptanzkriterien-Baseline.json`: eingefrorene Vergleichsstände, **nicht** Abnahmenachweise.
-- `docs/Syzeteo-Akzeptanztests-TDD-DE.md`: lesbarer Akzeptanztestkatalog und manuelle Freigaben.
-- `docs/Syzeteo-TDD-Kriterien-Governance-DE.md`: Regeln für Änderungen und CI-Schutz.
-- `docs/Syzeteo-TDD-US10-DE.md`, `docs/Syzeteo-TDD-US21-DE.md`, `docs/Syzeteo-TDD-Phase2-US24-DE.md`: vertiefte Tests und offene Restpunkte.
-
-## Aktueller Nachweisstand
-
-| Kennzahl | Stand |
+| Kennzahl | Wert |
 |---|---:|
 | User Stories | 29 |
-| Stories mit mindestens einer automatisierten Referenz | 29 |
-| Story-Test-Zuordnungen (Mehrfachnennungen eingeschlossen) | 88 |
-| Verschiedene referenzierte Testmethoden | 82 |
-| Story-Mappings mit Status `verified_partial` | 29 |
-| Maschinenlesbare Kriterien mit Status `legacy_provisional` | 21 |
-| Maschinenlesbare Kriterien mit Status `specified_partial` | 25 |
-| Gesamtzahl registrierter Akzeptanzkriterien | 46 |
-| Story-Mappings mit `manual_review: true` (Bedarfsmarker, **kein** Abnahmestatus) | 9 |
+| Stories mit Testreferenzen | 29 |
+| Registrierte Kriterien (gesamt) | 46 |
+| Status `specified_partial` | 46 |
+| Status `legacy_provisional` | 0 |
+| Story-Test-Zuordnungen | 109 |
+| Unterschiedliche referenzierte Testmethoden | 103 |
+| Story-Mappings mit `verified_partial` | 29 |
 
-**Einordnung:** `specified_partial` bezeichnet fachlich konkretisierte Kriterien mit direktem automatisiertem Teilnachweis, nicht die Vollabnahme einer Story. `verified_partial` bezeichnet dokumentierte fachliche **Teilnachweise** und keine vollständige Abnahme der Story. `legacy_provisional` kennzeichnet generische, noch fachlich zu präzisierende Kriterien. Die Zahl der Testreferenzen ist keine Testabdeckungsquote. Die CI prüft die Existenz referenzierter Methoden und führt Regressionstests aus; die semantische Aussagekraft der Assertions muss im Review bestätigt werden.
+**Definition:** Ein Kriterium `specified_partial` nennt eine konkrete fachliche, mit Assertions referenzierte Nachbedingung. Die zusätzliche Abdeckung aller denkbaren Randfälle, Sicherheits-/Datenschutzanforderungen und Browserverläufe ist **nicht** dadurch bewiesen. Die ursprünglichen 29 generischen Kriterien wurden konkretisiert; zusätzlich sind 17 weitere Kriterien registriert. Der eingefrorene Vergleichsbestand ist unverändert.
 
-### Referenzübersicht je Story
+## Story-zu-Test-Übersicht
 
-| Story | Automatische Testreferenzen | Nachweisstatus |
-|---|---:|---|
-| US #01 | 3 | Teilnachweis |
-| US #02 | 3 | Teilnachweis |
-| US #03 | 2 | Teilnachweis |
-| US #04 | 2 | Teilnachweis |
-| US #05 | 2 | Teilnachweis |
-| US #06 | 3 | Teilnachweis |
-| US #07 | 4 | Teilnachweis |
-| US #08 | 5 | Teilnachweis |
-| US #09 | 3 | Teilnachweis |
-| US #10 | 6 | Teilnachweis |
-| US #11 | 1 | Teilnachweis |
-| US #12 | 1 | Teilnachweis |
-| US #13 | 1 | Teilnachweis |
-| US #14 | 2 | Teilnachweis |
-| US #15 | 2 | Teilnachweis |
-| US #16 | 2 | Teilnachweis |
-| US #17 | 3 | Teilnachweis |
-| US #18 | 1 | Teilnachweis |
-| US #19 | 1 | Teilnachweis |
-| US #20 | 3 | Teilnachweis |
-| US #21 | 5 | Teilnachweis |
-| US #22 | 2 | Teilnachweis |
-| US #23 | 1 | Teilnachweis |
-| US #24 | 10 | Teilnachweis |
-| US #25 | 1 | Teilnachweis |
-| US #26 | 4 | Teilnachweis |
-| US #27 | 4 | Teilnachweis |
-| US #28 | 6 | Teilnachweis |
-| US #29 | 5 | Teilnachweis |
+| User Story | Kriterien | Story-Test-Zuordnungen | Einordnung |
+|---|---:|---:|---|
+| US #01 | 1 | 4 | Teilnachweis |
+| US #02 | 1 | 4 | Teilnachweis |
+| US #03 | 1 | 3 | Teilnachweis |
+| US #04 | 1 | 3 | Teilnachweis |
+| US #05 | 2 | 2 | Teilnachweis |
+| US #06 | 2 | 3 | Teilnachweis |
+| US #07 | 3 | 4 | Teilnachweis |
+| US #08 | 2 | 5 | Teilnachweis |
+| US #09 | 2 | 3 | Teilnachweis |
+| US #10 | 5 | 6 | Teilnachweis |
+| US #11 | 1 | 2 | Teilnachweis |
+| US #12 | 1 | 2 | Teilnachweis |
+| US #13 | 1 | 2 | Teilnachweis |
+| US #14 | 1 | 3 | Teilnachweis |
+| US #15 | 1 | 3 | Teilnachweis |
+| US #16 | 1 | 3 | Teilnachweis |
+| US #17 | 1 | 4 | Teilnachweis |
+| US #18 | 1 | 2 | Teilnachweis |
+| US #19 | 1 | 2 | Teilnachweis |
+| US #20 | 1 | 4 | Teilnachweis |
+| US #21 | 3 | 5 | Teilnachweis |
+| US #22 | 1 | 3 | Teilnachweis |
+| US #23 | 1 | 2 | Teilnachweis |
+| US #24 | 6 | 10 | Teilnachweis |
+| US #25 | 1 | 2 | Teilnachweis |
+| US #26 | 1 | 5 | Teilnachweis |
+| US #27 | 1 | 5 | Teilnachweis |
+| US #28 | 1 | 7 | Teilnachweis |
+| US #29 | 1 | 6 | Teilnachweis |
 
-## Fachliche Fortschritte seit dem ursprünglichen Review
+## Phase-2-Arbeitspakete
 
-- **US #10 – Studierende Teams zuordnen:** sechs direkte Akzeptanztests zu manueller und zufälliger Verteilung, Kursisolation und ungültigen Eingaben.
-- **US #21 – Laufendes Spiel fortsetzen:** fünf direkte Tests, einschließlich persistiertem Zustand nach gewertetem Spielzug und erneuter Datenbankverbindung.
-- **US #24 – Gespielte Fragen protokollieren:** zehn direkte Tests zu abgehandelten Fragen, Historie, Abbruch/Löschung, Kurs-/Rundenfilter, CSV und letzter Instructor-Karte.
-- **US #22 – Beamer-Modus:** zwei zugeordnete Rendering-Tests; diese ersetzen keine echte Browserprüfung.
+- **PR #11:** US #10, #21, #24 – Integrität der Team-Snapshots, Fortsetzung nach Spielzügen, Fragenprotokoll einschließlich CSV und Instructor-Karte; 14 Kriterien.
+- **PR #12:** US #05–#09 – Anmeldung, Accountverwaltung, Kurslöschung, Studierendenverwaltung und CSV-Import; weitere elf konkretisierte Kriterien.
+- **Aktuelles Paket:** US #01–#04 sowie #11–#20, #22–#23, #25–#29 – alle verbliebenen 21 vorläufigen Kriterien fachlich formuliert und mit 21 neuen konkreten Domain-Assertions verknüpft.
 
-Die vormals als testlos aufgeführten US #10, #21 und #24 besitzen inzwischen automatisierte Nachweise. Der frühere Stand von 59 Verknüpfungen/26 Stories ist **historisch und nicht mehr aktuell**.
+Die fachlichen User Stories, der Produktivcode, die Business Rules und die eingefrorenen `Syzeteo-TDD-Baseline.json` / `Syzeteo-Akzeptanzkriterien-Baseline.json` sind unverändert.
 
-## Manuelle UI-Freigaben
+## UI-Abnahme und Grenzen
 
-Am **29.10.2026** hat der Projektverantwortliche die UI-Abnahme im Chat als **PASS** erklärt. Für **US #10, #21, #22 und #24** ist diese gemeldete Freigabe dokumentiert (US #22 in der manuellen Prüftabelle, die anderen in den jeweiligen Detaildokumenten).
+Die **vom Projektverantwortlichen gemeldete** manuelle UI-Freigabe vom 29.10.2026 zu US #10, #21, #22 und #24 ist in `Syzeteo-Akzeptanztests-TDD-DE.md` dokumentiert. Sie ist keine unabhängige Browser-E2E-Prüfung. Browser-/Zoom-/Auflösungsdaten und Einzelbelege fehlen. Weitere Stories sind damit nicht pauschal freigegeben.
 
-**Evidenzgrenze:** Es fand keine eigene Browserprüfung durch den Assistenten statt; Browser-Version, tatsächlich verwendete Auflösung und Zoomstufe sowie Screenshots wurden nicht übermittelt. Die definierte **Referenzumgebung** beträgt 1920 × 1080 Pixel bei 100 % Zoom, ist jedoch nicht als tatsächlich geprüft belegt. Eine pauschale UI-Vollabnahme sämtlicher 29 Stories folgt aus der Freigabe nicht.
+Die CI prüft Testreferenzen sowie die Python-Regression. Die semantische Angemessenheit jeder Assertion, das Verhalten realer Browser und die vollständige Berücksichtigung aller fachlichen Neben- und Fehlerszenarien bleiben Gegenstand von Review/ggf. Phase 3.
 
-## CI und Änderungs-Governance
+## Nächste Stufe (Phase 3)
 
-`.github/workflows/tests.yml` startet bei Push und Pull Request:
+1. Branch Protection / verbindliche Checks für `main` verifizieren und aktivieren.
+2. Test-Gate gegen nur umbenannte oder thematisch unpassende Testreferenzen härten; kontrolliertes Kriterien-Rebaselining definieren.
+3. Optional Browser-E2E-Automation und revisionsfähige manuelle Prüfnachweise ergänzen.
+4. Zusätzliche fachliche Kriterien gezielt dort anlegen, wo während der weitergehenden Review noch ungetestete Randfälle identifiziert werden.
 
-1. `traceability_check.py`: neue oder geänderte User Stories müssen mit zusätzlicher Testreferenz hinterlegt sein.
-2. `acceptance_criteria_check.py`: neue oder geänderte Akzeptanzkriterien erfordern zusätzliche Testreferenzen; entfernte/doppelte/fehlerhaft zugeordnete Kriterien werden abgewiesen.
-3. PR-Schutz für die eingefrorene Kriterien-Baseline.
-4. `regression_pipeline.py --native --release`: kanonische Regression inklusive Release-Prüfungen.
-
-Die Ausgangsfassung der Baseline bleibt unangetastet. **Grenzen:** Das Gate beweist weder, dass Tests fachlich ausreichende Assertions enthalten, noch schützt es vor direkten Pushes auf `main`; hierfür sollte Branch Protection eingerichtet und überprüft werden.
-
-## Phase-2-Fortschritt
-
-Die User Stories #05–#10, #21 und #24 besitzen nun zusammen **25 präzise, maschinenlesbare Kriterien** (`specified_partial`) mit direkt zugeordneten Testmethoden. Die aktuelle Tranche ergänzt **elf Kriterien und acht neue Assertions** für Anmeldung, Accountverwaltung, Kurse, Studierende und CSV-Import. Zuvor wurden Snapshot-Integrität bei Teamwechseln, Fortsetzung nach zwei Spielzügen und Protokollierung unabhängig vom Punktgewinn ergänzt. Die **21 übrigen Kriterien** bleiben vorläufig. Die eingefrorene Kriterien-Baseline wurde nicht geändert.
-
-## Offene Arbeiten nach dieser Dokumentationsphase
-
-1. **Phase 2:** Die verbliebenen 21 generischen Kriterien in konkrete Given-When-Then-Szenarien überführen, fachliche Randfälle und ggf. ergänzende Tests prüfen. Der Snapshot-Randfall bei US #10 besitzt bereits einen direkten Test.
-2. **Phase 3:** Durchsetzung und Qualität des Traceability-Gates weiter verbessern; Branch Protection/Required Checks verifizieren; gegebenenfalls automatisierte Browser-E2E-Tests ergänzen.
-3. Falls ein revisionsfähiger Einzelprüfnachweis benötigt wird: manuelle UI-Freigaben um tatsächlich beobachtete Browser-Version, Auflösung, Schritte und Belege erweitern.
-
-**Phase-1-Abschlusskriterium:** Alle vorgenannten Angaben beruhen auf den aktuellen JSON-Mappings und den dokumentierten Freigaben; die Dokumentationsbereinigung ändert keine fachliche Anforderung, kein Testmapping, keinen Produktivcode und keine Baseline.
+**Phase-2-Abschlusskriterium:** Alle ursprünglich als `legacy_provisional` markierten Kriterien besitzen einen konkret benannten fachlichen Prüfzweck und mindestens eine neu zugeordnete direkte Testmethode; fachliche Vollabdeckung der Stories wird nicht behauptet.
