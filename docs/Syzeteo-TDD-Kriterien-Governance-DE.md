@@ -10,7 +10,7 @@ Stand: 29.10.2026
 
 ## Konsolidierter Nachweisstand und Nummerierung
 
-Der aktuelle Story-Test-Status und die verbleibenden fachlichen Lücken stehen in `Syzeteo-Testabdeckung-Review-DE.md`. Der lesbare Akzeptanztestkatalog ist `Syzeteo-Akzeptanztests-TDD-DE.md`. In Phase 2 wurden für US #05–#10, #21 und #24 insgesamt **25 konkrete Kriterien** mit maschinenlesbaren IDs `AC-USnn-mm` und Testreferenzen hinterlegt (`specified_partial`). Bei den übrigen 21 Kriterien bleibt der Status `legacy_provisional`. Maßgeblich registriert sind ausschließlich die IDs in `Syzeteo-Akzeptanzkriterien.json`; weitere Aufspaltungen müssen das CI-Gate durchlaufen.
+Der aktuelle Story-Test-Status und die verbleibenden fachlichen Lücken stehen in `Syzeteo-Testabdeckung-Review-DE.md`. Der lesbare Akzeptanztestkatalog ist `Syzeteo-Akzeptanztests-TDD-DE.md`. In Phase 2 wurden **alle ursprünglich 29 generischen Kriterien** zu konkreten, automatisiert referenzierten Prüfzwecken formuliert. Zusammen mit 17 ergänzenden Kriterien stehen nun **46 Kriterien** auf `specified_partial`; kein aktives Kriterium bleibt auf `legacy_provisional`. Dies ist ein Abschluss der initialen Kriterienkonkretisierung, keine Bestätigung vollständiger Story-Abdeckung. Maßgeblich registriert sind ausschließlich die IDs in `Syzeteo-Akzeptanzkriterien.json`; weitere Aufspaltungen müssen das CI-Gate durchlaufen.
 
 Die manuelle UI-Freigabe PASS für US #10, #21, #22 und #24 wurde vom Projektverantwortlichen gemeldet. Sie darf nicht als vom CI bestätigter Browser-E2E-Test oder als vollständige Freigabe aller Kriterien ausgegeben werden.
 
@@ -42,6 +42,6 @@ Der Prüfer `acceptance_criteria_check.py` vergleicht jede aktive Kriterien-ID m
 
 ## Noch offene methodische Punkte
 
-- Die 21 verbliebenen generischen `legacy_provisional`-Kriterien sind noch nicht fachlich ausformuliert; schrittweise präzisieren. Die 25 `specified_partial`-Kriterien sind überprüfbare Teilnachweise, keine komplette Story-Abnahme.
+- Es gibt keine aktiven generischen `legacy_provisional`-Kriterien mehr. Die 46 `specified_partial`-Kriterien beschreiben jeweils einen überprüfbaren Teilaspekt, **keine** garantierte vollständige Abnahme aller Story-Randfälle.
 - Die neuen Kriterien werden noch nicht automatisch aus dem Markdown-Katalog gespiegelt. Die JSON-Datei ist die verbindliche technische Referenz; menschliche Dokumentation muss im Review abgeglichen werden.
 - Der CI-Schutz der Baseline ist für Pull Requests implementiert. Direkte Pushes nach `main` sollten zusätzlich über GitHub Branch Protection unterbunden werden.
