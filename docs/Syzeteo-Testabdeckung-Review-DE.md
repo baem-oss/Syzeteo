@@ -1,6 +1,6 @@
 # Syzeteo – Testabdeckung und TDD-Status (konsolidiert)
 
-**Stand:** 29.10.2026 · **Bezug:** GitHub `main` nach PR #9 · **Geltung:** Dokumentations- und Traceability-Status, **keine fachliche Vollabnahme**.
+**Stand:** 29.10.2026 · **Bezug:** aktueller Phase-2-Branch auf Basis von `main` nach PR #11 · **Geltung:** Dokumentations- und Traceability-Status, **keine fachliche Vollabnahme**.
 
 ## Verbindliche Quellen
 
@@ -18,12 +18,12 @@
 |---|---:|
 | User Stories | 29 |
 | Stories mit mindestens einer automatisierten Referenz | 29 |
-| Story-Test-Zuordnungen (Mehrfachnennungen eingeschlossen) | 80 |
-| Verschiedene referenzierte Testmethoden | 74 |
+| Story-Test-Zuordnungen (Mehrfachnennungen eingeschlossen) | 88 |
+| Verschiedene referenzierte Testmethoden | 82 |
 | Story-Mappings mit Status `verified_partial` | 29 |
-| Maschinenlesbare Kriterien mit Status `legacy_provisional` | 26 |
-| Maschinenlesbare Kriterien mit Status `specified_partial` | 14 |
-| Gesamtzahl registrierter Akzeptanzkriterien | 40 |
+| Maschinenlesbare Kriterien mit Status `legacy_provisional` | 21 |
+| Maschinenlesbare Kriterien mit Status `specified_partial` | 25 |
+| Gesamtzahl registrierter Akzeptanzkriterien | 46 |
 | Story-Mappings mit `manual_review: true` (Bedarfsmarker, **kein** Abnahmestatus) | 9 |
 
 **Einordnung:** `specified_partial` bezeichnet fachlich konkretisierte Kriterien mit direktem automatisiertem Teilnachweis, nicht die Vollabnahme einer Story. `verified_partial` bezeichnet dokumentierte fachliche **Teilnachweise** und keine vollständige Abnahme der Story. `legacy_provisional` kennzeichnet generische, noch fachlich zu präzisierende Kriterien. Die Zahl der Testreferenzen ist keine Testabdeckungsquote. Die CI prüft die Existenz referenzierter Methoden und führt Regressionstests aus; die semantische Aussagekraft der Assertions muss im Review bestätigt werden.
@@ -36,11 +36,11 @@
 | US #02 | 3 | Teilnachweis |
 | US #03 | 2 | Teilnachweis |
 | US #04 | 2 | Teilnachweis |
-| US #05 | 1 | Teilnachweis |
-| US #06 | 1 | Teilnachweis |
-| US #07 | 2 | Teilnachweis |
-| US #08 | 4 | Teilnachweis |
-| US #09 | 1 | Teilnachweis |
+| US #05 | 2 | Teilnachweis |
+| US #06 | 3 | Teilnachweis |
+| US #07 | 4 | Teilnachweis |
+| US #08 | 5 | Teilnachweis |
+| US #09 | 3 | Teilnachweis |
 | US #10 | 6 | Teilnachweis |
 | US #11 | 1 | Teilnachweis |
 | US #12 | 1 | Teilnachweis |
@@ -90,11 +90,11 @@ Die Ausgangsfassung der Baseline bleibt unangetastet. **Grenzen:** Das Gate bewe
 
 ## Phase-2-Fortschritt
 
-Die User Stories #10, #21 und #24 besitzen nun insgesamt 14 präzise, maschinenlesbare Kriterien (`specified_partial`) mit direkt zugeordneten Testmethoden. Es wurden drei neue Assertions-Szenarien ergänzt: Snapshot-Integrität bei Teamwechseln, Fortsetzung nach zwei Spielzügen und Protokollierung unabhängig vom Punktgewinn. Die 26 übrigen Kriterien bleiben vorläufig. Die eingefrorene Kriterien-Baseline wurde nicht geändert.
+Die User Stories #05–#10, #21 und #24 besitzen nun zusammen **25 präzise, maschinenlesbare Kriterien** (`specified_partial`) mit direkt zugeordneten Testmethoden. Die aktuelle Tranche ergänzt **elf Kriterien und acht neue Assertions** für Anmeldung, Accountverwaltung, Kurse, Studierende und CSV-Import. Zuvor wurden Snapshot-Integrität bei Teamwechseln, Fortsetzung nach zwei Spielzügen und Protokollierung unabhängig vom Punktgewinn ergänzt. Die **21 übrigen Kriterien** bleiben vorläufig. Die eingefrorene Kriterien-Baseline wurde nicht geändert.
 
 ## Offene Arbeiten nach dieser Dokumentationsphase
 
-1. **Phase 2:** Die verbliebenen 26 generischen Kriterien in konkrete Given-When-Then-Szenarien überführen, fachliche Randfälle und ggf. ergänzende Tests prüfen. Der Snapshot-Randfall bei US #10 besitzt bereits einen direkten Test.
+1. **Phase 2:** Die verbliebenen 21 generischen Kriterien in konkrete Given-When-Then-Szenarien überführen, fachliche Randfälle und ggf. ergänzende Tests prüfen. Der Snapshot-Randfall bei US #10 besitzt bereits einen direkten Test.
 2. **Phase 3:** Durchsetzung und Qualität des Traceability-Gates weiter verbessern; Branch Protection/Required Checks verifizieren; gegebenenfalls automatisierte Browser-E2E-Tests ergänzen.
 3. Falls ein revisionsfähiger Einzelprüfnachweis benötigt wird: manuelle UI-Freigaben um tatsächlich beobachtete Browser-Version, Auflösung, Schritte und Belege erweitern.
 

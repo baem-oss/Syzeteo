@@ -51,32 +51,50 @@
       "id": 5,
       "criterion": "AC-US05-01",
       "test_references": [
-        "test_auth.py::test_admin_login_and_changes"
+        "test_auth.py::test_admin_login_and_changes",
+        "test_tdd_admin_acceptance.py::test_us05_login_accepts_valid_credentials_and_rejects_invalid_password"
       ],
       "manual_review": false,
       "review_status": "verified_partial",
-      "review_note": "Quelltest-Prüfzweck und Assertions fachlich geprüft; keine Vollabnahme der Story."
+      "review_note": "Phase-2-Kriterien AC-US05-01, AC-US05-02 mit direkt überprüfbaren Daten-/Authentifizierungsnachbedingungen; fachliche Teilabdeckung, keine Browser-E2E-Vollabnahme.",
+      "criteria": [
+        "AC-US05-01",
+        "AC-US05-02"
+      ]
     },
     {
       "id": 6,
       "criterion": "AC-US06-01",
       "test_references": [
-        "test_auth.py::test_admin_login_and_changes"
+        "test_auth.py::test_admin_login_and_changes",
+        "test_tdd_admin_acceptance.py::test_us06_changing_username_and_password_invalidates_previous_credentials",
+        "test_tdd_admin_acceptance.py::test_us06_wrong_old_password_does_not_modify_login_credentials"
       ],
       "manual_review": false,
       "review_status": "verified_partial",
-      "review_note": "Quelltest-Prüfzweck und Assertions fachlich geprüft; keine Vollabnahme der Story."
+      "review_note": "Phase-2-Kriterien AC-US06-01, AC-US06-02 mit direkt überprüfbaren Daten-/Authentifizierungsnachbedingungen; fachliche Teilabdeckung, keine Browser-E2E-Vollabnahme.",
+      "criteria": [
+        "AC-US06-01",
+        "AC-US06-02"
+      ]
     },
     {
       "id": 7,
       "criterion": "AC-US07-01",
       "test_references": [
         "test_storage.py::test_course_archive_preserves_data_hides_course_and_can_be_reactivated",
-        "test_storage.py::test_course_with_running_game_cannot_be_archived"
+        "test_storage.py::test_course_with_running_game_cannot_be_archived",
+        "test_tdd_admin_acceptance.py::test_us07_deleting_course_removes_games_students_and_history_but_keeps_global_pool",
+        "test_tdd_admin_acceptance.py::test_us07_archiving_and_reactivating_preserves_course_students"
       ],
       "manual_review": false,
       "review_status": "verified_partial",
-      "review_note": "Quelltest-Prüfzweck und Assertions fachlich geprüft; keine Vollabnahme der Story."
+      "review_note": "Phase-2-Kriterien AC-US07-01, AC-US07-02, AC-US07-03 mit direkt überprüfbaren Daten-/Authentifizierungsnachbedingungen; fachliche Teilabdeckung, keine Browser-E2E-Vollabnahme.",
+      "criteria": [
+        "AC-US07-01",
+        "AC-US07-02",
+        "AC-US07-03"
+      ]
     },
     {
       "id": 8,
@@ -85,21 +103,32 @@
         "test_student_duplicates.py::test_manual_duplicate_raises_localizable_storage_error",
         "test_student_duplicates.py::test_duplicate_name_is_allowed_in_different_course",
         "test_student_duplicates.py::test_rename_to_existing_name_raises_same_storage_error",
-        "test_student_duplicates.py::test_csv_import_still_skips_duplicate_names"
+        "test_student_duplicates.py::test_csv_import_still_skips_duplicate_names",
+        "test_tdd_admin_acceptance.py::test_us08_update_student_and_active_status_only_affects_selected_course_member"
       ],
       "manual_review": false,
       "review_status": "verified_partial",
-      "review_note": "Quelltest-Prüfzweck und Assertions fachlich geprüft; keine Vollabnahme der Story."
+      "review_note": "Phase-2-Kriterien AC-US08-01, AC-US08-02 mit direkt überprüfbaren Daten-/Authentifizierungsnachbedingungen; fachliche Teilabdeckung, keine Browser-E2E-Vollabnahme.",
+      "criteria": [
+        "AC-US08-01",
+        "AC-US08-02"
+      ]
     },
     {
       "id": 9,
       "criterion": "AC-US09-01",
       "test_references": [
-        "test_student_duplicates.py::test_csv_import_still_skips_duplicate_names"
+        "test_student_duplicates.py::test_csv_import_still_skips_duplicate_names",
+        "test_tdd_admin_acceptance.py::test_us09_csv_import_accepts_bom_and_semicolon_names_and_skips_duplicates",
+        "test_tdd_admin_acceptance.py::test_us09_csv_import_rejects_missing_name_columns"
       ],
       "manual_review": false,
       "review_status": "verified_partial",
-      "review_note": "Quelltest-Prüfzweck und Assertions fachlich geprüft; keine Vollabnahme der Story."
+      "review_note": "Phase-2-Kriterien AC-US09-01, AC-US09-02 mit direkt überprüfbaren Daten-/Authentifizierungsnachbedingungen; fachliche Teilabdeckung, keine Browser-E2E-Vollabnahme.",
+      "criteria": [
+        "AC-US09-01",
+        "AC-US09-02"
+      ]
     },
     {
       "id": 10,

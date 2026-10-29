@@ -51,30 +51,74 @@
     {
       "id": "AC-US05-01",
       "story_id": 5,
-      "statement": "Gegeben sind die in US #05 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Am System anmelden“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
-      "status": "legacy_provisional",
+      "statement": "Gegeben ist ein eingerichtetes Instructor-Konto mit gültigem Passwort; wenn sich der Instructor mit dem richtigen Benutzernamen unabhängig von dessen Groß-/Kleinschreibung und dem Passwort anmeldet, dann wird die Anmeldung akzeptiert und das Konto korrekt erkannt.",
+      "status": "specified_partial",
       "test_references": [
-        "test_auth.py::test_admin_login_and_changes"
+        "test_auth.py::test_admin_login_and_changes",
+        "test_tdd_admin_acceptance.py::test_us05_login_accepts_valid_credentials_and_rejects_invalid_password"
+      ],
+      "manual_review": false
+    },
+    {
+      "id": "AC-US05-02",
+      "story_id": 5,
+      "statement": "Gegeben ist ein eingerichtetes Instructor-Konto; wenn ein falsches Passwort zur Anmeldung verwendet wird, dann wird der Zugriff verweigert.",
+      "status": "specified_partial",
+      "test_references": [
+        "test_tdd_admin_acceptance.py::test_us05_login_accepts_valid_credentials_and_rejects_invalid_password"
       ],
       "manual_review": false
     },
     {
       "id": "AC-US06-01",
       "story_id": 6,
-      "statement": "Gegeben sind die in US #06 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Eigenen Account verwalten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
-      "status": "legacy_provisional",
+      "statement": "Gegeben ist ein authentifiziertes Instructor-Konto; wenn Benutzername und Passwort unter Angabe der bisherigen gültigen Zugangsdaten geändert werden, dann funktioniert die Anmeldung mit den neuen Daten und die früheren Zugangsdaten sind ungültig.",
+      "status": "specified_partial",
       "test_references": [
-        "test_auth.py::test_admin_login_and_changes"
+        "test_auth.py::test_admin_login_and_changes",
+        "test_tdd_admin_acceptance.py::test_us06_changing_username_and_password_invalidates_previous_credentials"
+      ],
+      "manual_review": false
+    },
+    {
+      "id": "AC-US06-02",
+      "story_id": 6,
+      "statement": "Gegeben ist ein Instructor-Konto mit gültigem Passwort; wenn bei der Passwortänderung ein falsches bisheriges Passwort angegeben wird, dann wird die Änderung abgewiesen und das bisherige Passwort bleibt gültig.",
+      "status": "specified_partial",
+      "test_references": [
+        "test_tdd_admin_acceptance.py::test_us06_wrong_old_password_does_not_modify_login_credentials"
       ],
       "manual_review": false
     },
     {
       "id": "AC-US07-01",
       "story_id": 7,
-      "statement": "Gegeben sind die in US #07 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Kurse verwalten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
-      "status": "legacy_provisional",
+      "statement": "Gegeben ist ein Kurs mit Studierenden, Spielkarten, Spiel und kursbezogener Historie sowie ein weiterer Kurs und ein globaler Fragenpool; wenn der Instructor den Kurs vollständig löscht, dann werden ausschließlich dessen Kurs-, Studierenden-, Spiel- und Historiendaten gelöscht, während der andere Kurs, seine Studierenden sowie globale Fragen und Runden erhalten bleiben (GR #10).",
+      "status": "specified_partial",
       "test_references": [
         "test_storage.py::test_course_archive_preserves_data_hides_course_and_can_be_reactivated",
+        "test_storage.py::test_course_with_running_game_cannot_be_archived",
+        "test_tdd_admin_acceptance.py::test_us07_deleting_course_removes_games_students_and_history_but_keeps_global_pool"
+      ],
+      "manual_review": false
+    },
+    {
+      "id": "AC-US07-02",
+      "story_id": 7,
+      "statement": "Gegeben ist ein Kurs mit Studierenden ohne laufendes Spiel; wenn der Instructor ihn archiviert und anschließend reaktiviert, dann wechselt der Sichtbarkeitsstatus, ohne dass die gespeicherten Studierenden verloren gehen.",
+      "status": "specified_partial",
+      "test_references": [
+        "test_tdd_admin_acceptance.py::test_us07_archiving_and_reactivating_preserves_course_students",
+        "test_storage.py::test_course_archive_preserves_data_hides_course_and_can_be_reactivated"
+      ],
+      "manual_review": false
+    },
+    {
+      "id": "AC-US07-03",
+      "story_id": 7,
+      "statement": "Gegeben ist ein Kurs mit laufendem Spiel; wenn der Instructor versucht, ihn zu archivieren, dann wird die Archivierung fachlich zurückgewiesen und der Kurs bleibt aktiv.",
+      "status": "specified_partial",
+      "test_references": [
         "test_storage.py::test_course_with_running_game_cannot_be_archived"
       ],
       "manual_review": false
@@ -82,23 +126,47 @@
     {
       "id": "AC-US08-01",
       "story_id": 8,
-      "statement": "Gegeben sind die in US #08 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Studierende verwalten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
-      "status": "legacy_provisional",
+      "statement": "Gegeben sind Studierende in mehreren Kursen; wenn der Instructor einen Studierenden umbenennt, dessen Team ändert und ihn deaktiviert, dann werden nur dessen Stammdaten geändert und ausschließlich aktive Studierende erscheinen in der aktiven Kursliste.",
+      "status": "specified_partial",
       "test_references": [
         "test_student_duplicates.py::test_manual_duplicate_raises_localizable_storage_error",
         "test_student_duplicates.py::test_duplicate_name_is_allowed_in_different_course",
         "test_student_duplicates.py::test_rename_to_existing_name_raises_same_storage_error",
-        "test_student_duplicates.py::test_csv_import_still_skips_duplicate_names"
+        "test_student_duplicates.py::test_csv_import_still_skips_duplicate_names",
+        "test_tdd_admin_acceptance.py::test_us08_update_student_and_active_status_only_affects_selected_course_member"
+      ],
+      "manual_review": false
+    },
+    {
+      "id": "AC-US08-02",
+      "story_id": 8,
+      "statement": "Gegeben ist ein Kurs mit bereits vorhandenem Studierendennamen; wenn derselbe Name erneut angelegt oder ein anderer Studierender darauf umbenannt werden soll, dann wird die doppelte Verwendung im Kurs abgewiesen, während gleichlautende Namen in verschiedenen Kursen zulässig bleiben.",
+      "status": "specified_partial",
+      "test_references": [
+        "test_student_duplicates.py::test_manual_duplicate_raises_localizable_storage_error",
+        "test_student_duplicates.py::test_rename_to_existing_name_raises_same_storage_error",
+        "test_student_duplicates.py::test_duplicate_name_is_allowed_in_different_course"
       ],
       "manual_review": false
     },
     {
       "id": "AC-US09-01",
       "story_id": 9,
-      "statement": "Gegeben sind die in US #09 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Studierende importieren“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.",
-      "status": "legacy_provisional",
+      "statement": "Gegeben ist eine UTF-8-CSV-Datei mit BOM, Semikolon-Trennung und Vorname-/Nachname-Spalten, in der ein Name bereits im Zielkurs existiert; wenn der Instructor sie importiert, dann werden neue Studierende angelegt, doppelte Einträge übersprungen und die Import-/Überspringungszahlen zurückgegeben.",
+      "status": "specified_partial",
       "test_references": [
-        "test_student_duplicates.py::test_csv_import_still_skips_duplicate_names"
+        "test_student_duplicates.py::test_csv_import_still_skips_duplicate_names",
+        "test_tdd_admin_acceptance.py::test_us09_csv_import_accepts_bom_and_semicolon_names_and_skips_duplicates"
+      ],
+      "manual_review": false
+    },
+    {
+      "id": "AC-US09-02",
+      "story_id": 9,
+      "statement": "Gegeben ist eine CSV-Datei ohne unterstützte Namensspalten; wenn der Instructor sie importiert, dann wird der Import mit einem fachlichen Fehler abgewiesen und im Kurs kein Studierender angelegt.",
+      "status": "specified_partial",
+      "test_references": [
+        "test_tdd_admin_acceptance.py::test_us09_csv_import_rejects_missing_name_columns"
       ],
       "manual_review": false
     },

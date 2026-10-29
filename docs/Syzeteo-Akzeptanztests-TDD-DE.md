@@ -4,7 +4,7 @@
 
 Diese Spezifikation dient der schrittweisen Synchronisation von User Stories und Regressionstests. **Die Mappings dokumentieren fachlich begründete Teilnachweise (Review-Status `verified_partial`), keine vollständige Abnahme der User Stories.** Die fachliche Referenz bilden `Syzeteo-L-US-DE.md`, `Syzeteo-RANF-etc-DE.md` und `Syzeteo-Traceability-Matrix-DE.md`.
 
-Für US #10, #21 und #24 sind die Akzeptanzkriterien in Phase 2 konkretisiert und maschinenlesbar hinterlegt. Die restlichen Stories enthalten weiterhin vorläufige generische Mindestformulierungen, die konkrete Szenarien nicht ersetzen.
+Für US #05 bis #10 sowie US #21 und #24 sind die Akzeptanzkriterien in Phase 2 konkretisiert und maschinenlesbar hinterlegt. Die restlichen Stories enthalten weiterhin vorläufige generische Mindestformulierungen, die konkrete Szenarien nicht ersetzen.
 
 ## TDD-Regel (beschlossen)
 
@@ -14,7 +14,7 @@ Für US #10, #21 und #24 sind die Akzeptanzkriterien in Phase 2 konkretisiert un
 4. Visuelle Kriterien werden hybrid geprüft: technische Tests plus dokumentierte manuelle Abnahme. Die Referenz ist **1920 × 1080 Pixel bei 100 % Browser-Zoom**, jeweils normale Spielansicht und Beamer-Modus.
 5. Baseline-Änderungen werden nicht automatisch vorgenommen und gehören in ein gesondert überprüftes Review.
 
-**Aktueller Phase-2-Stand:** 29 User Stories, 80 Story-Test-Zuordnungen (74 verschiedene Testmethoden), kein ungemappter Story-Eintrag. 14 Kriterien sind `specified_partial`, 26 bleiben `legacy_provisional`. Autoritativer Detailbericht: `Syzeteo-Testabdeckung-Review-DE.md`.
+**Aktueller Phase-2-Stand:** 29 User Stories, 88 Story-Test-Zuordnungen (82 verschiedene Testmethoden), kein ungemappter Story-Eintrag. 25 Kriterien sind `specified_partial`, 21 bleiben `legacy_provisional`. Autoritativer Detailbericht: `Syzeteo-Testabdeckung-Review-DE.md`.
 
 ## Übersicht der Akzeptanzkriterien und Teilnachweise
 
@@ -70,61 +70,77 @@ Für US #10, #21 und #24 sind die Akzeptanzkriterien in Phase 2 konkretisiert un
 
 **Fachliche Anforderung:** Als **Instructor** möchte ich mich an Syzeteo anmelden können, damit ich auf die für mich vorgesehenen Spiel- und Verwaltungsfunktionen zugreifen kann.
 
-**AC-US05-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #05 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Am System anmelden“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
+**Konkretisierte maschinenlesbare Kriterien (Status `specified_partial`):**
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_auth.py::test_admin_login_and_changes`.
+- **AC-US05-01:** Gegeben ist ein eingerichtetes Instructor-Konto mit gültigem Passwort; wenn sich der Instructor mit dem richtigen Benutzernamen unabhängig von dessen Groß-/Kleinschreibung und dem Passwort anmeldet, dann wird die Anmeldung akzeptiert und das Konto korrekt erkannt.
+- **AC-US05-02:** Gegeben ist ein eingerichtetes Instructor-Konto; wenn ein falsches Passwort zur Anmeldung verwendet wird, dann wird der Zugriff verweigert.
+
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** 2 referenzierte Testmethoden, darunter neue Assertions in `test_tdd_admin_acceptance.py`. Vollständige Methodenzuordnung: `Syzeteo-Akzeptanzkriterien.json`.
 
 **Visueller Abnahmenachweis:** Nicht gesondert festgelegt; UI-Anteile im Story-Review prüfen.
 
-**Abdeckungsstatus:** fachlich begründeter Teilnachweis; übrige Kriterien offen.
+**Abdeckungsstatus:** 2 konkretisierte Kriterien mit 2 direkten Story-Test-Zuordnungen; Teilabdeckung, keine vollständige Story-Abnahme.
 
 ### US #06 – Eigenen Account verwalten
 
 **Fachliche Anforderung:** Als **Instructor** möchte ich meinen Benutzernamen und mein Passwort ändern können, damit ich meine Zugangsdaten selbst verwalten kann.
 
-**AC-US06-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #06 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Eigenen Account verwalten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
+**Konkretisierte maschinenlesbare Kriterien (Status `specified_partial`):**
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_auth.py::test_admin_login_and_changes`.
+- **AC-US06-01:** Gegeben ist ein authentifiziertes Instructor-Konto; wenn Benutzername und Passwort unter Angabe der bisherigen gültigen Zugangsdaten geändert werden, dann funktioniert die Anmeldung mit den neuen Daten und die früheren Zugangsdaten sind ungültig.
+- **AC-US06-02:** Gegeben ist ein Instructor-Konto mit gültigem Passwort; wenn bei der Passwortänderung ein falsches bisheriges Passwort angegeben wird, dann wird die Änderung abgewiesen und das bisherige Passwort bleibt gültig.
+
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** 3 referenzierte Testmethoden, darunter neue Assertions in `test_tdd_admin_acceptance.py`. Vollständige Methodenzuordnung: `Syzeteo-Akzeptanzkriterien.json`.
 
 **Visueller Abnahmenachweis:** Nicht gesondert festgelegt; UI-Anteile im Story-Review prüfen.
 
-**Abdeckungsstatus:** fachlich begründeter Teilnachweis; übrige Kriterien offen.
+**Abdeckungsstatus:** 2 konkretisierte Kriterien mit 3 direkten Story-Test-Zuordnungen; Teilabdeckung, keine vollständige Story-Abnahme.
 
 ### US #07 – Kurse verwalten
 
 **Fachliche Anforderung:** Als **Instructor** möchte ich Kurse anlegen, archivieren, reaktivieren und bei Bedarf vollständig löschen können, damit ich die in Syzeteo verwendeten Lehrveranstaltungen aktuell halten kann. Bei der Löschung eines Kurses werden sämtliche mit diesem Kurs zusammenhängenden Daten gelöscht.
 
-**AC-US07-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #07 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Kurse verwalten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
+**Konkretisierte maschinenlesbare Kriterien (Status `specified_partial`):**
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_storage.py::test_course_archive_preserves_data_hides_course_and_can_be_reactivated`, `test_storage.py::test_course_with_running_game_cannot_be_archived`.
+- **AC-US07-01:** Gegeben ist ein Kurs mit Studierenden, Spielkarten, Spiel und kursbezogener Historie sowie ein weiterer Kurs und ein globaler Fragenpool; wenn der Instructor den Kurs vollständig löscht, dann werden ausschließlich dessen Kurs-, Studierenden-, Spiel- und Historiendaten gelöscht, während der andere Kurs, seine Studierenden sowie globale Fragen und Runden erhalten bleiben (GR #10).
+- **AC-US07-02:** Gegeben ist ein Kurs mit Studierenden ohne laufendes Spiel; wenn der Instructor ihn archiviert und anschließend reaktiviert, dann wechselt der Sichtbarkeitsstatus, ohne dass die gespeicherten Studierenden verloren gehen.
+- **AC-US07-03:** Gegeben ist ein Kurs mit laufendem Spiel; wenn der Instructor versucht, ihn zu archivieren, dann wird die Archivierung fachlich zurückgewiesen und der Kurs bleibt aktiv.
+
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** 4 referenzierte Testmethoden, darunter neue Assertions in `test_tdd_admin_acceptance.py`. Vollständige Methodenzuordnung: `Syzeteo-Akzeptanzkriterien.json`.
 
 **Visueller Abnahmenachweis:** Nicht gesondert festgelegt; UI-Anteile im Story-Review prüfen.
 
-**Abdeckungsstatus:** fachlich begründeter Teilnachweis; übrige Kriterien offen.
+**Abdeckungsstatus:** 3 konkretisierte Kriterien mit 4 direkten Story-Test-Zuordnungen; Teilabdeckung, keine vollständige Story-Abnahme.
 
 ### US #08 – Studierende verwalten
 
 **Fachliche Anforderung:** Als **Instructor** möchte ich Studierende eines Kurses anlegen, bearbeiten sowie aktiv oder inaktiv setzen können, damit der für den Spielbetrieb relevante Teilnehmerbestand aktuell gehalten werden kann.
 
-**AC-US08-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #08 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Studierende verwalten“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
+**Konkretisierte maschinenlesbare Kriterien (Status `specified_partial`):**
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_student_duplicates.py::test_manual_duplicate_raises_localizable_storage_error`, `test_student_duplicates.py::test_duplicate_name_is_allowed_in_different_course`, `test_student_duplicates.py::test_rename_to_existing_name_raises_same_storage_error`, `test_student_duplicates.py::test_csv_import_still_skips_duplicate_names`.
+- **AC-US08-01:** Gegeben sind Studierende in mehreren Kursen; wenn der Instructor einen Studierenden umbenennt, dessen Team ändert und ihn deaktiviert, dann werden nur dessen Stammdaten geändert und ausschließlich aktive Studierende erscheinen in der aktiven Kursliste.
+- **AC-US08-02:** Gegeben ist ein Kurs mit bereits vorhandenem Studierendennamen; wenn derselbe Name erneut angelegt oder ein anderer Studierender darauf umbenannt werden soll, dann wird die doppelte Verwendung im Kurs abgewiesen, während gleichlautende Namen in verschiedenen Kursen zulässig bleiben.
+
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** 5 referenzierte Testmethoden, darunter neue Assertions in `test_tdd_admin_acceptance.py`. Vollständige Methodenzuordnung: `Syzeteo-Akzeptanzkriterien.json`.
 
 **Visueller Abnahmenachweis:** Nicht gesondert festgelegt; UI-Anteile im Story-Review prüfen.
 
-**Abdeckungsstatus:** fachlich begründeter Teilnachweis; übrige Kriterien offen.
+**Abdeckungsstatus:** 2 konkretisierte Kriterien mit 5 direkten Story-Test-Zuordnungen; Teilabdeckung, keine vollständige Story-Abnahme.
 
 ### US #09 – Studierende importieren
 
 **Fachliche Anforderung:** Als **Instructor** möchte ich Studierendenlisten aus einer CSV-Datei in einen Kurs importieren können, damit ich größere Teilnehmergruppen nicht einzeln erfassen muss.
 
-**AC-US09-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #09 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Studierende importieren“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
+**Konkretisierte maschinenlesbare Kriterien (Status `specified_partial`):**
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_student_duplicates.py::test_csv_import_still_skips_duplicate_names`.
+- **AC-US09-01:** Gegeben ist eine UTF-8-CSV-Datei mit BOM, Semikolon-Trennung und Vorname-/Nachname-Spalten, in der ein Name bereits im Zielkurs existiert; wenn der Instructor sie importiert, dann werden neue Studierende angelegt, doppelte Einträge übersprungen und die Import-/Überspringungszahlen zurückgegeben.
+- **AC-US09-02:** Gegeben ist eine CSV-Datei ohne unterstützte Namensspalten; wenn der Instructor sie importiert, dann wird der Import mit einem fachlichen Fehler abgewiesen und im Kurs kein Studierender angelegt.
+
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** 3 referenzierte Testmethoden, darunter neue Assertions in `test_tdd_admin_acceptance.py`. Vollständige Methodenzuordnung: `Syzeteo-Akzeptanzkriterien.json`.
 
 **Visueller Abnahmenachweis:** Nicht gesondert festgelegt; UI-Anteile im Story-Review prüfen.
 
-**Abdeckungsstatus:** fachlich begründeter Teilnachweis; übrige Kriterien offen.
+**Abdeckungsstatus:** 2 konkretisierte Kriterien mit 3 direkten Story-Test-Zuordnungen; Teilabdeckung, keine vollständige Story-Abnahme.
 
 ### US #10 – Studierende Teams zuordnen
 
@@ -403,5 +419,5 @@ Die folgenden **PASS**-Einträge sind Freigaben des Projektverantwortlichen im C
 - Die GitHub-CI führt Python-Regressionstests aus, jedoch keine automatisierten Browser-End-to-End-Tests.
 - Eine Testmethodenzuordnung beweist weder vollständige Randfallabdeckung noch die semantische Angemessenheit ihrer Assertions.
 - `traceability_check.py` prüft Änderungen an User Stories. `acceptance_criteria_check.py` prüft zusätzlich neue oder geänderte Akzeptanzkriterien gegen die eingefrorene Kriterien-Baseline; fachliche Aussagekraft bleibt Review-Aufgabe.
-- 26 Kriterien bleiben `legacy_provisional`; die 14 Kriterien für US #10, #21 und #24 sind als `specified_partial` mit direkten Assertions hinterlegt. Dies ist keine Vollabnahme der Stories.
+- 21 Kriterien bleiben `legacy_provisional`; 25 Kriterien für US #05–#10, #21 und #24 sind als `specified_partial` mit direkten Assertions hinterlegt. Dies ist keine Vollabnahme der Stories.
 - Für aktuelle Zählwerte und verbleibende Aufgaben gilt `Syzeteo-Testabdeckung-Review-DE.md`; die Detaildokumente von US #10, #21 und #24 enthalten fachliche Testszenarien und gemeldete UI-Freigaben.
