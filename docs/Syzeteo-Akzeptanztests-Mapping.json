@@ -252,11 +252,12 @@
         "test_us24_question_protocol.py::test_us24_resolved_questions_have_course_round_and_position",
         "test_us24_question_protocol.py::test_us24_unresolved_and_challenge_cards_not_in_question_protocol",
         "test_us24_question_protocol.py::test_us24_question_snapshot_is_independent_of_pool_changes",
-        "test_us24_question_protocol.py::test_us24_protocol_has_status_and_resolution_timestamp"
+        "test_us24_question_protocol.py::test_us24_protocol_has_status_and_resolution_timestamp",
+        "test_us24_question_protocol.py::test_us24_aborted_game_keeps_resolved_questions_until_deleted"
       ],
       "manual_review": true,
       "review_status": "verified_partial",
-      "review_note": "Direkte Assertions für Protokollidentität, resolved-Filter, Snapshot und Status; CSV/Filter und fachliche Sonderfälle offen."
+      "review_note": "Direkte Assertions: abgeschlossene Fragen, Kurs/Runde, Snapshots, Abbruchstatus und Löschung. CSV-Export weiterhin offen."
     },
     {
       "id": 25,
