@@ -107,5 +107,18 @@ class US24QuestionProtocolAcceptanceTests(unittest.TestCase):
         self.assertEqual(row["course_code"], "A")
 
 
+    def test_us24_aborted_game_keeps_resolved_questions_until_deleted(self):
+        from storage import abort_game, delete_aborted_game
+        gid = self.game()
+        self.card(gid, 1, 301, "Abgeschlossene Frage")
+        self.card(gid, 2, 302, "Nur aufgedeckt", resolved=0)
+        abort_game(self.conn, gid)
+        rows = protocol_rows(self.conn)
+        self.assertEqual([(r["question_id"], r["status"]) for r in rows],
+                         [(301, "aborted")])
+        delete_aborted_game(self.conn, gid)
+        self.assertEqual(protocol_rows(self.conn), [])
+
+
 if __name__ == "__main__":
     unittest.main()
