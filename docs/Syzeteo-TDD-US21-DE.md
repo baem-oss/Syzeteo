@@ -28,3 +28,11 @@ Referenzumgebung: 1920×1080 Pixel, Browser-Zoom 100 %.
 4. Spiel abbrechen und erneut anmelden; prüfen, dass dieses Spiel nicht fortgesetzt werden kann.
 
 **Nachweisstatus:** Offen, bis Datum, Prüfer, Browser-Version und Ist-Ergebnis dokumentiert sind.
+
+## Erweiterung: Fortsetzung nach Wertung
+
+**AC-US21-04:** Gegeben ist ein laufendes Spiel mit einem bereits gewerteten regulären Spielzug. Wenn die SQLite-Verbindung geschlossen und neu geöffnet wird, dann bleiben Team-Punkte, aktuelle Spielerwahl, Zugnummer, Karten und Spielerkader unverändert. Eine weitere Karte lässt sich anschließend erfolgreich aufdecken.
+
+Automatisierter Test: `test_us21_resume.py::test_us21_scored_turn_can_continue_after_restart`.
+
+Die manuelle End-to-End-Abnahme der Streamlit-Oberfläche bleibt offen. Der automatisierte Test beweist den Persistenz- und Fortsetzungspfad auf Anwendungsebene, nicht die Darstellung im Browser.
