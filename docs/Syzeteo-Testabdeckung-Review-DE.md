@@ -18,13 +18,15 @@
 |---|---:|
 | User Stories | 29 |
 | Stories mit mindestens einer automatisierten Referenz | 29 |
-| Story-Test-Zuordnungen (Mehrfachnennungen eingeschlossen) | 77 |
-| Verschiedene referenzierte Testmethoden | 71 |
+| Story-Test-Zuordnungen (Mehrfachnennungen eingeschlossen) | 80 |
+| Verschiedene referenzierte Testmethoden | 74 |
 | Story-Mappings mit Status `verified_partial` | 29 |
-| Maschinenlesbare Kriterien mit Status `legacy_provisional` | 29 |
+| Maschinenlesbare Kriterien mit Status `legacy_provisional` | 26 |
+| Maschinenlesbare Kriterien mit Status `specified_partial` | 14 |
+| Gesamtzahl registrierter Akzeptanzkriterien | 40 |
 | Story-Mappings mit `manual_review: true` (Bedarfsmarker, **kein** Abnahmestatus) | 9 |
 
-**Einordnung:** `verified_partial` bezeichnet dokumentierte fachliche **Teilnachweise** und keine vollständige Abnahme der Story. `legacy_provisional` kennzeichnet generische, noch fachlich zu präzisierende Kriterien. Die Zahl der Testreferenzen ist keine Testabdeckungsquote. Die CI prüft die Existenz referenzierter Methoden und führt Regressionstests aus; die semantische Aussagekraft der Assertions muss im Review bestätigt werden.
+**Einordnung:** `specified_partial` bezeichnet fachlich konkretisierte Kriterien mit direktem automatisiertem Teilnachweis, nicht die Vollabnahme einer Story. `verified_partial` bezeichnet dokumentierte fachliche **Teilnachweise** und keine vollständige Abnahme der Story. `legacy_provisional` kennzeichnet generische, noch fachlich zu präzisierende Kriterien. Die Zahl der Testreferenzen ist keine Testabdeckungsquote. Die CI prüft die Existenz referenzierter Methoden und führt Regressionstests aus; die semantische Aussagekraft der Assertions muss im Review bestätigt werden.
 
 ### Referenzübersicht je Story
 
@@ -39,7 +41,7 @@
 | US #07 | 2 | Teilnachweis |
 | US #08 | 4 | Teilnachweis |
 | US #09 | 1 | Teilnachweis |
-| US #10 | 5 | Teilnachweis |
+| US #10 | 6 | Teilnachweis |
 | US #11 | 1 | Teilnachweis |
 | US #12 | 1 | Teilnachweis |
 | US #13 | 1 | Teilnachweis |
@@ -50,10 +52,10 @@
 | US #18 | 1 | Teilnachweis |
 | US #19 | 1 | Teilnachweis |
 | US #20 | 3 | Teilnachweis |
-| US #21 | 4 | Teilnachweis |
+| US #21 | 5 | Teilnachweis |
 | US #22 | 2 | Teilnachweis |
 | US #23 | 1 | Teilnachweis |
-| US #24 | 9 | Teilnachweis |
+| US #24 | 10 | Teilnachweis |
 | US #25 | 1 | Teilnachweis |
 | US #26 | 4 | Teilnachweis |
 | US #27 | 4 | Teilnachweis |
@@ -62,9 +64,9 @@
 
 ## Fachliche Fortschritte seit dem ursprünglichen Review
 
-- **US #10 – Studierende Teams zuordnen:** fünf direkte Akzeptanztests zu manueller und zufälliger Verteilung, Kursisolation und ungültigen Eingaben.
-- **US #21 – Laufendes Spiel fortsetzen:** vier direkte Tests, einschließlich persistiertem Zustand nach gewertetem Spielzug und erneuter Datenbankverbindung.
-- **US #24 – Gespielte Fragen protokollieren:** neun direkte Tests zu abgehandelten Fragen, Historie, Abbruch/Löschung, Kurs-/Rundenfilter, CSV und letzter Instructor-Karte.
+- **US #10 – Studierende Teams zuordnen:** sechs direkte Akzeptanztests zu manueller und zufälliger Verteilung, Kursisolation und ungültigen Eingaben.
+- **US #21 – Laufendes Spiel fortsetzen:** fünf direkte Tests, einschließlich persistiertem Zustand nach gewertetem Spielzug und erneuter Datenbankverbindung.
+- **US #24 – Gespielte Fragen protokollieren:** zehn direkte Tests zu abgehandelten Fragen, Historie, Abbruch/Löschung, Kurs-/Rundenfilter, CSV und letzter Instructor-Karte.
 - **US #22 – Beamer-Modus:** zwei zugeordnete Rendering-Tests; diese ersetzen keine echte Browserprüfung.
 
 Die vormals als testlos aufgeführten US #10, #21 und #24 besitzen inzwischen automatisierte Nachweise. Der frühere Stand von 59 Verknüpfungen/26 Stories ist **historisch und nicht mehr aktuell**.
@@ -86,9 +88,13 @@ Am **29.10.2026** hat der Projektverantwortliche die UI-Abnahme im Chat als **PA
 
 Die Ausgangsfassung der Baseline bleibt unangetastet. **Grenzen:** Das Gate beweist weder, dass Tests fachlich ausreichende Assertions enthalten, noch schützt es vor direkten Pushes auf `main`; hierfür sollte Branch Protection eingerichtet und überprüft werden.
 
+## Phase-2-Fortschritt
+
+Die User Stories #10, #21 und #24 besitzen nun insgesamt 14 präzise, maschinenlesbare Kriterien (`specified_partial`) mit direkt zugeordneten Testmethoden. Es wurden drei neue Assertions-Szenarien ergänzt: Snapshot-Integrität bei Teamwechseln, Fortsetzung nach zwei Spielzügen und Protokollierung unabhängig vom Punktgewinn. Die 26 übrigen Kriterien bleiben vorläufig. Die eingefrorene Kriterien-Baseline wurde nicht geändert.
+
 ## Offene Arbeiten nach dieser Dokumentationsphase
 
-1. **Phase 2:** Vorläufige generische Kriterien nach und nach in konkrete Given-When-Then-Szenarien überführen; fachliche Randfälle und ggf. ergänzende Tests prüfen. Insbesondere die Unveränderlichkeit von Team-Snapshots bei nachträglicher Änderung der Teamzuordnung bleibt bei US #10 ein zusätzlicher Testkandidat.
+1. **Phase 2:** Die verbliebenen 26 generischen Kriterien in konkrete Given-When-Then-Szenarien überführen, fachliche Randfälle und ggf. ergänzende Tests prüfen. Der Snapshot-Randfall bei US #10 besitzt bereits einen direkten Test.
 2. **Phase 3:** Durchsetzung und Qualität des Traceability-Gates weiter verbessern; Branch Protection/Required Checks verifizieren; gegebenenfalls automatisierte Browser-E2E-Tests ergänzen.
 3. Falls ein revisionsfähiger Einzelprüfnachweis benötigt wird: manuelle UI-Freigaben um tatsächlich beobachtete Browser-Version, Auflösung, Schritte und Belege erweitern.
 
