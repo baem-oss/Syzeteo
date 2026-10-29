@@ -106,9 +106,11 @@ The release contains regression, migration, release-acceptance, and internationa
 
 ## Documentation
 
-The `docs/` directory contains the requirements and traceability set in German and English, the current technical baseline, historical baselines, internationalization specifications, and upgrade-safety documentation.
+For students and instructors using Syzeteo as a **Requirements Engineering case study**, begin with the [German documentation index](docs/README.md) and the [worked US → UC → BPMN → requirements → acceptance criteria example](docs/RE-Methodenbeispiel-DE.md).
 
-For current TDD evidence, see the [consolidated test coverage and open-work report](docs/Syzeteo-Testabdeckung-Review-DE.md), the [acceptance test catalog](docs/Syzeteo-Akzeptanztests-TDD-DE.md) the [acceptance criteria governance rules](docs/Syzeteo-TDD-Kriterien-Governance-DE.md), and the [Phase-3 GitHub branch protection checklist](docs/Syzeteo-TDD-Phase3-Governance-DE.md). All 29 stories have at least partial automated mappings; this does **not** imply full acceptance coverage.
+The canonical requirements remain available as [User Stories](docs/Syzeteo-L-US-DE.md), [constraints/nonfunctional requirements/business rules](docs/Syzeteo-RANF-etc-DE.md), [Use Cases](docs/Syzeteo-Use-Cases-US26-DE.md), and the [Traceability Matrix](docs/Syzeteo-Traceability-Matrix-DE.md). See [QA and manual acceptance evidence](docs/Syzeteo-QS-und-Abnahme-DE.md) for the test status and known evidence limitations.
+
+Historical technical specifications and versioned migration notes are kept in the [technical archive](docs/archiv/README.md). These are not the current RE baseline.
 
 ## Repository hygiene
 
