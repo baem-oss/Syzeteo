@@ -108,6 +108,8 @@ The release contains regression, migration, release-acceptance, and internationa
 
 The `docs/` directory contains the requirements and traceability set in German and English, the current technical baseline, historical baselines, internationalization specifications, and upgrade-safety documentation.
 
+For current TDD evidence, see the [consolidated test coverage and open-work report](docs/Syzeteo-Testabdeckung-Review-DE.md), the [acceptance test catalog](docs/Syzeteo-Akzeptanztests-TDD-DE.md) and the [acceptance criteria governance rules](docs/Syzeteo-TDD-Kriterien-Governance-DE.md). All 29 stories have at least partial automated mappings; this does **not** imply full acceptance coverage.
+
 ## Repository hygiene
 
 The public repository must not contain productive databases, SQLite WAL/SHM files, backups, real student lists, account data or teaching content whose publication rights are unclear. The bundled student CSV contains only fictional demonstration names.

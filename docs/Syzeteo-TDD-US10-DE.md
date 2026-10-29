@@ -1,33 +1,34 @@
-# Syzeteo – US #10: Akzeptanztests zur Teamzuordnung
+# Syzeteo – US #10: Teamzuordnung, Akzeptanznachweise
 
-Stand: 29.10.2026
+**Stand:** 29.10.2026 · **Status:** fünf direkte automatisierte Teilnachweise; UI-Freigabe PASS (vom Nutzer gemeldet).
 
 ## Fachliche Grundlage
 
-US #10: Der Instructor kann Studierende manuell oder zufällig Team 1 beziehungsweise Team 2 zuordnen. Die aktuellen Funktionen sind `update_student` und `randomize_teams` in `storage.py`.
+Der Instructor kann Studierende manuell oder zufällig Team 1 beziehungsweise Team 2 zuordnen. Die Implementierung verwendet `storage.py::update_student` und `storage.py::randomize_teams`.
 
-## Direkte automatisierte Akzeptanztests
+**Verbindliche maschinenlesbare Kriterien-ID:** `AC-US10-01` in `Syzeteo-Akzeptanzkriterien.json` (Status `legacy_provisional`). Die **S-US10-xx**-Kennungen unten bezeichnen konkrete Testszenarien und **sind keine zusätzlichen, bereits registrierten Akzeptanzkriterien**.
 
-| ID | Gegeben | Wenn | Dann |
-|---|---|---|---|
-| AC-US10-01 | Zwei Studierende ohne Team | Eine Person wird manuell Team 2 zugewiesen | Nur diese Person gehört Team 2 an |
-| AC-US10-02 | Sieben aktive Studierende | Zufällige Teamzuordnung | Alle sieben sind zugeordnet; Teamgrößen 3 und 4 |
-| AC-US10-03 | Aktive und inaktive Studierende sowie ein anderer Kurs | Teams werden zufällig verteilt | Nur aktive Studierende des Zielkurses werden neu zugeteilt |
-| AC-US10-04 | Weniger als zwei aktive Studierende | Zufällige Zuordnung wird angefordert | Fachlicher Fehler, keine Teamänderung |
-| AC-US10-05 | Studierender mit gültiger Teamzuordnung | Ungültige Teamkennung wird zugewiesen | Fachlicher Fehler; ursprüngliche Zuordnung bleibt erhalten |
+## Automatisierte Szenarien
 
-Implementiert in `test_us10_team_assignment.py` (isolierte temporäre Datenbank).
+| Szenario | Gegeben | Wenn | Dann | Direkter Test |
+|---|---|---|---|---|
+| S-US10-01 | Zwei Studierende ohne Team | Eine Person wird Team 2 zugeordnet | Nur diese Person hat Team 2 | `test_us10_manual_assignment_changes_only_selected_student` |
+| S-US10-02 | Sieben aktive Studierende | Zufällige Zuordnung | Teamgrößen 3 und 4 | `test_us10_random_assignment_balances_odd_number` |
+| S-US10-03 | Aktive, inaktive und kursfremde Studierende | Zufallszuordnung im Zielkurs | Nur aktive Mitglieder des Zielkurses werden neu verteilt | `test_us10_random_assignment_ignores_inactive_and_other_courses` |
+| S-US10-04 | Weniger als zwei aktive Studierende | Zufallszuordnung angefordert | Fachlicher Fehler; Zuordnung unverändert | `test_us10_random_assignment_rejects_less_than_two_active` |
+| S-US10-05 | Studierender mit Team 1 | Ungültige Teamkennung zugewiesen | Fehler; Team 1 bleibt bestehen | `test_us10_manual_assignment_rejects_invalid_team_without_mutation` |
 
-## Offene Abnahmepunkte
+Alle Methoden liegen in `test_us10_team_assignment.py` und nutzen eine temporäre SQLite-Datenbank. Die fünf Referenzen sind im Story-Mapping hinterlegt.
 
-- Der tatsächliche Instructor-UI-Ablauf ist noch nicht manuell abgenommen.
-- Die Unveränderlichkeit der gespeicherten Team-Snapshots bereits gestarteter Spiele wird in anderen bestehenden Tests für Teamnamen behandelt; **eine direkte Prüfung gegen nachträgliche Studierenden-Teamänderungen** fehlt noch.
-- Die zufällige Verteilung ist auf eine ausgeglichene Anzahl geprüft, nicht auf statistische Zufälligkeit. Letzteres ist keine fachliche Voraussetzung von US #10.
+## Manuelle UI-Abnahme
 
-## Vorgehen
+**PASS – vom Projektverantwortlichen am 29.10.2026 im Chat erteilt.** Eine eigene Browserprüfung durch den Assistenten fand nicht statt. Browser-Version, tatsächliche Auflösung und Zoomstufe sowie Einzelbeobachtungen/Screenshots wurden nicht übermittelt. Das vereinbarte **Referenzformat** ist 1920 × 1080 bei 100 % Zoom.
 
-Dieser Commit ändert keine Produktivlogik. Nach grünem CI wird der PR nach Review gemergt; anschließend sollen Akzeptanzkriteriumsänderungen zusätzlich im Traceability-Gate abgesichert werden.
+## Fachliche Grenzen und nächste Arbeit
 
-## UI-Abnahme – Freigabe vom 29.10.2026
+- Ein direkter Nachweis, dass nachträgliche Studierenden-Teamänderungen die gespeicherten Team-Snapshots **bereits gestarteter** Spiele nicht verändern, fehlt noch; hierfür ist ein gesonderter Randfalltest sinnvoll.
+- Eine ausgeglichene zufällige Verteilung ist getestet, nicht statistische Zufälligkeit; letztere ist kein eigenständiges Akzeptanzkriterium.
+- Die fünf Szenarien sind Teilnachweise, keine vollständige fachliche Vollabnahme von US #10.
+- Weitere Kriterien-IDs werden erst in Phase 2 bewusst spezifiziert und gemäß CI-Governance mit Tests hinterlegt. Keine Baseline wird dadurch stillschweigend verändert.
 
-**Status: PASS (ausdrückliche Nutzerfreigabe im Chat).** Die UI-Abnahme wurde vom Projektverantwortlichen als bestanden gemeldet. Keine eigenständige Browserprüfung durch den Assistenten und kein separat übermitteltes Prüfprotokoll. Browser-Version, tatsächlich verwendete Auflösung und Zoomstufe sind nicht nachgewiesen. Die zugehörigen automatisierten Regressionstests bleiben unabhängige Nachweise. Für US #10 gilt diese Freigabe als gemeldete manuelle UI-Abnahme; weitergehende fachliche Vollabdeckung wird daraus nicht abgeleitet.
+Siehe auch `Syzeteo-Testabdeckung-Review-DE.md` und `Syzeteo-TDD-Kriterien-Governance-DE.md`.
