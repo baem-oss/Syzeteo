@@ -3,7 +3,9 @@ import tempfile
 import unittest
 from pathlib import Path
 from storage import (connect, create_course, add_student, list_students,
-                     update_student, randomize_teams, StorageError)
+                     update_student, randomize_teams, StorageError,
+                     add_learning_unit, add_question, create_round, start_game,
+                     game_roster, get_game)
 
 
 class US10TeamAssignmentTests(unittest.TestCase):
@@ -66,6 +68,41 @@ class US10TeamAssignmentTests(unittest.TestCase):
             update_student(self.conn, student["id"], "Alpha", 3, True)
         self.assertEqual(ctx.exception.code, "error.student.invalid_team")
         self.assertEqual(list_students(self.conn, self.a)[0]["team"], 1)
+
+
+    def test_us10_reassignment_does_not_change_running_game_team_snapshots(self):
+        """NFANF #02: changing course master data must not rewrite a running game."""
+        add_learning_unit(self.conn, "LE1", "Unit", 1)
+        unit = self.conn.execute(
+            "SELECT id FROM learning_units WHERE code='LE1'"
+        ).fetchone()[0]
+        questions = []
+        for i in range(8):
+            add_question(self.conn, unit, f"Question {i}", f"Answer {i}")
+            questions.append(self.conn.execute("SELECT last_insert_rowid()").fetchone()[0])
+        rid = create_round(self.conn, "Snapshot round", questions)
+        for i in range(8):
+            add_student(self.conn, self.a, f"Player {i}", team=1 if i < 4 else 2)
+        students = list_students(self.conn, self.a)
+        ids = [s["id"] for s in students]
+        gid = start_game(self.conn, rid, self.a, ids)
+        before = {row["student_id"]: (row["display_name_snapshot"], row["team_snapshot"])
+                  for row in game_roster(self.conn, gid)}
+        current_before = (get_game(self.conn, gid)["current_student_id"],
+                          get_game(self.conn, gid)["current_team"])
+        changed = next(s for s in students if s["team"] == 1)
+        update_student(self.conn, changed["id"], changed["display_name"], 2, True)
+        self.assertEqual(
+            self.conn.execute("SELECT team FROM students WHERE id=?",
+                              (changed["id"],)).fetchone()[0], 2
+        )
+        after = {row["student_id"]: (row["display_name_snapshot"], row["team_snapshot"])
+                 for row in game_roster(self.conn, gid)}
+        self.assertEqual(after, before)
+        self.assertEqual(
+            (get_game(self.conn, gid)["current_student_id"],
+             get_game(self.conn, gid)["current_team"]), current_before
+        )
 
 
 if __name__ == "__main__":
