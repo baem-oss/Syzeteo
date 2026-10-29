@@ -4,7 +4,7 @@
 
 Diese Spezifikation dient der schrittweisen Synchronisation von User Stories und Regressionstests. **Die Mappings dokumentieren fachlich begründete Teilnachweise (Review-Status `verified_partial`), keine vollständige Abnahme der User Stories.** Die fachliche Referenz bilden `Syzeteo-L-US-DE.md`, `Syzeteo-RANF-etc-DE.md` und `Syzeteo-Traceability-Matrix-DE.md`.
 
-Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffenen Story konkret in mehrere überprüfbare Given/When/Then-Szenarien aufzuschlüsseln. Die hier notierte generische Mindestform ersetzt diese Szenarien nicht.
+Für US #10, #21 und #24 sind die Akzeptanzkriterien in Phase 2 konkretisiert und maschinenlesbar hinterlegt. Die restlichen Stories enthalten weiterhin vorläufige generische Mindestformulierungen, die konkrete Szenarien nicht ersetzen.
 
 ## TDD-Regel (beschlossen)
 
@@ -14,9 +14,9 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 4. Visuelle Kriterien werden hybrid geprüft: technische Tests plus dokumentierte manuelle Abnahme. Die Referenz ist **1920 × 1080 Pixel bei 100 % Browser-Zoom**, jeweils normale Spielansicht und Beamer-Modus.
 5. Baseline-Änderungen werden nicht automatisch vorgenommen und gehören in ein gesondert überprüftes Review.
 
-**Aktueller Gesamtstand:** 29 User Stories, 77 Story-Test-Zuordnungen (71 verschiedene Testmethoden), kein ungemappter Story-Eintrag. Alle 29 Kriterien sind weiterhin `legacy_provisional`. Autoritativer Detailbericht: `Syzeteo-Testabdeckung-Review-DE.md`.
+**Aktueller Phase-2-Stand:** 29 User Stories, 80 Story-Test-Zuordnungen (74 verschiedene Testmethoden), kein ungemappter Story-Eintrag. 14 Kriterien sind `specified_partial`, 26 bleiben `legacy_provisional`. Autoritativer Detailbericht: `Syzeteo-Testabdeckung-Review-DE.md`.
 
-## Übersicht und vorläufige Akzeptanzkriterien
+## Übersicht der Akzeptanzkriterien und Teilnachweise
 
 ### US #01 – Startspieler ändern
 
@@ -130,13 +130,19 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 **Fachliche Anforderung:** Als **Instructor** möchte ich Studierende manuell oder zufällig Team 1 oder Team 2 zuordnen können, damit für jeden Kurs eine geeignete Teamstruktur für den Spielbetrieb besteht.
 
-**AC-US10-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #10 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Studierende Teams zuordnen“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
+**Konkretisierte maschinenlesbare Kriterien (Status `specified_partial`):**
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_us10_team_assignment.py` (fünf direkte Akzeptanztests; manuelle und zufällige Zuordnung, Validierung, Kursisolation).
+- **AC-US10-01:** Gegeben sind aktive Studierende eines Kurses mit Teamzuordnungen; wenn der Instructor eine Person manuell Team 1 oder 2 zuweist, dann wird nur deren aktuelle Teamzuordnung geändert und die Zuordnungen anderer Studierender bleiben unverändert.
+- **AC-US10-02:** Gegeben sind sieben aktive Studierende eines Kurses; wenn der Instructor die zufällige Teamzuordnung ausführt, dann sind alle sieben einem der zwei Teams zugeordnet und deren Größen unterscheiden sich um höchstens eins.
+- **AC-US10-03:** Gegeben sind aktive und inaktive Studierende sowie ein weiterer Kurs; wenn für einen Kurs Teams zufällig zugeordnet werden, dann werden nur die aktiven Studierenden dieses Kurses neu verteilt; inaktive Studierende und andere Kurse bleiben unverändert.
+- **AC-US10-04:** Gegeben sind weniger als zwei aktive Studierende oder eine ungültige manuelle Teamkennung; wenn die jeweilige Teamzuordnung ausgelöst wird, dann wird sie mit fachlichem Fehler abgewiesen und der vorhandene Zuordnungsstand nicht verändert.
+- **AC-US10-05:** Gegeben ist ein laufendes Spiel mit gespeichertem Spielerkader und Team-Snapshots; wenn danach eine Studierenden-Teamzuordnung im Kurs geändert wird, dann bleiben die im gestarteten Spiel gespeicherten Teamzuordnungen und die aktuelle Spielerwahl unverändert (NFANF #02).
+
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_us10_team_assignment.py` (sechs Tests). Die Einzelreferenzen stehen in `Syzeteo-Akzeptanzkriterien.json`.
 
 **Visueller Abnahmenachweis:** Nicht gesondert festgelegt; UI-Anteile im Story-Review prüfen.
 
-**Abdeckungsstatus:** fünf direkte Akzeptanztests und manuelle UI-Freigabe PASS vom Projektverantwortlichen (29.10.2026). Historische Team-Snapshots bei späteren Teamänderungen sind weiterhin ein Testkandidat; keine fachliche Vollabnahme.
+**Abdeckungsstatus:** 5 konkrete Kriterien mit 6 direkten Testmethoden im Story-Mapping; weiterhin keine vollständige Story-Abnahme.
 
 ### US #11 – Anwesenheit festlegen
 
@@ -262,13 +268,17 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 **Fachliche Anforderung:** Als **Instructor** möchte ich ein laufendes Spiel später wieder öffnen und am gespeicherten Spielstand fortsetzen können, damit ein Spiel bei Unterbrechungen nicht verloren geht.
 
-**AC-US21-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #21 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Laufendes Spiel fortsetzen“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
+**Konkretisierte maschinenlesbare Kriterien (Status `specified_partial`):**
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_us21_resume.py` (vier direkte Tests zu Wiederfinden, Erhalt des Zustands, Abbruch und Fortsetzung nach gewertetem Zug).
+- **AC-US21-01:** Gegeben ist ein laufendes Spiel mit zwei abgeschlossenen und gewerteten regulären Spielzügen; wenn die persistierte Sitzung neu geöffnet wird, dann bleiben Punkte, aktueller Spieler, Zugnummer, Karten und Spielerkader erhalten und ein weiterer Spielzug lässt sich abschließen.
+- **AC-US21-02:** Gegeben ist ein laufendes Spiel; wenn die Datenbankverbindung neu geöffnet wird, dann bleibt es mit Status running auffindbar und sein gespeicherter Anfangszustand mit Kader und Karten ist unverändert.
+- **AC-US21-03:** Gegeben ist ein abgebrochenes Spiel; wenn die Datenbankverbindung neu geöffnet wird, dann wird das Spiel nicht als laufendes Spiel zur Fortsetzung angeboten (GR #11).
+
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_us21_resume.py` (fünf Tests). Die Einzelreferenzen stehen in `Syzeteo-Akzeptanzkriterien.json`.
 
 **Visueller Abnahmenachweis:** Nicht gesondert festgelegt; UI-Anteile im Story-Review prüfen.
 
-**Abdeckungsstatus:** vier direkte Akzeptanztests und gemeldete UI-Abnahme PASS (29.10.2026); automatisierte Browser-E2E-Abnahme und vollständige fachliche Randfälle weiterhin offen.
+**Abdeckungsstatus:** 3 konkrete Kriterien mit 5 direkten Testmethoden im Story-Mapping; weiterhin keine vollständige Story-Abnahme.
 
 ### US #22 – Beamer-Modus verwenden
 
@@ -298,13 +308,20 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 **Fachliche Anforderung:** Als **Instructor** möchte ich nachvollziehen können, welche Fachfragen in welcher Runde und in welchem Kurs tatsächlich gespielt wurden, und dieses Protokoll exportieren können, damit die Verwendung der Fragen für die weitere Lehr- und Klausurplanung dokumentiert ist.
 
-**AC-US24-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #24 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Gespielte Fragen protokollieren“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
+**Konkretisierte maschinenlesbare Kriterien (Status `specified_partial`):**
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_us24_question_protocol.py` (sechs direkte Tests zu Protokoll, Snapshot, Abbruch/Löschung und Instructor-Fachfrage), `test_us24_csv.py` (drei direkte Tests zu Filterung und CSV-Export).
+- **AC-US24-01:** Gegeben sind richtig und falsch beantwortete, abschließend behandelte Fachfragen sowie eine nur aufgedeckte Fachfrage; wenn das Fragenprotokoll angezeigt wird, dann werden beide abgeschlossenen Fachfragen unabhängig von der Wertung protokolliert, die bloß aufgedeckte dagegen nicht.
+- **AC-US24-02:** Gegeben sind abgeschlossene Fachfragen in verschiedenen Kursen und Runden; wenn das Protokoll gelesen wird, dann enthält jede Fachfrage ihre Kurs-, Runden- und Kartenpositionszuordnung.
+- **AC-US24-03:** Gegeben ist eine bereits gespielte Frage, deren Wortlaut im globalen Fragenpool später geändert wurde; wenn das Protokoll gelesen wird, dann erscheint weiterhin der gespeicherte historische Fragetext und Lerneinheitencode.
+- **AC-US24-04:** Gegeben ist ein abgebrochenes Spiel mit abschließend behandelten Fachfragen; wenn das Protokoll gelesen wird, dann werden diese samt Abbruchstatus und Zeitstempel angezeigt; nach ausdrücklicher Löschung des Spiels sind dessen Protokolleinträge entfernt.
+- **AC-US24-05:** Gegeben ist ein Fragenprotokoll über mehrere Kurse und Runden; wenn nach Kurs und Runde gefiltert und als CSV exportiert wird, dann enthält die CSV ausschließlich die gefilterte Ansicht, einschließlich Sonderzeichen, UTF-8-BOM und Spaltenköpfen auch bei leerer Treffermenge.
+- **AC-US24-06:** Gegeben ist eine abschließend behandelte letzte Instructor-Fachfrage; wenn Protokoll und statistische Fragenauswertung gelesen werden, dann erscheint die Fachfrage nur im Protokoll, nicht aber als studentischer Versuch in der Fragenauswertung (GR #07 und #13).
+
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_us24_question_protocol.py` (sieben Tests) und `test_us24_csv.py` (drei Tests). Die Einzelreferenzen stehen in `Syzeteo-Akzeptanzkriterien.json`.
 
 **Visueller Abnahmenachweis:** Export- und Protokollansicht prüfen; Datum, Browser, Prüfer, erwartetes/tatsächliches Ergebnis und Screenshotreferenz dokumentieren.
 
-**Abdeckungsstatus:** neun direkte Akzeptanztests und gemeldete UI-Abnahme PASS (29.10.2026); keine fachliche Vollabnahme sämtlicher Randfälle.
+**Abdeckungsstatus:** 6 konkrete Kriterien mit 10 direkten Testmethoden im Story-Mapping; weiterhin keine vollständige Story-Abnahme.
 
 **Beschlossene Sonderregel:** Die letzte Instructor-Fachfrage wird protokolliert, aber aus der statistischen Fragenauswertung ausgeschlossen. Nachweis: `test_us24_question_protocol.py::test_us24_final_instructor_question_is_logged_but_not_analyzed`.
 
@@ -386,5 +403,5 @@ Die folgenden **PASS**-Einträge sind Freigaben des Projektverantwortlichen im C
 - Die GitHub-CI führt Python-Regressionstests aus, jedoch keine automatisierten Browser-End-to-End-Tests.
 - Eine Testmethodenzuordnung beweist weder vollständige Randfallabdeckung noch die semantische Angemessenheit ihrer Assertions.
 - `traceability_check.py` prüft Änderungen an User Stories. `acceptance_criteria_check.py` prüft zusätzlich neue oder geänderte Akzeptanzkriterien gegen die eingefrorene Kriterien-Baseline; fachliche Aussagekraft bleibt Review-Aufgabe.
-- Die 29 bestehenden Kriterien sind weiterhin `legacy_provisional`, bis sie in Phase 2 konkretisiert und überprüft werden.
+- 26 Kriterien bleiben `legacy_provisional`; die 14 Kriterien für US #10, #21 und #24 sind als `specified_partial` mit direkten Assertions hinterlegt. Dies ist keine Vollabnahme der Stories.
 - Für aktuelle Zählwerte und verbleibende Aufgaben gilt `Syzeteo-Testabdeckung-Review-DE.md`; die Detaildokumente von US #10, #21 und #24 enthalten fachliche Testszenarien und gemeldete UI-Freigaben.
