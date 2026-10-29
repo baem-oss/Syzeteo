@@ -2,7 +2,7 @@
 
 ## Geltung und Methodik
 
-Diese Spezifikation dient der schrittweisen Synchronisation von User Stories und Regressionstests. **Die derzeitige Zuordnung ist ein Kandidatennachweis auf Grundlage der Testmethodennamen, kein Beleg für die vollständige Erfüllung eines Akzeptanzkriteriums.** Die fachliche Referenz bilden `Syzeteo-L-US-DE.md`, `Syzeteo-RANF-etc-DE.md` und `Syzeteo-Traceability-Matrix-DE.md`.
+Diese Spezifikation dient der schrittweisen Synchronisation von User Stories und Regressionstests. **Die Mappings dokumentieren fachlich begründete Teilnachweise (Review-Status `verified_partial`), keine vollständige Abnahme der User Stories.** Die fachliche Referenz bilden `Syzeteo-L-US-DE.md`, `Syzeteo-RANF-etc-DE.md` und `Syzeteo-Traceability-Matrix-DE.md`.
 
 Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffenen Story konkret in mehrere überprüfbare Given/When/Then-Szenarien aufzuschlüsseln. Die hier notierte generische Mindestform ersetzt diese Szenarien nicht.
 
@@ -10,9 +10,11 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 1. Vorhandene Testlücken werden sichtbar berichtet und blockieren die Pipeline zunächst nicht.
 2. Neue oder geänderte User Stories benötigen mindestens einen neuen, ausführbaren und in der Manifestdatei referenzierten automatisierten Akzeptanztest, bevor die Änderung freigegeben wird.
-3. Änderungen an Akzeptanzkriterien ohne Story-Textänderung müssen den gleichen Prozess durchlaufen; hierfür ist die Baseline nur nach Review zu aktualisieren. Die CI-Prüfung einer solchen rein semantischen Änderung ist mit dem derzeitigen Mechanismus **nicht automatisch erzwingbar**.
+3. Für neue oder textlich geänderte Akzeptanzkriterien erzwingt `acceptance_criteria_check.py` eine zusätzliche ausführbare Testreferenz. Diese technische Zuordnung beweist noch keine semantische Testgüte; Assertion-Review bleibt erforderlich. Die Kriterien-Baseline wird im normalen Feature-PR nicht geändert.
 4. Visuelle Kriterien werden hybrid geprüft: technische Tests plus dokumentierte manuelle Abnahme. Die Referenz ist **1920 × 1080 Pixel bei 100 % Browser-Zoom**, jeweils normale Spielansicht und Beamer-Modus.
 5. Baseline-Änderungen werden nicht automatisch vorgenommen und gehören in ein gesondert überprüftes Review.
+
+**Aktueller Gesamtstand:** 29 User Stories, 77 Story-Test-Zuordnungen (71 verschiedene Testmethoden), kein ungemappter Story-Eintrag. Alle 29 Kriterien sind weiterhin `legacy_provisional`. Autoritativer Detailbericht: `Syzeteo-Testabdeckung-Review-DE.md`.
 
 ## Übersicht und vorläufige Akzeptanzkriterien
 
@@ -134,7 +136,7 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 **Visueller Abnahmenachweis:** Nicht gesondert festgelegt; UI-Anteile im Story-Review prüfen.
 
-**Abdeckungsstatus:** fünf direkte Akzeptanztests; historische Team-Snapshots und UI-Abnahme offen.
+**Abdeckungsstatus:** fünf direkte Akzeptanztests und manuelle UI-Freigabe PASS vom Projektverantwortlichen (29.10.2026). Historische Team-Snapshots bei späteren Teamänderungen sind weiterhin ein Testkandidat; keine fachliche Vollabnahme.
 
 ### US #11 – Anwesenheit festlegen
 
@@ -262,11 +264,11 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 **AC-US21-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #21 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Laufendes Spiel fortsetzen“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** **Kein hinreichend direkter Nachweis – Testlücke**.
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_us21_resume.py` (vier direkte Tests zu Wiederfinden, Erhalt des Zustands, Abbruch und Fortsetzung nach gewertetem Zug).
 
 **Visueller Abnahmenachweis:** Nicht gesondert festgelegt; UI-Anteile im Story-Review prüfen.
 
-**Abdeckungsstatus:** kein direkter Akzeptanztest; offen.
+**Abdeckungsstatus:** vier direkte Akzeptanztests und gemeldete UI-Abnahme PASS (29.10.2026); automatisierte Browser-E2E-Abnahme und vollständige fachliche Randfälle weiterhin offen.
 
 ### US #22 – Beamer-Modus verwenden
 
@@ -278,7 +280,7 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 **Visueller Abnahmenachweis:** Normalansicht und Beamer-Modus bei 1920×1080, 100 % Zoom abnehmen; Datum, Browser, Prüfer, erwartetes/tatsächliches Ergebnis und Screenshotreferenz dokumentieren.
 
-**Abdeckungsstatus:** fachlich begründeter Teilnachweis; übrige Kriterien offen.
+**Abdeckungsstatus:** Rendering-Teilnachweise; UI-Abnahme vom Projektverantwortlichen am 29.10.2026 als PASS gemeldet (siehe manuelle Prüftabelle). Kein separater technischer Nachweis der tatsächlichen Testumgebung; übrige fachliche Kriterien bleiben offen.
 
 ### US #23 – Ergebnisse überblicken
 
@@ -298,11 +300,11 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 **AC-US24-01 (vorläufiges Prüfszenario, zu verfeinern):** Gegeben sind die in US #24 beschriebenen Vorbedingungen und die einschlägigen Geschäftsregeln; wenn der Instructor die Funktion „Gespielte Fragen protokollieren“ bestimmungsgemäß ausführt, dann erfüllt das System die in der Story formulierte Nachbedingung ohne Verletzung der zugeordneten Rand- und Integritätsregeln.
 
-**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_us24_question_protocol.py` (neun direkte Tests zu Kurs/Runde, resolved-Filter, Snapshot, Status; partielle Abdeckung).
+**Fachlich zugeordnete Teilnachweise (Quellcode/Assertions geprüft, keine Vollabnahme):** `test_us24_question_protocol.py` (sechs direkte Tests zu Protokoll, Snapshot, Abbruch/Löschung und Instructor-Fachfrage), `test_us24_csv.py` (drei direkte Tests zu Filterung und CSV-Export).
 
 **Visueller Abnahmenachweis:** Export- und Protokollansicht prüfen; Datum, Browser, Prüfer, erwartetes/tatsächliches Ergebnis und Screenshotreferenz dokumentieren.
 
-**Abdeckungsstatus:** neun direkte Akzeptanztests; manuelle UI-Abnahme weiterhin offen.
+**Abdeckungsstatus:** neun direkte Akzeptanztests und gemeldete UI-Abnahme PASS (29.10.2026); keine fachliche Vollabnahme sämtlicher Randfälle.
 
 **Beschlossene Sonderregel:** Die letzte Instructor-Fachfrage wird protokolliert, aber aus der statistischen Fragenauswertung ausgeschlossen. Nachweis: `test_us24_question_protocol.py::test_us24_final_instructor_question_is_logged_but_not_analyzed`.
 
@@ -368,15 +370,21 @@ Vor der nächsten fachlichen Änderung sind die Akzeptanzkriterien der betroffen
 
 ## Dokumentation manueller Prüfungen
 
-| Datum | US / AC | Browser / Version | Auflösung / Zoom | Schritte | Erwartetes Ergebnis | Tatsächliches Ergebnis | Bestanden? | Prüfer | Screenshot-/Ticketlink |
-|---|---|---|---|---|---|---|---|---|---|
-| 29.10.2026 (Freigabe) | US22 / AC-US22-01 | nicht angegeben | Referenz: 1920×1080 / 100 %; tatsächliche Umgebung nicht dokumentiert | Normal- und Beameransicht öffnen, Inhalte/Navigation/Scrollen prüfen (Prüfschritte nicht einzeln belegt) | Lesbare Darstellung ohne störende Navigation, gemäß NFANF #03 möglichst ohne vertikales Scrollen | UI-Abnahme vom Projektverantwortlichen pauschal als PASS erklärt; keine Einzelbeobachtungen übermittelt | PASS (Nutzerfreigabe) | Projektverantwortlicher | nicht vorgelegt |
+Die folgenden **PASS**-Einträge sind Freigaben des Projektverantwortlichen im Chat vom 29.10.2026, keine unabhängigen Browsermessungen. Für US #10, #21 und #24 sind die entsprechenden Einzelvermerke zusätzlich in den fachlichen Detaildokumenten enthalten.
 
-**Hinweis zur US22-Abnahme:** Der Status dokumentiert die vom Projektverantwortlichen erteilte UI-Freigabe, keine vom Assistenten durchgeführte Sichtprüfung. Eine protokollierte Einzelprüfung der Beameransicht und der Scrollfreiheit ist nicht belegt.
+| Datum | US / AC | Browser / Version | Auflösung / Zoom | Prüfgegenstand | Tatsächliches Ergebnis | Bestanden? | Prüfer | Screenshot-/Ticketlink |
+|---|---|---|---|---|---|---|---|---|
+| 29.10.2026 (Freigabe) | US10 / AC-US10-01 | nicht angegeben | Referenz 1920×1080 / 100 %; tatsächliche Umgebung nicht dokumentiert | Manuelle und zufällige Teamzuordnung | UI-Freigabe des Projektverantwortlichen, Einzelbeobachtungen nicht übermittelt | PASS (Nutzerfreigabe) | Projektverantwortlicher | nicht vorgelegt |
+| 29.10.2026 (Freigabe) | US21 / AC-US21-01 | nicht angegeben | Referenz 1920×1080 / 100 %; tatsächliche Umgebung nicht dokumentiert | Laufendes Spiel wieder öffnen und fortsetzen | UI-Freigabe des Projektverantwortlichen, Einzelbeobachtungen nicht übermittelt | PASS (Nutzerfreigabe) | Projektverantwortlicher | nicht vorgelegt |
+| 29.10.2026 (Freigabe) | US22 / AC-US22-01 | nicht angegeben | Referenz 1920×1080 / 100 %; tatsächliche Umgebung nicht dokumentiert | Normal-/Beameransicht, Navigation und Scrollen | UI-Freigabe des Projektverantwortlichen, Einzelbeobachtungen nicht übermittelt | PASS (Nutzerfreigabe) | Projektverantwortlicher | nicht vorgelegt |
+| 29.10.2026 (Freigabe) | US24 / AC-US24-01 | nicht angegeben | Referenz 1920×1080 / 100 %; tatsächliche Umgebung nicht dokumentiert | Fragenprotokoll, Kurs-/Rundenfilter und CSV | UI-Freigabe des Projektverantwortlichen, Einzelbeobachtungen nicht übermittelt | PASS (Nutzerfreigabe) | Projektverantwortlicher | nicht vorgelegt |
+
+**Grenze des Nachweises:** Browser-Version, verwendete Auflösung, Zoomstufe, einzelne Prüfschritte, Screenshots und Einzelbeobachtungen liegen nicht vor. Der Referenzwert 1920×1080/100 % ist **kein Beleg**, dass diese Testumgebung tatsächlich verwendet wurde. Weitere US sind durch diese Tabelle nicht automatisch freigegeben.
 
 ## Grenzen des aktuellen Bestands
 
-- Die bisherige CI prüft vorhandene Python-Tests, aber keine Ende-zu-Ende-Browserabläufe.
-- Eine Testmethodenzuordnung beweist nicht, dass sämtliche fachlichen Randfälle abgedeckt sind.
-- Die Baseline-Prüfung erkennt Story-Textänderungen und neue Stories. Eine Änderung der Akzeptanzkriterien ohne Änderung der User Story kann nur durch verbindliche Review-Konvention sichergestellt werden.
-- Die bereits vorhandenen Tests wurden in diesem Schritt nicht ausgeführt; der CI-Lauf liefert dafür den Laufzeitnachweis.
+- Die GitHub-CI führt Python-Regressionstests aus, jedoch keine automatisierten Browser-End-to-End-Tests.
+- Eine Testmethodenzuordnung beweist weder vollständige Randfallabdeckung noch die semantische Angemessenheit ihrer Assertions.
+- `traceability_check.py` prüft Änderungen an User Stories. `acceptance_criteria_check.py` prüft zusätzlich neue oder geänderte Akzeptanzkriterien gegen die eingefrorene Kriterien-Baseline; fachliche Aussagekraft bleibt Review-Aufgabe.
+- Die 29 bestehenden Kriterien sind weiterhin `legacy_provisional`, bis sie in Phase 2 konkretisiert und überprüft werden.
+- Für aktuelle Zählwerte und verbleibende Aufgaben gilt `Syzeteo-Testabdeckung-Review-DE.md`; die Detaildokumente von US #10, #21 und #24 enthalten fachliche Testszenarien und gemeldete UI-Freigaben.
