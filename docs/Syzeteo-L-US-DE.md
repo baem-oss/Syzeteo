@@ -92,3 +92,8 @@ Stand: 28.10.2026
 - [x] **US #29 – Tic-Tac-Toe auf dem Board**  
   Als **Instructor** möchte ich, dass gewertete Karten auf dem Board einen Rand in der Farbe des punktenden Teams erhalten und eine vollständige Reihe markiert wird, damit nebenbei ein Tic-Tac-Toe als zusätzlicher spielerischer Anreiz mitläuft, ohne die Spielansicht zu vergrößern oder die reguläre Wertung zu verändern.
 
+- [x] **US #30 – Gespielte Runde exportieren**  
+  Als **Instructor** möchte ich jede abgeschlossene Runde einzeln als UTF-8-Textdatei exportieren, damit ich ihren Namen und ihre acht regulären Fragen unabhängig von der Anwendung nutzen kann. Nicht exportiert werden Challenge Card (BäM-Joker), Musterlösungen sowie Spiel-, Team- oder personenbezogene Leistungsdaten.
+
+  **Akzeptanzkriterien:** AC-01: abgeschlossene Runde auswählbar; AC-02: Einzel-Export; AC-03: UTF-8-TXT; AC-04: ausschließlich Rundenname und acht Fragen in ursprünglicher Rundenreihenfolge, ohne Joker und Musterlösungen; AC-05: schreibgeschützt; AC-06: wiederholbar; AC-07: keine individuellen Leistungsdaten; AC-08: verständliche Fehlermeldung bei nicht exportierbaren Daten.
+  **Upgradefähigkeit:** Keine Änderung am Datenbankschema, keine Migration, bestehende SQLite-Daten und Runden bleiben erhalten.
