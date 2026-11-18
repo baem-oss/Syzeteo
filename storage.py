@@ -985,6 +985,28 @@ def round_questions(conn, round_id):
     ).fetchall()
 
 
+def export_played_round_txt(conn, round_id):
+    """Read-only UTF-8 export of a finished round's original eight questions."""
+    row = conn.execute(
+        """SELECT r.name FROM rounds r
+           WHERE r.id=? AND EXISTS (
+               SELECT 1 FROM games g WHERE g.round_id=r.id AND g.status='finished'
+           )""", (round_id,)
+    ).fetchone()
+    if row is None:
+        raise StorageError("error.round.export_unavailable")
+    questions = conn.execute(
+        """SELECT rq.question_text_snapshot
+           FROM round_questions rq
+           WHERE rq.round_id=? ORDER BY rq.position""", (round_id,)
+    ).fetchall()
+    if len(questions) != 8 or any(q["question_text_snapshot"] is None for q in questions):
+        raise StorageError("error.round.export_unavailable")
+    return ("Runde: " + row["name"] + "\n\n" +
+            "\n\n".join(f"{i}. {q['question_text_snapshot']}" for i, q in enumerate(questions, 1)) +
+            "\n").encode("utf-8")
+
+
 def update_round_questions(conn, round_id, question_ids):
     row = conn.execute("SELECT locked FROM rounds WHERE id=?", (round_id,)).fetchone()
     if not row:
