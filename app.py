@@ -13,7 +13,7 @@ from question_protocol import filter_protocol_table, export_protocol_csv
 from storage import (
     add_late_player, add_learning_unit, add_question, add_student, archive_course, connect, course_scoreboard,
     abort_game, create_course, create_round, delete_aborted_game, delete_course, delete_learning_unit, delete_question,
-    export_question_pool_csv, export_question_pool_json, game_cards, game_history, game_roster,
+    export_question_pool_csv, export_question_pool_json, export_played_round_txt, game_cards, game_history, game_roster,
     get_game, import_question_pool_json, import_students_csv, learning_unit_question_count,
     list_courses, list_games, list_learning_units, list_questions, preview_question_pool_import,
     list_rounds, list_students, protocol_rows, question_analysis_rows, randomize_teams, reveal_card,
@@ -703,6 +703,19 @@ elif PAGE==PAGE_ROUNDS:
             rq=round_questions(conn,rnd["id"])
             for item in rq:
                 st.html(round_question_html(item["position"], item["unit_code"], item["question_text"]))
+            if any(g["round_id"] == rnd["id"] and g["status"] == "finished" for g in game_history(conn)):
+                try:
+                    import re
+                    safe_name = re.sub(r"[^\\w.-]+", "_", rnd["name"], flags=re.UNICODE).strip("._")[:80] or "Runde"
+                    st.download_button(
+                        tr("rounds.export_txt"),
+                        data=export_played_round_txt(conn, rnd["id"]),
+                        file_name=f"Syzeteo-Runde-{rnd['id']}-{safe_name}.txt",
+                        mime="text/plain; charset=utf-8",
+                        key=f"export_round_{rnd['id']}",
+                    )
+                except Exception as exc:
+                    show_error(exc)
             st.write(tr("rounds.challenge_auto"))
             if not rnd["locked"] and len(qopts)>=8:
                 selected_labels=[]
