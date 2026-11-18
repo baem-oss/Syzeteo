@@ -215,6 +215,8 @@
   "rounds.filter_edit": "Filter questions for editing by learning unit",
   "rounds.change_questions": "Change questions",
   "rounds.save": "Save round",
+  "rounds.export_txt": "Export questions as text file",
+  "error.round.export_unavailable": "The round is not finished or its questions are incomplete.",
   "rounds.locked_info": "The question set is immutable after the first game has started.",
   "game.title": "Game",
   "game.finished.title": "{round_name} · {course_code} finished",
