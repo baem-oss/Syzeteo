@@ -92,3 +92,7 @@ Status: 28 October 2026
 - [x] **US #29 – Tic-Tac-Toe on the Board**  
   As an **Instructor**, I want scored cards on the board to get a border in the color of the scoring team and a completed line to be marked, so that a tic-tac-toe runs alongside as an additional playful incentive without enlarging the game view or changing the regular scoring.
 
+- [x] **US #30 – Export played round**  
+  As an **Instructor**, I want to export each finished round separately as a UTF-8 plain-text file containing only its name and eight regular questions in original round order. The Challenge Card, model answers, game results and personal performance data are excluded.
+
+  **Acceptance criteria:** selectable finished round; individual and repeatable TXT download; immutable read-only export; explicit error on incomplete data. **Upgrade compatibility:** no database schema change or migration; existing SQLite data remain intact.
