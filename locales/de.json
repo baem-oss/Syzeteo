@@ -215,6 +215,8 @@
   "rounds.filter_edit": "Fragen zum Bearbeiten filtern nach Lerneinheit",
   "rounds.change_questions": "Fragen ändern",
   "rounds.save": "Runde speichern",
+  "rounds.export_txt": "Fragen als Textdatei exportieren",
+  "error.round.export_unavailable": "Die Runde ist nicht abgeschlossen oder ihre Fragen sind nicht vollständig verfügbar.",
   "rounds.locked_info": "Seit dem ersten Spielstart ist der Fragensatz unveränderlich.",
   "game.title": "Spiel",
   "game.finished.title": "{round_name} · {course_code} beendet",
